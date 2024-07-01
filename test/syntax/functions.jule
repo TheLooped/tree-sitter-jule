@@ -1,0 +1,145 @@
+fn example() {
+    // ...
+}
+
+example()
+
+
+fn printInt(i: int) {
+    outln(i)
+}
+
+fn main() {
+    printInt(50)
+}
+
+
+
+fn myFunc(mut i: int) {
+    i += 5
+    outln(i)
+}
+
+
+
+fn strOut(values: ...str) {
+    for _, s in values {
+        out(s)
+    }
+}
+
+fn main() {
+    strOut("Hello", "World", "Variadic")
+}
+
+
+
+fn main() {
+    outln(div(10, 2))
+}
+
+fn div(a: f64, b: f64): f64 { ret a / b }
+
+
+
+let myFunction: fn(int, int): int
+
+
+
+fn main() {
+    let makeHello = fn(name: str): str {
+        ret "Hello " + name + "!"
+    };
+    outln(makeHello("Jule"))
+}
+
+
+fn main() {
+    let message = "Hello, World!"
+    let func = fn() { outln(message) }
+    func()
+}
+
+
+
+myFunc(): (int, int) { ret 18, 96 }
+
+fn lessThan(x: int, y: int): (bool) { ret x < y }
+
+
+
+fn example(): (x: int, y: int) {
+    x = 10
+    y = 20
+    ret x, y
+}
+
+fn example(): (x: int, y: int) {
+    x = 10
+    y = 20
+    ret
+}
+
+fn example(): (x: int, y: int) { ret 90, 100 }
+
+
+
+
+fn main() {
+    let (less, equal) = compareInt(10, 20)
+    outln(less)
+    outln(equal)
+}
+
+
+fn helloWorld() { outln("Hello World") }
+
+fn main() {
+    co helloWorld()
+}
+
+
+
+fn sum[T](a: T, b: T) T {
+    let x: T = a + b
+    ret x
+}
+
+fn main() {
+    outln(sum[int](10, 20))  // 30
+    outln(sum[f32](10, 4.2)) // 14.2
+    outln(sum[f64](4.67, 2)) // 6.67
+}
+
+
+
+fn foo[T1, T2, T3](t1: T1, t2: T2, t3: T3) {
+    outln(t1)
+    outln(t2)
+    outln(t3)
+}
+
+fn main() {
+    let func: fn(int, bool, str) = foo[int, bool, str]
+    func(20, false, "hello")
+}
+
+
+
+fn printMap[Key, Value](map: map[Key]Value) {
+    for key, value in map {
+        out(key)
+        out(": ")
+        outln(value)
+    }
+}
+
+fn main() {
+    let myMap: map[int]str = {
+        0: "A",
+        1: "B",
+        2: "C",
+    }
+    printMap(myMap)
+}
+
