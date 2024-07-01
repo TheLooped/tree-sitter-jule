@@ -66,7 +66,9 @@ module.exports = grammar({
 			choice(
 				$.function_declaration,
 				$.function_signature,
-				$.variable_declaration
+				$.variable_declaration,
+				$.struct_declaration,
+				$.enum_declaration
 			),
 
 		function_declaration: ($) =>
@@ -183,6 +185,46 @@ module.exports = grammar({
 				optional(seq(':', field('type', $._type)))
 			),
 
+		struct_declaration: ($) =>
+			seq(
+				'struct',
+				field('name', $._type_identifier),
+				optional(field('type_parameters', $.generic_type_parameters)),
+				field('body', $.struct_body)
+			),
+
+		struct_body: ($) => seq('{', repeat($.struct_field_list), '}'),
+
+		struct_field_list: ($) =>
+			choice($.field_member, $.default_field_member),
+
+		field_member: ($) =>
+			seq(
+				field('name', $._field_identifier),
+				':',
+				field('type', $._type)
+			),
+
+		default_field_member: ($) =>
+			seq($.field_member, '=', field('default_value', $._expression)),
+
+		enum_declaration: ($) =>
+			seq(
+				'enum',
+				field('name', $._type_identifier),
+				optional(seq(':', field('type', $._type))),
+				field('body', $.enum_body)
+			),
+
+		enum_body: ($) =>
+			seq('{', sepBy(',', $.enum_member), optional(','), '}'),
+
+		enum_member: ($) =>
+			seq(
+				field('name', $.identifier),
+				optional(seq(':', field('value', $._expression)))
+			),
+
 		// ===============
 		// Expressions
 		// ===============
@@ -199,6 +241,7 @@ module.exports = grammar({
 				$.unary_expression,
 				$.binary_expression,
 				$.call_expression,
+				$.struct_expression,
 				$.assignment_expression,
 				$.compound_assignment_expr,
 				$.slice_expression,
@@ -255,6 +298,33 @@ module.exports = grammar({
 					),
 					field('right', $._expression)
 				)
+			),
+
+		struct_expression: ($) =>
+			prec(
+				1,
+				seq(
+					field('name', $._type_identifier),
+					field('body', $.struct_fields)
+				)
+			),
+
+		struct_fields: ($) =>
+			seq(
+				'{',
+				optional(
+					sepBy(',', choice($.struct_named_element, $.struct_element))
+				),
+				optional(','),
+				'}'
+			),
+		struct_element: ($) => choice($._expression, $.struct_fields),
+
+		struct_named_element: ($) =>
+			seq(
+				field('field', $._field_identifier),
+				':',
+				field('value', $.struct_element)
 			),
 
 		return_expression: ($) =>
@@ -337,6 +407,7 @@ module.exports = grammar({
 				$.primitive_type,
 				$.function_type,
 				$.array_type,
+				$.map_type,
 				$.generic_type,
 				alias($.identifier, $.type_identifier),
 				$._literals
@@ -406,6 +477,9 @@ module.exports = grammar({
 					field('element', $._type)
 				)
 			),
+
+		map_type: ($) =>
+			seq('map[', field('key', $._type), ']', field('value', $._type)),
 
 		// ===============
 		// Literals
