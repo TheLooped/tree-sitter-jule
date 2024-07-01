@@ -50,6 +50,7 @@ module.exports = grammar({
 	conflicts: ($) => [[$._type, $._expression], [$.call_expression]],
 
 	inline: ($) => [$._type_identifier],
+
 	word: ($) => $.identifier,
 
 	rules: {
@@ -97,7 +98,8 @@ module.exports = grammar({
 				field('body', optional($.block))
 			),
 
-		generic_type_parameters: ($) => seq('[', sepBy(',', $.type_param), ']'),
+		generic_type_parameters: ($) =>
+			seq(token.immediate('['), sepBy(',', $.type_param), ']'),
 
 		parameters: ($) =>
 			seq(
@@ -125,7 +127,8 @@ module.exports = grammar({
 		return_type: ($) =>
 			seq(optional($.exception_flag), ':', field('return_type', $._type)),
 
-		variadic_argument: ($) => prec.right(seq($._expression, '...')),
+		variadic_argument: ($) =>
+			prec.right(choice(seq($._expression, '...'), '...')),
 
 		argument_list: ($) =>
 			seq(
@@ -179,6 +182,7 @@ module.exports = grammar({
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._type)))
 			),
+
 		// ===============
 		// Expressions
 		// ===============
@@ -195,6 +199,11 @@ module.exports = grammar({
 				$.unary_expression,
 				$.binary_expression,
 				$.call_expression,
+				$.assignment_expression,
+				$.compound_assignment_expr,
+				$.slice_expression,
+				$.index_expression,
+				$.array_expression,
 				$.return_expression,
 				$._type,
 				$._literals,
@@ -214,10 +223,71 @@ module.exports = grammar({
 				)
 			),
 
+		assignment_expression: ($) =>
+			prec.left(
+				PREC.assign,
+				seq(
+					field('left', $._expression),
+					'=',
+					field('right', $._expression)
+				)
+			),
+
+		compound_assignment_expr: ($) =>
+			prec.left(
+				PREC.assign,
+				seq(
+					field('left', $._expression),
+					field(
+						'operator',
+						choice(
+							'+=',
+							'-=',
+							'*=',
+							'/=',
+							'%=',
+							'&=',
+							'|=',
+							'^=',
+							'<<=',
+							'>>='
+						)
+					),
+					field('right', $._expression)
+				)
+			),
+
 		return_expression: ($) =>
 			choice(
 				prec.left(seq('ret', field('values', $._expression))),
 				prec(-1, 'ret')
+			),
+
+		array_expression: ($) =>
+			seq('[', repeat(seq($._expression, optional(','))), ']'),
+
+		slice_expression: ($) =>
+			prec(
+				PREC.call,
+				seq(
+					field('operand', $._expression),
+					choice('[', token.immediate('[')),
+					optional(field('first', $._expression)),
+					token.immediate(':'),
+					optional(field('second', $._expression)),
+					']'
+				)
+			),
+
+		index_expression: ($) =>
+			prec(
+				PREC.call,
+				seq(
+					field('operand', $._expression),
+					choice('[', token.immediate('[')),
+					field('index', $._expression),
+					']'
+				)
 			),
 
 		unary_expression: ($) =>
@@ -225,7 +295,7 @@ module.exports = grammar({
 				PREC.unary,
 				seq(
 					field('operator', $.unary_operator),
-					field('expression', $._expression)
+					field('operand', $._expression)
 				)
 			),
 
@@ -265,8 +335,9 @@ module.exports = grammar({
 		_type: ($) =>
 			choice(
 				$.primitive_type,
-				$.generic_type,
 				$.function_type,
+				$.array_type,
+				$.generic_type,
 				alias($.identifier, $.type_identifier),
 				$._literals
 			),
@@ -274,9 +345,14 @@ module.exports = grammar({
 		primitive_type: (_) => choice(...primitiveTypes),
 
 		function_type: ($) =>
-			seq(
-				prec(PREC.call, seq('fn', field('parameters', $.parameters))),
-				optional(seq(':', field('return_type', $._type)))
+			prec.right(
+				seq(
+					prec(
+						PREC.call,
+						seq('fn', field('parameters', $.parameters))
+					),
+					optional(seq(':', field('return_type', $._type)))
+				)
 			),
 
 		generic_type: ($) =>
@@ -301,13 +377,33 @@ module.exports = grammar({
 				)
 			),
 
+		//TODO: fix precedence
 		type_constraint_param: ($) =>
-			seq(
-				field('name', $.identifier),
-				':',
-				choice(
-					sepBy1('|', field('constraint', $._type)),
-					field('constraint', $._type)
+			prec(
+				1,
+				seq(
+					field('name', $.identifier),
+					':',
+					choice(
+						sepBy1('|', field('constraint', $._type)),
+						field('constraint', $._type)
+					)
+				)
+			),
+
+		array_type: ($) =>
+			prec(
+				1,
+				seq(
+					'[',
+					optional(
+						choice(
+							field('auto_size', '...'),
+							field('length', choice($.integer, $.identifier))
+						)
+					),
+					']',
+					field('element', $._type)
 				)
 			),
 
