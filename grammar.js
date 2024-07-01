@@ -155,7 +155,15 @@ module.exports = grammar({
 					seq(
 						optional($.mutable_flag),
 						$.declaration_content,
-						optional(seq('=', field('value', $._expression)))
+						optional(
+							seq(
+								'=',
+								field(
+									'value',
+									choice($.map_literal, $._expression)
+								)
+							)
+						)
 					)
 				)
 			),
@@ -248,12 +256,15 @@ module.exports = grammar({
 				$.index_expression,
 				$.array_expression,
 				$.return_expression,
+				$.inc_expr,
+				$.dec_expr,
 				$._type,
 				$._literals,
 				$.identifier
 			),
 
-		_expression_ending_with_block: ($) => choice($.block),
+		_expression_ending_with_block: ($) =>
+			choice($.block, $.for_expression, $.if_expression),
 
 		call_expression: ($) =>
 			prec(
@@ -360,6 +371,60 @@ module.exports = grammar({
 				)
 			),
 
+		//==================
+		//Control Flow
+		//==================
+
+		for_expression: ($) =>
+			seq(
+				'for',
+				optional(choice($.while_next, $.for_each, $._expression)),
+				field('body', $.block)
+			),
+
+		while_next: ($) =>
+			prec.left(
+				seq(
+					optional(
+						seq(field('initializer', optional($._expression)), ';')
+					),
+					field('condition', optional($._expression)),
+					';',
+					field('update', optional($._expression))
+				)
+			),
+
+		for_each: ($) =>
+			prec.left(
+				1,
+				seq(
+					field('iter', choice('_', $._expression, $.identifier)),
+					optional(
+						seq(
+							token.immediate(','),
+							field(
+								'value',
+								choice('_', $._expression, $.identifier)
+							)
+						)
+					),
+					alias('in', $.keyword),
+					field('right', choice($._expression, $._type_identifier))
+				)
+			),
+
+		if_expression: ($) =>
+			prec.right(
+				seq(
+					'if',
+					field('condition', $._expression),
+					field('consequence', $.block),
+					optional(field('alternative', $.else_block))
+				)
+			),
+
+		else_block: ($) => seq('else', choice($.block, $.if_expression)),
+
 		unary_expression: ($) =>
 			prec.left(
 				PREC.unary,
@@ -368,6 +433,10 @@ module.exports = grammar({
 					field('operand', $._expression)
 				)
 			),
+
+		inc_expr: ($) => seq($._expression, '++'),
+
+		dec_expr: ($) => seq($._expression, '--'),
 
 		binary_expression: ($) => {
 			const table = [
@@ -487,6 +556,16 @@ module.exports = grammar({
 
 		_literals: ($) =>
 			choice($.integer, $.float, $.bool, $.char, $.string, $.raw_string),
+
+		map_literal: ($) =>
+			seq('{', sepBy(',', $.map_entry), optional(','), '}'),
+
+		map_entry: ($) =>
+			seq(
+				field('key', $._expression),
+				':',
+				field('value', $._expression)
+			),
 
 		integer: (_) =>
 			token(
