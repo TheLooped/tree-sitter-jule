@@ -13,7 +13,6 @@ const PREC = {
 	and: 2, // &&
 	or: 1, // ||
 	assign: 0, // Assignment
-	slice: 1, // ...
 	comment: 0 // Comments
 }
 
@@ -46,6 +45,11 @@ module.exports = grammar({
 
 	extras: ($) => [/\s+/, $.comment],
 
+	supertypes: ($) => [$._expression, $._type, $._literals],
+
+	conflicts: ($) => [[$._type, $._expression], [$.call_expression]],
+
+	inline: ($) => [$._type_identifier],
 	word: ($) => $.identifier,
 
 	rules: {
@@ -58,26 +62,42 @@ module.exports = grammar({
 		// Declarations
 		// ===============
 		_declaration_statement: ($) =>
-			choice($.function_declaration, $.function_declaration),
+			choice(
+				$.function_declaration,
+				$.function_signature,
+				$.variable_declaration
+			),
 
 		function_declaration: ($) =>
 			prec.right(
+				1,
 				seq(
+					// does static keyword belong here?
+					optional(field('modifier', choice($.unsafe, $.cpp))),
 					'fn',
 					field('name', $.identifier),
-					optional($.parameters),
-					field('body', optional($.block)),
-					optional(alias(';', $.terminator))
+					field(
+						'type_parameters',
+						optional($.generic_type_parameters)
+					),
+					field('parameters', $.parameters),
+					optional($.return_type),
+					field('body', optional($.block))
 				)
 			),
 
 		function_signature: ($) =>
 			seq(
+				optional(field('modifier', choice($.unsafe, $.cpp))),
 				'fn',
 				field('name', $.identifier),
+				field('type_parameters', optional($.generic_type_parameters)),
 				field('parameters', $.parameters),
-				optional(seq(':', field('return_type', $._type)))
+				optional($.return_type),
+				field('body', optional($.block))
 			),
+
+		generic_type_parameters: ($) => seq('[', sepBy(',', $.type_param), ']'),
 
 		parameters: ($) =>
 			seq(
@@ -91,8 +111,7 @@ module.exports = grammar({
 			seq(
 				optional($.mutable_flag),
 				field('name', $.identifier),
-				':',
-				field('type', $._type)
+				optional(seq(':', field('type', $._type)))
 			),
 
 		variadic_parameter: ($) =>
@@ -106,20 +125,139 @@ module.exports = grammar({
 		return_type: ($) =>
 			seq(optional($.exception_flag), ':', field('return_type', $._type)),
 
+		variadic_argument: ($) => prec.right(seq($._expression, '...')),
+
+		argument_list: ($) =>
+			seq(
+				'(',
+				optional(
+					seq(
+						choice($._expression, $.variadic_argument),
+						repeat(
+							seq(',', choice($._expression, $.variadic_argument))
+						),
+						optional(',')
+					)
+				),
+				')'
+			),
+
+		variable_declaration: ($) =>
+			seq(
+				choice('const', 'let', 'static'),
+				choice(
+					$.declaration_list,
+					seq(
+						optional($.mutable_flag),
+						$.declaration_content,
+						optional(seq('=', field('value', $._expression)))
+					)
+				)
+			),
+
+		declaration_list: ($) =>
+			prec.right(
+				seq(
+					'(',
+					sepBy(',', $.declaration_item),
+					')',
+					optional(
+						seq('=', sepBy(',', field('value', $._expression)))
+					)
+				)
+			),
+
+		declaration_item: ($) =>
+			choice(
+				$.declaration_content,
+				seq($.mutable_flag, $.declaration_content),
+				'_'
+			),
+
+		declaration_content: ($) =>
+			seq(
+				field('name', $.identifier),
+				optional(seq(':', field('type', $._type)))
+			),
 		// ===============
 		// Expressions
 		// ===============
 		_expression_statement: ($) =>
 			prec.left(
 				choice(
-					seq($._expression, optional(alias(';', $.terminator))),
+					seq($._expression, optional($.terminator)),
 					prec(1, $._expression_ending_with_block)
 				)
 			),
 
-		_expression: ($) => choice($.identifier),
+		_expression: ($) =>
+			choice(
+				$.unary_expression,
+				$.binary_expression,
+				$.call_expression,
+				$.return_expression,
+				$._type,
+				$._literals,
+				$.identifier
+			),
 
 		_expression_ending_with_block: ($) => choice($.block),
+
+		call_expression: ($) =>
+			prec(
+				PREC.call,
+				seq(
+					optional(field('modifier', $.co)),
+					field('function', $._expression),
+					optional(field('type_arguments', $.type_arguments)),
+					field('arguments', $.argument_list)
+				)
+			),
+
+		return_expression: ($) =>
+			choice(
+				prec.left(seq('ret', field('values', $._expression))),
+				prec(-1, 'ret')
+			),
+
+		unary_expression: ($) =>
+			prec.left(
+				PREC.unary,
+				seq(
+					field('operator', $.unary_operator),
+					field('expression', $._expression)
+				)
+			),
+
+		binary_expression: ($) => {
+			const table = [
+				[PREC.and, '&&'],
+				[PREC.or, '||'],
+				[PREC.bitand, '&'],
+				[PREC.bitor, '|'],
+				[PREC.bitxor, '^'],
+				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
+				[PREC.shift, choice('<<', '>>')],
+				[PREC.additive, choice('+', '-')],
+				[PREC.multiplicative, choice('*', '/', '%')]
+			]
+
+			return choice(
+				...table.map(([precedence, operator]) =>
+					prec.left(
+						precedence,
+						seq(
+							field('left', $._expression),
+							field(
+								'operator',
+								alias(operator, $.binary_operator)
+							),
+							field('right', $._expression)
+						)
+					)
+				)
+			)
+		},
 
 		// ===============
 		// Types
@@ -127,11 +265,51 @@ module.exports = grammar({
 		_type: ($) =>
 			choice(
 				$.primitive_type,
+				$.generic_type,
+				$.function_type,
 				alias($.identifier, $.type_identifier),
 				$._literals
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		function_type: ($) =>
+			seq(
+				prec(PREC.call, seq('fn', field('parameters', $.parameters))),
+				optional(seq(':', field('return_type', $._type)))
+			),
+
+		generic_type: ($) =>
+			prec(
+				1,
+				seq(
+					field('type', $._type_identifier),
+					field('type_arguments', $.type_arguments)
+				)
+			),
+
+		type_arguments: ($) =>
+			prec.dynamic(2, seq('[', sepBy(',', $.type_param), ']')),
+
+		type_param: ($) =>
+			prec(
+				1,
+				choice(
+					$._type,
+					$.type_constraint_param,
+					alias($.identifier, $.type_identifier)
+				)
+			),
+
+		type_constraint_param: ($) =>
+			seq(
+				field('name', $.identifier),
+				':',
+				choice(
+					sepBy1('|', field('constraint', $._type)),
+					field('constraint', $._type)
+				)
+			),
 
 		// ===============
 		// Literals
@@ -196,7 +374,8 @@ module.exports = grammar({
 					'{',
 					optional(repeat($._statement)),
 					optional($._expression),
-					'}'
+					'}',
+					optional($.terminator)
 				)
 			),
 
@@ -209,15 +388,32 @@ module.exports = grammar({
 
 		exception_flag: (_) => '!',
 
+		static: (_) => 'static',
+		cpp: (_) => 'cpp',
+		unsafe: (_) => 'unsafe',
+		co: (_) => 'co',
+
+		// ===============
+		// Identifiers
+		// ===============
+		identifier: (_) => /[\p{XID_Start}][_0-9\p{XID_Continue}]*/,
+
+		_type_identifier: ($) => alias($.identifier, $.type_identifier),
+
+		_field_identifier: ($) => alias($.identifier, $.field_identifier),
+
+		// ===============
+		// Operators
+		// ===============
+		unary_operator: (_) => choice('~', '!', '-', '-%'),
+
 		// ===============
 		// Comments
 		// ===============
 		comment: ($) => choice($.line_comment, $.block_comment),
 
 		line_comment: ($) => token(seq('//', /[^\r\n]*/)),
-		block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')),
-
-		identifier: (_) => /[\p{XID_Start}][_0-9\p{XID_Continue}]*/
+		block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/'))
 	}
 })
 
