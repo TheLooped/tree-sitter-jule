@@ -1,3 +1,22 @@
+const PREC = {
+	call: 13, // Function calls
+	field: 12, // Field access
+	unary: 11, // Unary operators
+	cast: 10, // Type casting
+	multiplicative: 9, // *, %, /
+	shift: 8, // <<, >>
+	additive: 7, // +, -
+	bitand: 6, // &
+	bitxor: 5, // ^ (XOR)
+	bitor: 4, // |
+	comparative: 3, // ==, !=, <, <=, >, >=
+	and: 2, // &&
+	or: 1, // ||
+	assign: 0, // Assignment
+	slice: 1, // ...
+	comment: 0 // Comments
+}
+
 const numericTypes = [
 	'u8',
 	'i8',
