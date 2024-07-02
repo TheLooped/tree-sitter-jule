@@ -188,9 +188,11 @@ module.exports = grammar({
 			),
 
 		declaration_content: ($) =>
-			seq(
-				field('name', $.identifier),
-				optional(seq(':', field('type', $._type)))
+			prec.left(
+				seq(
+					field('name', $.identifier),
+					optional(seq(':', field('type', $._type)))
+				)
 			),
 
 		struct_declaration: ($) =>
@@ -256,6 +258,8 @@ module.exports = grammar({
 				$.index_expression,
 				$.array_expression,
 				$.return_expression,
+				$.break_expression,
+				$.continue_expression,
 				$.inc_expr,
 				$.dec_expr,
 				$._type,
@@ -264,7 +268,12 @@ module.exports = grammar({
 			),
 
 		_expression_ending_with_block: ($) =>
-			choice($.block, $.for_expression, $.if_expression),
+			choice(
+				$.block,
+				$.for_expression,
+				$.if_expression,
+				$.match_expression
+			),
 
 		call_expression: ($) =>
 			prec(
@@ -274,6 +283,16 @@ module.exports = grammar({
 					field('function', $._expression),
 					optional(field('type_arguments', $.type_arguments)),
 					field('arguments', $.argument_list)
+				)
+			),
+
+		field_expression: ($) =>
+			prec(
+				PREC.field,
+				seq(
+					field('value', $._expression),
+					'.',
+					field('field', $._field_identifier)
 				)
 			),
 
@@ -311,9 +330,15 @@ module.exports = grammar({
 				)
 			),
 
+		break_expression: ($) =>
+			prec.left(seq('break', optional(field('label', $.identifier)))),
+
+		continue_expression: ($) =>
+			prec.left(seq('continue', optional($.identifier))),
+
 		struct_expression: ($) =>
 			prec(
-				1,
+				-1,
 				seq(
 					field('name', $._type_identifier),
 					field('body', $.struct_fields)
@@ -424,6 +449,51 @@ module.exports = grammar({
 			),
 
 		else_block: ($) => seq('else', choice($.block, $.if_expression)),
+
+		// TODO: Fix the match arms and add multiple match arms feature
+		match_expression: ($) =>
+			seq(
+				'match',
+				optional(field('type_flag', alias('type', $.keyword))),
+				field('value', $._expression),
+				field('body', $.match_block)
+			),
+
+		match_block: ($) =>
+			seq(
+				'{',
+				optional(
+					seq(
+						repeat($.match_arm),
+						alias($.last_match_arm, $.match_arm)
+					)
+				),
+				'}'
+			),
+
+		match_arm: ($) =>
+			prec.right(
+				seq(
+					choice(
+						field('patterns', repeat(seq('|', $.match_pattern))),
+						$.multiple_patterns
+					),
+					':',
+					field('value', $.match_arm_body)
+				)
+			),
+
+		last_match_arm: ($) => seq('|:', field('value', $.match_arm_body)),
+
+		match_pattern: ($) => choice($._expression),
+
+		multiple_patterns: ($) =>
+			seq($._expression, repeat1(seq('|', $._expression))),
+
+		match_arm_body: ($) =>
+			prec.right(
+				choice(seq(repeat1($._statement), optional($.fall)), $.fall)
+			),
 
 		unary_expression: ($) =>
 			prec.left(
@@ -633,9 +703,16 @@ module.exports = grammar({
 		// ===============
 		mutable_flag: (_) => 'mut',
 
+		type_flag: (_) => 'type',
+
+		label: ($) => seq($.identifier, ':'),
+
 		terminator: (_) => ';',
 
 		exception_flag: (_) => '!',
+
+		fall: (_) => 'fall',
+		self: (_) => 'self',
 
 		static: (_) => 'static',
 		cpp: (_) => 'cpp',
