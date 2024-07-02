@@ -218,6 +218,21 @@ module.exports = grammar({
 		default_field_member: ($) =>
 			seq($.field_member, '=', field('default_value', $._expression)),
 
+		impl_declaration: ($) =>
+			seq(
+				'impl',
+				optional(seq(field('trait', $.identifier), 'for')),
+				field('struct', $.identifier),
+				field('body', $.declaration_list)
+			),
+
+		trait_declaration: ($) =>
+			seq(
+				'trait',
+				field('name', $.identifier),
+				field('body', $.declaration_list)
+			),
+
 		enum_declaration: ($) =>
 			seq(
 				'enum',
@@ -250,7 +265,9 @@ module.exports = grammar({
 			choice(
 				$.unary_expression,
 				$.binary_expression,
+				$.reference_expression,
 				$.call_expression,
+				$.field_expression,
 				$.struct_expression,
 				$.assignment_expression,
 				$.compound_assignment_expr,
@@ -260,6 +277,8 @@ module.exports = grammar({
 				$.return_expression,
 				$.break_expression,
 				$.continue_expression,
+				$.type_cast_expression,
+				$.type_alias_expression,
 				$.inc_expr,
 				$.dec_expr,
 				$._type,
@@ -293,6 +312,38 @@ module.exports = grammar({
 					field('value', $._expression),
 					'.',
 					field('field', $._field_identifier)
+				)
+			),
+
+		// TODO: fix mixup with call_expression
+		type_cast_expression: ($) =>
+			prec(
+				PREC.cast,
+				choice(
+					seq(
+						'(',
+						field('type', $._type),
+						')',
+						'(',
+						field('value', $._expression),
+						')'
+					),
+					seq(
+						field('type', $._type),
+						'(',
+						field('value', $._expression),
+						')'
+					)
+				)
+			),
+
+		type_alias_expression: ($) =>
+			prec.left(
+				seq(
+					'type',
+					field('name', $._type_identifier),
+					':',
+					field('type', $._type)
 				)
 			),
 
@@ -494,6 +545,8 @@ module.exports = grammar({
 			prec.right(
 				choice(seq(repeat1($._statement), optional($.fall)), $.fall)
 			),
+		reference_expression: ($) =>
+			prec(PREC.unary, seq('&', field('value', $._expression))),
 
 		unary_expression: ($) =>
 			prec.left(
@@ -547,12 +600,19 @@ module.exports = grammar({
 				$.function_type,
 				$.array_type,
 				$.map_type,
+				$.reference_type,
+				$.pointer_type,
 				$.generic_type,
 				alias($.identifier, $.type_identifier),
 				$._literals
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		reference_type: ($) =>
+			prec(PREC.unary, seq('&', field('type', $._type))),
+
+		pointer_type: ($) => prec(PREC.unary, seq('*', $._type)),
 
 		function_type: ($) =>
 			prec.right(
@@ -687,6 +747,7 @@ module.exports = grammar({
 		// ===============
 		// Blocks
 		// ===============
+		unsafe_block: ($) => seq('unsafe', $.block),
 		block: ($) =>
 			prec.left(
 				seq(

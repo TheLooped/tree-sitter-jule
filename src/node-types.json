@@ -44,6 +44,10 @@
         "named": true
       },
       {
+        "type": "field_expression",
+        "named": true
+      },
+      {
         "type": "identifier",
         "named": true
       },
@@ -65,6 +69,14 @@
       },
       {
         "type": "struct_expression",
+        "named": true
+      },
+      {
+        "type": "type_alias_expression",
+        "named": true
+      },
+      {
+        "type": "type_cast_expression",
         "named": true
       },
       {
@@ -728,6 +740,32 @@
     "type": "exception_flag",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "field_expression",
+    "named": true,
+    "fields": {
+      "field": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "field_identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "field_member",
@@ -1757,6 +1795,32 @@
     "fields": {}
   },
   {
+    "type": "type_alias_expression",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "type_arguments",
     "named": true,
     "fields": {},
@@ -1769,6 +1833,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "type_cast_expression",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_type",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
