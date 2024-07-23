@@ -1,0 +1,45 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"files": {
+		"ignore": [
+			"crates/**",
+			"dist/**",
+			".astro/**",
+			"assets/**",
+			"packages/@biomejs/backend-jsonrpc/src/workspace.ts",
+			"public/**",
+			"**/__snapshots__",
+			"**/undefined/**",
+			"_fonts/**",
+			"packages/@biomejs/wasm-*"
+		],
+		"include": ["packages/@biomejs/**", "packages/tailwindcss-config-analyzer"]
+	},
+	"formatter": {
+		"ignore": ["configuration_schema.json"]
+	},
+	"json": {
+		"formatter": {
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 1
+		}
+	},
+	"vcs": {
+		"clientKind": "git",
+		"enabled": true,
+		"useIgnoreFile": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "off"
+			}
+		}
+	},
+	"organizeImports": {
+		"enabled": true
+	}
+}

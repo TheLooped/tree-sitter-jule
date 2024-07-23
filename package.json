@@ -1,0 +1,19 @@
+{
+  "name": "tree-sitter-jule",
+  "version": "0.0.1",
+  "description": "Tree sitter grammar for Jule",
+  "main": "index.js",
+  "scripts": {
+    "test": "tree-sitter test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "keywords": [
+    "Jule",
+    "Parser"
+  ],
+  "author": "TheLooped",
+  "license": "BSD-3-Clause"
+}
