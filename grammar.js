@@ -75,7 +75,8 @@ module.exports = grammar({
 				$.parenthesized_expression
 			),
 
-		_composite_expression: ($) => choice($.array_expression),
+		_composite_expression: ($) =>
+			choice($.array_expression, $.map_expression),
 
 		//------------Expressions------------//
 
@@ -88,6 +89,16 @@ module.exports = grammar({
 			),
 
 		parenthesized_expression: ($) => seq('(', $._expression, ')'),
+
+		map_expression: ($) =>
+			seq('{', optional(commaSep($.map_entry)), optional(','), '}'),
+
+		map_entry: ($) =>
+			seq(
+				field('key', $._expression),
+				':',
+				field('value', $._expression)
+			),
 
 		array_expression: ($) =>
 			prec.right(
@@ -168,9 +179,23 @@ module.exports = grammar({
 			choice($.primitive_type, alias($.identifier, $.type_identifier)),
 
 		_composite_type: ($) =>
-			choice($.array_type, $.auto_sized_array_type, $.slice_type),
+			choice(
+				$.array_type,
+				$.auto_sized_array_type,
+				$.slice_type,
+				$.map_type
+			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		map_type: ($) =>
+			seq(
+				'map',
+				'[',
+				field('key_type', $._type),
+				']',
+				field('value_type', $._type)
+			),
 
 		array_type: ($) =>
 			seq(
