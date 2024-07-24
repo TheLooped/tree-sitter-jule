@@ -45,7 +45,12 @@ const terminator = choice('\n', ';')
 module.exports = grammar({
 	name: 'jule',
 
-	conflicts: ($) => [[$._type, $._expression]],
+	conflicts: ($) => [
+		[$.array_type],
+		[$._primary_type, $._expression],
+		[$._type, $._expression],
+		[$.array_type, $.array_expression]
+	],
 
 	extras: ($) => [$.comment, /\s+/],
 
@@ -59,7 +64,8 @@ module.exports = grammar({
 		_declaration: ($) =>
 			choice($._variable_declaration, $.assignment_statement),
 
-		_expression_statement: ($) => choice($._expression),
+		_expression_statement: ($) =>
+			choice($._expression, $._composite_expression),
 
 		_expression: ($) =>
 			choice(
@@ -69,6 +75,8 @@ module.exports = grammar({
 				$.indexed_expression,
 				$.parenthesized_expression
 			),
+
+		_composite_expression: ($) => choice($.array_expression),
 
 		expression_list: ($) => commaSep1($._expression),
 
@@ -84,6 +92,19 @@ module.exports = grammar({
 
 		parenthesized_expression: ($) => seq('(', $._expression, ')'),
 
+		array_expression: ($) =>
+			seq(
+				'[',
+				optional(
+					choice(
+						commaSep1($._expression),
+						seq($._expression, ',', '...'),
+						'...'
+					)
+				),
+				optional(','),
+				']'
+			),
 		//------------Declarations------------//
 
 		_variable_declaration: ($) =>
@@ -141,14 +162,28 @@ module.exports = grammar({
 
 		//------------Types------------//
 
-		_type: ($) =>
-			choice(
-				$.primitive_type,
-				alias($.identifier, $.type_identifier),
-				$._literals
-			),
+		_type: ($) => choice($._primary_type, $._composite_type, $._literals),
+
+		_primary_type: ($) =>
+			choice($.primitive_type, alias($.identifier, $.type_identifier)),
+
+		_composite_type: ($) =>
+			choice($.array_type, $.auto_sized_array_type, $.slice_type),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		array_type: ($) =>
+			seq(
+				'[',
+				field('length', $._expression),
+				']',
+				optional(field('type', $._type))
+			),
+
+		auto_sized_array_type: ($) =>
+			seq('[', '...', ']', field('type', $._type)),
+
+		slice_type: ($) => seq('[', ']', field('type', $._type)),
 
 		//------------Literals------------//
 		_literals: ($) =>
