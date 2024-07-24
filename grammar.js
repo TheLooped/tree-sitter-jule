@@ -32,6 +32,12 @@ const numericTypes = [
 	'f64'
 ]
 
+const DIGIT = /[0-9]/
+const HEX_DIGIT = /[0-9a-fA-F]/
+const BIN_DIGIT = /[01]/
+const OCT_DIGIT = /[0-7]/
+const UNDERSCORE_SEP = /_?/
+
 const primitiveTypes = numericTypes.concat(['bool', 'str'])
 
 const terminator = choice('\n', ';')
@@ -190,19 +196,30 @@ module.exports = grammar({
 		_unsigned_number: ($) => choice($.integer_literal, $.float_literal),
 
 		integer_literal: ($) =>
-			choice($._decimal_integer, $._non_decimal_integer),
+			choice(
+				$._decimal_integer,
+				$._binary_integer,
+				$._octal_integer,
+				$._hexadecimal_integer
+			),
 
-		_non_decimal_integer: ($) =>
-			choice($._binary_integer, $._octal_integer, $._hexadecimal_integer),
+		_decimal_integer: ($) =>
+			token(seq(DIGIT, repeat(seq(UNDERSCORE_SEP, DIGIT)))),
 
-		_decimal_integer: ($) => $._decimal_digits,
-
-		_binary_integer: ($) => seq('0b', $._binary_digits),
+		_binary_integer: ($) =>
+			token(
+				seq(/0[bB]/, BIN_DIGIT, repeat(seq(UNDERSCORE_SEP, BIN_DIGIT)))
+			),
 
 		_octal_integer: ($) =>
-			choice(seq('0', $._octal_digits), seq('0o', $._octal_digits)),
+			token(
+				seq(/0[oO]?/, OCT_DIGIT, repeat(seq(UNDERSCORE_SEP, OCT_DIGIT)))
+			),
 
-		_hexadecimal_integer: ($) => seq('0x', $._hex_digits),
+		_hexadecimal_integer: ($) =>
+			token(
+				seq(/0[xX]/, HEX_DIGIT, repeat(seq(UNDERSCORE_SEP, HEX_DIGIT)))
+			),
 
 		float_literal: ($) =>
 			choice(
@@ -212,49 +229,47 @@ module.exports = grammar({
 			),
 
 		_decimal_float: ($) =>
-			choice(
-				seq($._decimal_digits, '.', optional($._decimal_digits)),
-				seq('.', $._decimal_digits)
+			token(
+				seq(
+					optional(seq(DIGIT, repeat(seq(UNDERSCORE_SEP, DIGIT)))),
+					'.',
+					optional(seq(DIGIT, repeat(seq(UNDERSCORE_SEP, DIGIT))))
+				)
 			),
 
 		_exponential_float: ($) =>
-			seq(
-				$._decimal_float_base,
-				/[eE]/,
-				optional(/[-+]/),
-				$._decimal_digits
+			token(
+				seq(
+					seq(
+						optional(
+							seq(DIGIT, repeat(seq(UNDERSCORE_SEP, DIGIT)))
+						),
+						'.',
+						optional(seq(DIGIT, repeat(seq(UNDERSCORE_SEP, DIGIT))))
+					),
+					/[eE]/,
+					optional(/[-+]/),
+					DIGIT,
+					repeat(seq(UNDERSCORE_SEP, DIGIT))
+				)
 			),
 
 		_hexadecimal_float: ($) =>
-			seq(
-				'0x',
-				$._hex_float_base,
-				/[pP]/,
-				optional(/[-+]/),
-				$._decimal_digits
-			),
-
-		_decimal_digits: ($) =>
-			token(seq(/[0-9]/, repeat(seq(optional('_'), /[0-9]/)))),
-		_binary_digits: ($) =>
-			token(seq(/[01]/, repeat(seq(optional('_'), /[01]/)))),
-		_octal_digits: ($) =>
-			token(seq(/[0-7]/, repeat(seq(optional('_'), /[0-7]/)))),
-		_hex_digits: ($) =>
 			token(
-				seq(/[0-9a-fA-F]/, repeat(seq(optional('_'), /[0-9a-fA-F]/)))
-			),
-
-		_decimal_float_base: ($) =>
-			seq(
-				$._decimal_digits,
-				optional(seq('.', optional($._decimal_digits)))
-			),
-
-		_hex_float_base: ($) =>
-			choice(
-				seq($._hex_digits, '.', optional($._hex_digits)),
-				seq('.', $._hex_digits)
+				seq(
+					/0[xX]/,
+					optional(
+						seq(HEX_DIGIT, repeat(seq(UNDERSCORE_SEP, HEX_DIGIT)))
+					),
+					'.',
+					optional(
+						seq(HEX_DIGIT, repeat(seq(UNDERSCORE_SEP, HEX_DIGIT)))
+					),
+					/[pP]/,
+					optional(/[-+]/),
+					DIGIT,
+					repeat(seq(UNDERSCORE_SEP, DIGIT))
+				)
 			),
 
 		byte_literal: ($) =>
@@ -323,6 +338,7 @@ module.exports = grammar({
 
 		ignore_operator: (_) => '_',
 
+		//------------Identifiers------------//
 		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/
 	}
 })

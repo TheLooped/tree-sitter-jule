@@ -861,26 +861,6 @@
     "named": false
   },
   {
-    "type": ".",
-    "named": false
-  },
-  {
-    "type": "0",
-    "named": false
-  },
-  {
-    "type": "0b",
-    "named": false
-  },
-  {
-    "type": "0o",
-    "named": false
-  },
-  {
-    "type": "0x",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
