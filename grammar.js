@@ -48,8 +48,7 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$.array_type],
 		[$._primary_type, $._expression],
-		[$._type, $._expression],
-		[$.array_type, $.array_expression]
+		[$._type, $._expression]
 	],
 
 	extras: ($) => [$.comment, /\s+/],
@@ -64,11 +63,11 @@ module.exports = grammar({
 		_declaration: ($) =>
 			choice($._variable_declaration, $.assignment_statement),
 
-		_expression_statement: ($) =>
-			choice($._expression, $._composite_expression),
+		_expression_statement: ($) => choice($._expression),
 
 		_expression: ($) =>
 			choice(
+				$._composite_expression,
 				$._literals,
 				$._type,
 				$.identifier,
@@ -77,8 +76,6 @@ module.exports = grammar({
 			),
 
 		_composite_expression: ($) => choice($.array_expression),
-
-		expression_list: ($) => commaSep1($._expression),
 
 		//------------Expressions------------//
 
@@ -93,19 +90,19 @@ module.exports = grammar({
 		parenthesized_expression: ($) => seq('(', $._expression, ')'),
 
 		array_expression: ($) =>
-			seq(
-				'[',
-				optional(
-					choice(
-						commaSep1($._expression),
-						seq($._expression, ',', '...'),
-						'...'
-					)
-				),
-				optional(','),
-				']'
+			prec.right(
+				seq(
+					'[',
+					optional(
+						choice(
+							commaSep($._expression),
+							seq($._expression, ',', '...')
+						)
+					),
+					optional(','),
+					']'
+				)
 			),
-		//------------Declarations------------//
 
 		_variable_declaration: ($) =>
 			choice(
@@ -120,7 +117,9 @@ module.exports = grammar({
 				optional($.mutable_flag),
 				$._declarator_list,
 				optional(seq(':', field('type', $._type))),
-				optional(seq('=', field('value', $.expression_list)))
+				optional(
+					seq('=', field('value', commaSep($._expression_statement)))
+				)
 			),
 
 		const_declaration: ($) =>
@@ -147,9 +146,9 @@ module.exports = grammar({
 			prec.right(
 				PREC.assign,
 				seq(
-					field('left', $.expression_list),
+					field('left', commaSep($._expression_statement)),
 					'=',
-					field('right', $.expression_list)
+					field('right', commaSep($._expression_statement))
 				)
 			),
 
@@ -158,7 +157,8 @@ module.exports = grammar({
 
 		_single_declarator: ($) => field('name', $.identifier),
 
-		multi_declarator: ($) => seq('(', $.expression_list, ')'),
+		multi_declarator: ($) =>
+			seq('(', commaSep($._expression_statement), ')'),
 
 		//------------Types------------//
 
@@ -177,7 +177,19 @@ module.exports = grammar({
 				'[',
 				field('length', $._expression),
 				']',
-				optional(field('type', $._type))
+				field('element_type', $._type),
+				optional($._multi_dimensional_array)
+			),
+
+		_multi_dimensional_array: ($) =>
+			prec.right(
+				seq(
+					'[',
+					field('length', $._expression),
+					']',
+					field('element_type', $._type),
+					optional($._multi_dimensional_array)
+				)
 			),
 
 		auto_sized_array_type: ($) =>
