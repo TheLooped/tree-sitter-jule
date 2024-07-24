@@ -1,5 +1,10 @@
 [
   {
+    "type": "boolean_literal",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {},
@@ -19,6 +24,80 @@
     }
   },
   {
+    "type": "float_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "decimal_float",
+          "named": true
+        },
+        {
+          "type": "exponential_float",
+          "named": true
+        },
+        {
+          "type": "hexadecimal_float",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "integer_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_integer",
+          "named": true
+        },
+        {
+          "type": "decimal_integer",
+          "named": true
+        },
+        {
+          "type": "hexadecimal_integer",
+          "named": true
+        },
+        {
+          "type": "octal_integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "negative_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raw_string_literal",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -27,18 +106,127 @@
       "required": false,
       "types": [
         {
+          "type": "any",
+          "named": true
+        },
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "byte_literal",
+          "named": true
+        },
+        {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "negative_literal",
+          "named": true
+        },
+        {
+          "type": "nil",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal",
+          "named": true
+        },
+        {
+          "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "string_literal",
           "named": true
         }
       ]
     }
   },
   {
+    "type": "string_literal",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "`",
+    "named": false
+  },
+  {
+    "type": "any",
+    "named": true
+  },
+  {
+    "type": "binary_integer",
+    "named": true
+  },
+  {
     "type": "block_comment",
+    "named": true
+  },
+  {
+    "type": "byte_literal",
+    "named": true
+  },
+  {
+    "type": "decimal_float",
+    "named": true
+  },
+  {
+    "type": "decimal_integer",
+    "named": true
+  },
+  {
+    "type": "exponential_float",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "hexadecimal_float",
+    "named": true
+  },
+  {
+    "type": "hexadecimal_integer",
     "named": true
   },
   {
     "type": "line_comment",
     "named": true
+  },
+  {
+    "type": "nil",
+    "named": true
+  },
+  {
+    "type": "octal_integer",
+    "named": true
+  },
+  {
+    "type": "rune_literal",
+    "named": true
+  },
+  {
+    "type": "true",
+    "named": false
   }
 ]
