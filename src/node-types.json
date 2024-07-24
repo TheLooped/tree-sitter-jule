@@ -10,14 +10,6 @@
           {
             "type": "expression_list",
             "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "indexed_expression",
-            "named": true
           }
         ]
       },
@@ -507,19 +499,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "ignore_operator",
-          "named": true
-        },
-        {
-          "type": "mutable_flag",
+          "type": "expression_list",
           "named": true
         }
       ]
@@ -934,10 +918,6 @@
   },
   {
     "type": "identifier",
-    "named": true
-  },
-  {
-    "type": "ignore_operator",
     "named": true
   },
   {

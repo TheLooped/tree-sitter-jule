@@ -360,7 +360,7 @@
             "name": "left",
             "content": {
               "type": "SYMBOL",
-              "name": "_assignable"
+              "name": "expression_list"
             }
           },
           {
@@ -407,105 +407,14 @@
           "value": "("
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "identifier"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "ignore_operator"
-                },
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "mutable_flag"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "identifier"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ","
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "identifier"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "ignore_operator"
-                      },
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "mutable_flag"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "identifier"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "expression_list"
         },
         {
           "type": "STRING",
           "value": ")"
         }
       ]
-    },
-    "_assignable": {
-      "type": "PREC",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "identifier"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "indexed_expression"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "expression_list"
-              }
-            ]
-          }
-        ]
-      }
     },
     "_type": {
       "type": "CHOICE",
@@ -1420,10 +1329,6 @@
     "mutable_flag": {
       "type": "STRING",
       "value": "mut"
-    },
-    "ignore_operator": {
-      "type": "STRING",
-      "value": "_"
     },
     "identifier": {
       "type": "PATTERN",

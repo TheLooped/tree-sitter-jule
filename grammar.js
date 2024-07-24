@@ -126,7 +126,7 @@ module.exports = grammar({
 			prec.right(
 				PREC.assign,
 				seq(
-					field('left', $._assignable),
+					field('left', $.expression_list),
 					'=',
 					field('right', $.expression_list)
 				)
@@ -137,30 +137,7 @@ module.exports = grammar({
 
 		_single_declarator: ($) => field('name', $.identifier),
 
-		multi_declarator: ($) =>
-			seq(
-				'(',
-				commaSep1(
-					choice(
-						$.identifier,
-						$.ignore_operator,
-						seq($.mutable_flag, $.identifier)
-					)
-				),
-				')'
-			),
-
-		_assignable: ($) =>
-			prec(
-				PREC.assign,
-				seq(
-					choice(
-						$.identifier,
-						$.indexed_expression,
-						$.expression_list
-					)
-				)
-			),
+		multi_declarator: ($) => seq('(', $.expression_list, ')'),
 
 		//------------Types------------//
 
@@ -335,8 +312,6 @@ module.exports = grammar({
 
 		//------------Tokens------------//
 		mutable_flag: ($) => 'mut',
-
-		ignore_operator: (_) => '_',
 
 		//------------Identifiers------------//
 		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/
