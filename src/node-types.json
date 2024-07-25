@@ -3343,7 +3343,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "block",
@@ -4061,10 +4061,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "assignment_statement",
-          "named": true
-        },
         {
           "type": "const_declaration",
           "named": true
@@ -8182,10 +8178,6 @@
       "required": false,
       "types": [
         {
-          "type": "assignment_statement",
-          "named": true
-        },
-        {
           "type": "const_declaration",
           "named": true
         },
@@ -8216,6 +8208,10 @@
         {
           "type": "trait_declaration",
           "named": true
+        },
+        {
+          "type": "trait_item",
+          "named": true
         }
       ]
     }
@@ -8244,6 +8240,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "trait_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
     }
   },
   {

@@ -12,7 +12,7 @@ const PREC = {
 	comparative: 3, // ==, !=, <, <=, >, >=
 	and: 2, // &&
 	or: 1, // ||
-	assign: 1 // Assignment
+	assign: 0 // Assignment
 }
 
 const numericTypes = [
@@ -62,18 +62,23 @@ module.exports = grammar({
 		source_file: ($) => repeat(seq($._statement, optional(terminator))),
 
 		_statement: ($) =>
-			choice($._declaration, seq($._expression_statement, terminator)),
+			choice(
+				$._declaration,
+				seq($._expression_statement, terminator),
+				$._simple_statement
+			),
 
 		_declaration: ($) =>
 			choice(
 				$.function_declaration,
 				$._variable_declaration,
-				$.assignment_statement,
 				$.struct_declaration,
 				$.enum_declaration,
 				$.impl_declaration,
 				$.trait_declaration
 			),
+
+		_simple_statement: ($) => choice($.assignment_statement),
 
 		_expression_statement: ($) =>
 			choice($._expression, $._expression_ending_with_block),
@@ -343,7 +348,7 @@ module.exports = grammar({
 					optional(field('generic_params', $.generic_parameters)),
 					field('parameters', $.parameters),
 					optional($.return_type),
-					field('body', $.block)
+					optional(field('body', $.block))
 				)
 			),
 
@@ -382,7 +387,10 @@ module.exports = grammar({
 			),
 
 		self_parameter: ($) =>
-			seq(optional('&'), optional($.mutable_flag), $.self),
+			choice(
+				$.self,
+				seq(optional('&'), optional($.mutable_flag), $.self)
+			),
 
 		generic_parameter: ($) =>
 			choice(
@@ -580,7 +588,10 @@ module.exports = grammar({
 				field('body', $.trait_body)
 			),
 
-		trait_body: ($) => seq('{', repeat($._declaration), '}'),
+		trait_body: ($) =>
+			seq('{', repeat(choice($.trait_item, $._declaration)), '}'),
+
+		trait_item: ($) => $.identifier,
 
 		//------Enums-----//
 		enum_declaration: ($) =>
