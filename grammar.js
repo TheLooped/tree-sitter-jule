@@ -86,11 +86,18 @@ module.exports = grammar({
 				$.parenthesized_expression,
 				$.return_expression,
 				$.call_expression,
-				$.field_expression
+				$.field_expression,
+				$.break_expression,
+				$.continue_expression
 			),
 
 		_expression_ending_with_block: ($) =>
-			choice($.block, $.for_expression, $.if_expression),
+			choice(
+				$.block,
+				$.for_expression,
+				$.if_expression,
+				$.match_expression
+			),
 
 		_composite_expression: ($) =>
 			choice(
@@ -104,6 +111,12 @@ module.exports = grammar({
 
 		inc_expression: ($) => prec(-1, seq($._expression, '++')),
 		dec_expression: ($) => prec(-1, seq($._expression, '--')),
+
+		break_expression: ($) =>
+			prec.left(seq('break', optional(field('label', $.identifier)))),
+
+		continue_expression: ($) =>
+			prec.left(seq('continue', optional($.identifier))),
 
 		call_expression: ($) =>
 			prec(
@@ -233,6 +246,42 @@ module.exports = grammar({
 			),
 
 		else_block: ($) => seq('else', choice($.block, $.if_expression)),
+
+		match_expression: ($) =>
+			seq(
+				'match',
+				optional(field('type_flag', alias('type', $.keyword))),
+				optional(field('value', $._expression)),
+				field('body', $.match_block)
+			),
+
+		match_block: ($) =>
+			seq('{', repeat1($.match_arm), optional($.last_match_arm), '}'),
+
+		match_arm: ($) =>
+			prec.right(
+				seq(
+					choice(
+						field('patterns', repeat(seq('|', $.match_pattern))),
+						$.multiple_patterns
+					),
+					':',
+					field('value', $.match_arm_body)
+				)
+			),
+
+		last_match_arm: ($) => seq('|:', field('value', $.match_arm_body)),
+
+		match_pattern: ($) => choice($._expression),
+
+		multiple_patterns: ($) =>
+			seq($._expression, repeat1(seq('|', $._expression))),
+
+		match_arm_body: ($) =>
+			prec.right(
+				choice(seq(repeat1($._statement), optional($.fall)), $.fall)
+			),
+
 		//------------Declarations------------//
 
 		function_declaration: ($) =>
@@ -655,7 +704,11 @@ module.exports = grammar({
 
 		self: ($) => 'self',
 
+		fall: ($) => 'fall',
+
 		exception_flag: ($) => '!',
+
+		label: ($) => seq(field('name', $.identifier), ':'),
 
 		_function_modifiers: ($) =>
 			choice($.unsafe_flag, $.cpp_flag, $.static_flag, $.co_flag),
