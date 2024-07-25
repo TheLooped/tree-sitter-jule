@@ -46,7 +46,6 @@ module.exports = grammar({
 	name: 'jule',
 
 	conflicts: ($) => [
-		[$.array_type],
 		[$._primary_type, $._expression],
 		[$._type, $._expression]
 	],
@@ -56,12 +55,18 @@ module.exports = grammar({
 	word: ($) => $.identifier,
 
 	rules: {
-		source_file: ($) => repeat(seq($._statement, terminator)),
+		source_file: ($) => repeat(seq($._statement, optional(terminator))),
 
-		_statement: ($) => choice($._declaration, $._expression_statement),
+		_statement: ($) =>
+			choice($._declaration, seq($._expression_statement, terminator)),
 
 		_declaration: ($) =>
-			choice($._variable_declaration, $.assignment_statement),
+			choice(
+				$.function_declaration,
+				$._variable_declaration,
+				$.assignment_statement,
+				$.function_signature
+			),
 
 		_expression_statement: ($) => choice($._expression),
 
@@ -81,11 +86,14 @@ module.exports = grammar({
 		//------------Expressions------------//
 
 		indexed_expression: ($) =>
-			seq(
-				field('object', $._expression),
-				'[',
-				field('index', $._expression),
-				']'
+			prec(
+				PREC.call,
+				seq(
+					field('object', $._expression),
+					'[',
+					field('index', $._expression),
+					']'
+				)
 			),
 
 		parenthesized_expression: ($) => seq('(', $._expression, ')'),
@@ -115,6 +123,83 @@ module.exports = grammar({
 				)
 			),
 
+		//------------Declarations------------//
+
+		function_declaration: ($) =>
+			prec.right(
+				1,
+				seq(
+					'fn',
+					field('name', $.identifier),
+					field('parameters', $.parameters),
+					optional($.return_type),
+					field('body', $.block)
+				)
+			),
+
+		function_signature: ($) =>
+			seq(
+				'fn',
+				field('name', $.identifier),
+				field('parameters', $.parameters),
+				optional($.return_type),
+				field('body', optional($.block))
+			),
+
+		parameters: ($) =>
+			seq(
+				'(',
+				commaSep(seq(choice($.parameter, $.variadic_parameter))),
+				optional(','),
+				')'
+			),
+
+		parameter: ($) =>
+			seq(
+				optional($.mutable_flag),
+				field('name', $.identifier),
+				optional(seq(':', field('type', $._type)))
+			),
+
+		return_type: ($) =>
+			choice(
+				$.single_return_type,
+				$.multiple_return_types,
+				$.named_return_types
+			),
+
+		single_return_type: ($) =>
+			seq(optional($.exception_flag), ':', field('type', $._type)),
+
+		multiple_return_types: ($) =>
+			seq(
+				optional($.exception_flag),
+				':',
+				'(',
+				commaSep1(field('type', $._type)),
+				')'
+			),
+
+		named_return_types: ($) =>
+			seq(
+				optional($.exception_flag),
+				':',
+				'(',
+				commaSep1($.named_return_type),
+				')'
+			),
+
+		named_return_type: ($) =>
+			seq(field('name', $.identifier), ':', field('type', $._type)),
+
+		variadic_parameter: ($) =>
+			seq(
+				field('name', $.identifier),
+				':',
+				'...',
+				field('type', $._type)
+			),
+
 		_variable_declaration: ($) =>
 			choice(
 				$.let_declaration,
@@ -123,13 +208,18 @@ module.exports = grammar({
 			),
 
 		let_declaration: ($) =>
-			seq(
-				'let',
-				optional($.mutable_flag),
-				$._declarator_list,
-				optional(seq(':', field('type', $._type))),
-				optional(
-					seq('=', field('value', commaSep($._expression_statement)))
+			prec.right(
+				seq(
+					'let',
+					optional($.mutable_flag),
+					$._declarator_list,
+					optional(seq(':', field('type', $._type))),
+					optional(
+						seq(
+							'=',
+							field('value', commaSep($._expression_statement))
+						)
+					)
 				)
 			),
 
@@ -183,10 +273,20 @@ module.exports = grammar({
 				$.array_type,
 				$.auto_sized_array_type,
 				$.slice_type,
-				$.map_type
+				$.map_type,
+				$.function_type
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		function_type: ($) =>
+			prec.right(
+				seq(
+					'fn',
+					field('parameters', $.parameters),
+					optional(seq(':', field('return_type', $._type)))
+				)
+			),
 
 		map_type: ($) =>
 			seq(
@@ -198,12 +298,14 @@ module.exports = grammar({
 			),
 
 		array_type: ($) =>
-			seq(
-				'[',
-				field('length', $._expression),
-				']',
-				field('element_type', $._type),
-				optional($._multi_dimensional_array)
+			prec.right(
+				seq(
+					'[',
+					field('length', $._expression),
+					']',
+					field('element_type', $._type),
+					optional($._multi_dimensional_array)
+				)
 			),
 
 		_multi_dimensional_array: ($) =>
@@ -376,6 +478,18 @@ module.exports = grammar({
 		nil: ($) => 'nil',
 		any: ($) => 'any',
 
+		//------------Blocks------------//
+		block: ($) =>
+			prec.right(
+				seq(
+					'{',
+					optional(repeat($._statement)),
+					optional($._expression),
+					'}',
+					optional(terminator)
+				)
+			),
+
 		//------------Comments------------//
 		comment: ($) => choice($.line_comment, $.block_comment),
 
@@ -384,6 +498,8 @@ module.exports = grammar({
 
 		//------------Tokens------------//
 		mutable_flag: ($) => 'mut',
+
+		exception_flag: ($) => '!',
 
 		//------------Identifiers------------//
 		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/
