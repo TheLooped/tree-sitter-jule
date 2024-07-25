@@ -12,8 +12,7 @@ const PREC = {
 	comparative: 3, // ==, !=, <, <=, >, >=
 	and: 2, // &&
 	or: 1, // ||
-	assign: 1, // Assignment
-	comment: 0 // Comments
+	assign: 1 // Assignment
 }
 
 const numericTypes = [
@@ -55,7 +54,7 @@ module.exports = grammar({
 		[$.call_expression]
 	],
 
-	extras: ($) => [$.comment, /\s+/],
+	extras: ($) => [/\s|\\\r?\n/, $.line_comment, $.block_comment],
 
 	word: ($) => $.identifier,
 
@@ -69,7 +68,9 @@ module.exports = grammar({
 			choice(
 				$.function_declaration,
 				$._variable_declaration,
-				$.assignment_statement
+				$.assignment_statement,
+				$.struct_declaration,
+				$.enum_declaration
 			),
 
 		_expression_statement: ($) =>
@@ -96,7 +97,8 @@ module.exports = grammar({
 				$.block,
 				$.for_expression,
 				$.if_expression,
-				$.match_expression
+				$.match_expression,
+				$.struct_expression
 			),
 
 		_composite_expression: ($) =>
@@ -327,6 +329,7 @@ module.exports = grammar({
 
 		//------------Declarations------------//
 
+		//------Functions------//
 		function_declaration: ($) =>
 			prec.right(
 				1,
@@ -436,6 +439,8 @@ module.exports = grammar({
 				field('type', $._type)
 			),
 
+		//------Variables-----//
+
 		_variable_declaration: ($) =>
 			choice(
 				$.let_declaration,
@@ -497,6 +502,78 @@ module.exports = grammar({
 		multi_declarator: ($) =>
 			seq('(', commaSep($._expression_statement), ')'),
 
+		//------Structs-----//
+		struct_declaration: ($) =>
+			seq(
+				'struct',
+				field('name', $.identifier),
+				optional(field('type_parameters', $.generic_parameters)),
+				field('body', $.struct_decl_body)
+			),
+
+		struct_decl_body: ($) => seq('{', repeat($.struct_decl_field), '}'),
+
+		struct_decl_field: ($) => choice($.regular_field, $.default_field),
+
+		regular_field: ($) =>
+			seq(
+				field('name', $._field_identifier),
+				':',
+				field('type', $._type)
+			),
+
+		default_field: ($) =>
+			seq(
+				field('name', $._field_identifier),
+				':',
+				field('type', $._type),
+				'=',
+				field('default_value', $._expression)
+			),
+
+		struct_expression: ($) =>
+			prec(
+				1,
+				seq(
+					field('name', $.identifier),
+					field('body', $.struct_expr_body)
+				)
+			),
+
+		struct_expr_body: ($) =>
+			seq(
+				'{',
+				optional(commaSep($.struct_expr_field)),
+				optional(','),
+				'}'
+			),
+
+		struct_expr_field: ($) =>
+			choice(
+				seq(
+					field('field', $._field_identifier),
+					':',
+					field('value', $._expression)
+				),
+				$._expression
+			),
+
+		//------Enums-----//
+		enum_declaration: ($) =>
+			seq(
+				'enum',
+				field('name', $._type_identifier),
+				optional(seq(':', field('type', $._type))),
+				field('body', $.enum_body)
+			),
+
+		enum_body: ($) => seq('{', commaSep($.enum_member), optional(','), '}'),
+
+		enum_member: ($) =>
+			seq(
+				field('name', $.identifier),
+				optional(seq(':', field('value', $._expression)))
+			),
 		//------------Types------------//
 
 		_type: ($) => choice($._primary_type, $._composite_type, $._literals),
@@ -755,10 +832,9 @@ module.exports = grammar({
 			),
 
 		//------------Comments------------//
-		comment: ($) => choice($.line_comment, $.block_comment),
-
-		line_comment: ($) => token(seq('//', /[^\r\n]*/)),
-		block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')),
+		line_comment: ($) => token(seq('//', /(\\+(.|\r?\n)|[^\\\n])*/)),
+		block_comment: ($) =>
+			token(seq('/*', /[^*]*[*]+(?:[^/*][^*]*[*]+)*/, '/')),
 
 		//------------Tokens------------//
 		mutable_flag: ($) => 'mut',
