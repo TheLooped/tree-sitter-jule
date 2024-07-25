@@ -104,11 +104,54 @@ module.exports = grammar({
 				$.array_expression,
 				$.map_expression,
 				$.inc_expression,
-				$.dec_expression
+				$.dec_expression,
+				$.unary_expression,
+				$.binary_expression
 			),
 
 		//------------Expressions------------//
 
+		reference_expression: ($) =>
+			prec(PREC.unary, seq('&', field('value', $._expression))),
+
+		unary_expression: ($) =>
+			prec.left(
+				PREC.unary,
+				seq(
+					field('operator', $.unary_operator),
+					field('operand', $._expression)
+				)
+			),
+
+		binary_expression: ($) => {
+			const table = [
+				[PREC.and, '&&'],
+				[PREC.or, '||'],
+				[PREC.bitand, '&'],
+				[PREC.bitor, '|'],
+				[PREC.bitxor, '^'],
+				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
+				[PREC.shift, choice('<<', '>>')],
+				[PREC.additive, choice('+', '-')],
+				[PREC.multiplicative, choice('*', '/', '%')]
+			]
+
+			return choice(
+				...table.map(([precedence, operator]) =>
+					prec.left(
+						precedence,
+						seq(
+							field('left', $._expression),
+							field(
+								'operator',
+								alias(operator, $.binary_operator)
+							),
+							field('right', $._expression)
+						)
+					)
+				)
+			)
+		},
 		inc_expression: ($) => prec(-1, seq($._expression, '++')),
 		dec_expression: ($) => prec(-1, seq($._expression, '--')),
 
@@ -691,6 +734,23 @@ module.exports = grammar({
 					'}',
 					optional(terminator)
 				)
+			),
+
+		//------------Operators------------//
+		unary_operator: (_) => prec.left(choice('~', '!', '-', '-%')),
+
+		assignment_operator: (_) =>
+			choice(
+				'+=',
+				'-=',
+				'*=',
+				'/=',
+				'%=',
+				'&=',
+				'|=',
+				'^=',
+				'<<=',
+				'>>='
 			),
 
 		//------------Comments------------//
