@@ -528,6 +528,7 @@ module.exports = grammar({
 
 		regular_field: ($) =>
 			seq(
+				optional($.mutable_flag),
 				field('name', $._field_identifier),
 				':',
 				field('type', $._type)
@@ -535,6 +536,7 @@ module.exports = grammar({
 
 		default_field: ($) =>
 			seq(
+				optional($.mutable_flag),
 				field('name', $._field_identifier),
 				':',
 				field('type', $._type),
@@ -622,10 +624,17 @@ module.exports = grammar({
 				$.slice_type,
 				$.map_type,
 				$.function_type,
-				$.generic_type
+				$.generic_type,
+				$.reference_type,
+				$.pointer_type
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		reference_type: ($) =>
+			prec(PREC.unary, seq('&', field('type', $._type))),
+
+		pointer_type: ($) => prec(PREC.unary, seq('*', $._type)),
 
 		function_type: ($) =>
 			prec.right(

@@ -104,6 +104,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -113,6 +117,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -247,6 +255,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -256,6 +268,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -342,11 +358,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -472,6 +496,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -481,6 +509,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -640,6 +672,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -649,6 +685,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -806,6 +846,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -815,6 +859,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -906,11 +954,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1042,6 +1098,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -1051,6 +1111,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1194,6 +1258,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -1203,6 +1271,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1378,6 +1450,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -1387,6 +1463,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -1572,6 +1652,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -1581,6 +1665,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1698,11 +1786,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1828,6 +1924,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -1837,6 +1937,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -1987,6 +2091,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -1996,6 +2104,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -2134,6 +2246,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -2143,6 +2259,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2234,11 +2354,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2259,6 +2387,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mutable_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2372,11 +2510,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2518,6 +2664,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -2527,6 +2677,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2681,6 +2835,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -2690,6 +2848,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2838,6 +3000,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -2847,6 +3013,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -2980,6 +3150,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -2989,6 +3163,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -3126,6 +3304,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -3135,6 +3317,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -3295,6 +3481,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -3304,6 +3494,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -3528,11 +3722,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -3612,11 +3814,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -3738,11 +3948,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -3858,11 +4076,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4004,6 +4230,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -4013,6 +4243,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4237,6 +4471,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -4246,6 +4484,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -4384,6 +4626,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -4393,6 +4639,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4526,6 +4776,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -4535,6 +4789,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4653,11 +4911,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4803,6 +5069,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -4812,6 +5082,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -4969,6 +5243,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -4978,6 +5256,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -5111,6 +5393,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -5120,6 +5406,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -5222,11 +5512,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -5300,11 +5598,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -5516,6 +5822,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -5525,6 +5835,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -5718,6 +6032,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -5727,6 +6045,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -5862,6 +6184,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -5871,6 +6197,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -6021,6 +6351,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -6030,6 +6364,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -6168,6 +6506,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -6177,6 +6519,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -6263,11 +6609,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -6367,11 +6721,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -6480,11 +6842,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -6645,6 +7015,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -6654,6 +7028,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -6678,6 +7056,93 @@
         },
         {
           "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pointer_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "any",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "byte_literal",
+          "named": true
+        },
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "generic_type",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "nil",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
           "named": true
         }
       ]
@@ -6802,6 +7267,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -6811,6 +7280,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -6835,6 +7308,98 @@
           },
           {
             "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "reference_type",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "any",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "boolean_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "generic_type",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
             "named": true
           }
         ]
@@ -6908,11 +7473,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -6933,6 +7506,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mutable_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -7044,6 +7627,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -7053,6 +7640,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -7186,11 +7777,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -7280,11 +7879,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -7452,6 +8059,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -7461,6 +8072,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -7573,11 +8188,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -7703,6 +8326,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -7712,6 +8339,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -7966,6 +8597,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -7975,6 +8610,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8105,6 +8744,10 @@
           "named": true
         },
         {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
           "named": true
         },
@@ -8114,6 +8757,10 @@
         },
         {
           "type": "reference_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
           "named": true
         },
         {
@@ -8366,6 +9013,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -8375,6 +9026,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8487,11 +9142,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
           {
             "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8623,6 +9286,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -8632,6 +9299,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8765,6 +9436,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -8774,6 +9449,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8907,6 +9586,10 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
             "named": true
           },
@@ -8916,6 +9599,10 @@
           },
           {
             "type": "reference_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
             "named": true
           },
           {
@@ -8972,6 +9659,10 @@
   },
   {
     "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
     "named": false
   },
   {
