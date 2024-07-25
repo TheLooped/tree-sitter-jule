@@ -395,6 +395,7 @@ module.exports = grammar({
 		parameter: ($) =>
 			seq(
 				optional($.mutable_flag),
+				optional('&'),
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._type)))
 			),

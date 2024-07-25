@@ -2083,6 +2083,18 @@
           ]
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "&"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "name",
           "content": {
@@ -5086,10 +5098,6 @@
     [
       "_type",
       "_expression"
-    ],
-    [
-      "_type",
-      "generic_type"
     ],
     [
       "call_expression"
