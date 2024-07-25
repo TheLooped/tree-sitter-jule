@@ -10766,7 +10766,7 @@
     "fields": {}
   },
   {
-    "type": "use_as_clause",
+    "type": "use_aliased",
     "named": true,
     "fields": {
       "alias": {
@@ -10786,36 +10786,17 @@
           {
             "type": "scoped_identifier",
             "named": true
+          },
+          {
+            "type": "use_list",
+            "named": true
+          },
+          {
+            "type": "use_wildcard",
+            "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "use_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "scoped_identifier",
-          "named": true
-        },
-        {
-          "type": "use_as_clause",
-          "named": true
-        },
-        {
-          "type": "use_list",
-          "named": true
-        },
-        {
-          "type": "use_wildcard",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -10827,7 +10808,19 @@
       "required": true,
       "types": [
         {
-          "type": "use_clause",
+          "type": "use_aliased",
+          "named": true
+        },
+        {
+          "type": "use_list",
+          "named": true
+        },
+        {
+          "type": "use_simple",
+          "named": true
+        },
+        {
+          "type": "use_wildcard",
           "named": true
         }
       ]
@@ -10842,34 +10835,30 @@
       "required": false,
       "types": [
         {
-          "type": "scoped_identifier",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "use_list_item",
+          "type": "scoped_identifier",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "use_list_item",
+    "type": "use_simple",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "scoped_identifier",
-          "named": true
-        },
-        {
-          "type": "use_as_clause",
-          "named": true
-        },
-        {
-          "type": "use_wildcard",
           "named": true
         }
       ]

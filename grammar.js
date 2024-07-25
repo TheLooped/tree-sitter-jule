@@ -357,21 +357,26 @@ module.exports = grammar({
 		//------------Declarations------------//
 
 		//------Use------//
-		use_declaration: ($) => seq('use', $.use_clause),
-
-		use_clause: ($) =>
-			choice(
-				$.scoped_identifier,
-				$.use_as_clause,
-				$.use_wildcard,
-				$.use_list
+		use_declaration: ($) =>
+			seq(
+				'use',
+				choice($.use_aliased, $.use_list, $.use_wildcard, $.use_simple)
 			),
 
-		use_as_clause: ($) =>
-			seq(
-				field('alias', $.identifier),
-				'for',
-				field('path', $.scoped_identifier)
+		_use_clause: ($) =>
+			choice($.scoped_identifier, $.use_wildcard, $.use_list),
+
+		use_simple: ($) =>
+			seq(optional(seq($.scoped_identifier, '::')), $.identifier),
+
+		use_aliased: ($) =>
+			prec(
+				1,
+				seq(
+					field('alias', $.identifier),
+					'for',
+					field('path', $._use_clause)
+				)
 			),
 
 		use_wildcard: ($) => seq(optional($.scoped_identifier), '::', '*'),
@@ -380,13 +385,10 @@ module.exports = grammar({
 			seq(
 				optional(seq($.scoped_identifier, '::')),
 				'{',
-				commaSep($.use_list_item),
+				commaSep($.identifier),
 				optional(','),
 				'}'
 			),
-
-		use_list_item: ($) =>
-			choice($.scoped_identifier, $.use_as_clause, $.use_wildcard),
 
 		scoped_identifier: ($) =>
 			prec.left(
