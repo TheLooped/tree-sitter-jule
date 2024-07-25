@@ -70,7 +70,9 @@ module.exports = grammar({
 				$._variable_declaration,
 				$.assignment_statement,
 				$.struct_declaration,
-				$.enum_declaration
+				$.enum_declaration,
+				$.impl_declaration,
+				$.trait_declaration
 			),
 
 		_expression_statement: ($) =>
@@ -108,7 +110,8 @@ module.exports = grammar({
 				$.inc_expression,
 				$.dec_expression,
 				$.unary_expression,
-				$.binary_expression
+				$.binary_expression,
+				$.reference_expression
 			),
 
 		//------------Expressions------------//
@@ -557,6 +560,27 @@ module.exports = grammar({
 				),
 				$._expression
 			),
+
+		//-------Implementations-------//
+		impl_declaration: ($) =>
+			seq(
+				'impl',
+				optional(seq(field('trait', $.identifier), 'for')),
+				field('struct', $.identifier),
+				field('body', $.impl_body)
+			),
+
+		impl_body: ($) => seq('{', repeat($._declaration), '}'),
+
+		//-------Trait-------//
+		trait_declaration: ($) =>
+			seq(
+				'trait',
+				field('name', $.identifier),
+				field('body', $.trait_body)
+			),
+
+		trait_body: ($) => seq('{', repeat($._declaration), '}'),
 
 		//------Enums-----//
 		enum_declaration: ($) =>

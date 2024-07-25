@@ -1,12 +1,36 @@
-fn sum[T](a: T, b: T) T {
-    ret 1
+struct Employee {
+    name: str
+    age: u8
+    title: str
+    salary: u32
+}
+struct Employee {
+    name:   str = "anonymous"
+    age:    u8  = 18
+    title:  str = "NA"
+    salary: u32 = 100000
 }
 
-fn foo[T1, T2, T3](t1: T1, t2: T2, t3: T3) {}
+fn main() {
+    let emp = &Employee{}
+    // emp: Employee{name:anonymous, age:18, title:NA, salary:100000}
+    outln(emp)
+}
+struct Character {
+    name: str
+    age: u8
+    title: str
+}
 
-fn clamp[T: int | f32](value: T, min: T, max: T): T {}
-
-
-sum[int](10, 20)
-
-clamp[f32](3.14, 0.0, 21.0)
+fn main() {
+    let anon = Character{}
+    let frodo = Character{"Frodo", 50, "Hobbit"}
+    let gandalf = Character{
+        name: "Gandalf",
+        age: 24000,
+        title: "Wizard",
+    }
+    outln(anon)
+    outln(frodo)
+    outln(gandalf)
+}
