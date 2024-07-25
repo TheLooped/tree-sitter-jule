@@ -49,7 +49,6 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$._expression, $.generic_parameter, $._type_identifier],
 		[$._type_identifier, $._expression],
-		[$._primary_type, $.generic_type],
 		[$._type, $._expression],
 		[$.call_expression]
 	],
@@ -86,17 +85,18 @@ module.exports = grammar({
 		_expression: ($) =>
 			choice(
 				$._composite_expression,
-				$._literals,
-				$._type,
-				$.identifier,
-				$.function_literal,
+				$.slice_expression,
 				$.indexed_expression,
+				$.function_literal,
 				$.parenthesized_expression,
 				$.return_expression,
 				$.call_expression,
 				$.field_expression,
 				$.break_expression,
-				$.continue_expression
+				$.continue_expression,
+				$.identifier,
+				$._literals,
+				$._type
 			),
 
 		_expression_ending_with_block: ($) =>
@@ -120,6 +120,19 @@ module.exports = grammar({
 			),
 
 		//------------Expressions------------//
+
+		slice_expression: ($) =>
+			prec.right(
+				PREC.call,
+				seq(
+					field('operand', $._expression),
+					'[',
+					optional(field('first', $._expression)),
+					':',
+					optional(field('second', $._expression)),
+					']'
+				)
+			),
 
 		reference_expression: ($) =>
 			prec(PREC.unary, seq('&', field('value', $._expression))),
@@ -202,7 +215,7 @@ module.exports = grammar({
 			),
 
 		indexed_expression: ($) =>
-			prec(
+			prec.left(
 				PREC.call,
 				seq(
 					field('object', $._expression),
@@ -613,9 +626,13 @@ module.exports = grammar({
 			),
 		//------------Types------------//
 
-		_type: ($) => choice($._primary_type, $._composite_type, $._literals),
-
-		_primary_type: ($) => choice($.primitive_type, $._type_identifier),
+		_type: ($) =>
+			choice(
+				$._composite_type,
+				$.primitive_type,
+				$._type_identifier,
+				$._literals
+			),
 
 		_composite_type: ($) =>
 			choice(
@@ -624,7 +641,7 @@ module.exports = grammar({
 				$.slice_type,
 				$.map_type,
 				$.function_type,
-				$.generic_type,
+				//$.generic_type,
 				$.reference_type,
 				$.pointer_type
 			),
@@ -647,13 +664,37 @@ module.exports = grammar({
 			),
 
 		generic_type: ($) =>
-			seq(
-				field('base_type', $._type_identifier),
-				optional(field('type_arguments', $.generic_type_arguments))
+			prec(
+				1,
+				seq(
+					field('type', $._type_identifier),
+					field('type_arguments', $.type_arguments)
+				)
 			),
 
-		generic_type_arguments: ($) =>
-			seq('[', commaSep1(field('argument', $._type)), ']'),
+		type_arguments: ($) =>
+			prec.dynamic(2, seq('[', commaSep($.type_param), ']')),
+
+		type_param: ($) =>
+			choice(
+				$._type,
+				$._literals,
+				$.type_constraint_param,
+				alias($.identifier, $.type_identifier)
+			),
+
+		type_constraint_param: ($) =>
+			prec(
+				1,
+				seq(
+					field('name', $.identifier),
+					':',
+					choice(
+						sep(field('constraint', $._type), '|'),
+						field('constraint', $._type)
+					)
+				)
+			),
 
 		map_type: ($) =>
 			seq(
