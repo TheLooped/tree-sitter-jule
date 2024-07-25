@@ -48,6 +48,7 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$._expression, $.generic_parameter, $._type_identifier],
+		[$._expression, $._single_declarator, $._type_identifier],
 		[$._type_identifier, $._expression],
 		[$._type, $._expression],
 		[$._type, $.type_param],
@@ -78,7 +79,8 @@ module.exports = grammar({
 				$.trait_declaration
 			),
 
-		_simple_statement: ($) => choice($.assignment_statement),
+		_simple_statement: ($) =>
+			choice($.assignment_statement, $.compound_assignment_statement),
 
 		_expression_statement: ($) =>
 			choice($._expression, $._expression_ending_with_block),
@@ -479,7 +481,6 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					'let',
-					optional($.mutable_flag),
 					$._declarator_list,
 					optional(seq(':', field('type', $._type))),
 					optional(
@@ -505,14 +506,29 @@ module.exports = grammar({
 				'static',
 				optional($.mutable_flag),
 				$._single_declarator,
-				':',
-				field('type', $._type),
+				optional(seq(':', field('type', $._type))),
 				'=',
 				field('value', $._expression)
 			),
 
+		_declarator_list: ($) =>
+			choice($._single_declarator, $.multi_declarator),
+
+		_single_declarator: ($) =>
+			seq(optional('&'), field('name', $.identifier)),
+
+		multi_declarator: ($) => seq('(', commaSep($.declaration_item), ')'),
+
+		declaration_item: ($) =>
+			choice(
+				$._single_declarator,
+				seq($.mutable_flag, $._single_declarator),
+				$._expression_statement,
+				'_'
+			),
+
 		assignment_statement: ($) =>
-			prec.right(
+			prec.left(
 				PREC.assign,
 				seq(
 					field('left', commaSep($._expression_statement)),
@@ -520,15 +536,15 @@ module.exports = grammar({
 					field('right', commaSep($._expression_statement))
 				)
 			),
-
-		_declarator_list: ($) =>
-			choice($._single_declarator, $.multi_declarator),
-
-		_single_declarator: ($) => field('name', $.identifier),
-
-		multi_declarator: ($) =>
-			seq('(', commaSep($._expression_statement), ')'),
-
+		compound_assignment_statement: ($) =>
+			prec.left(
+				PREC.assign,
+				seq(
+					field('left', $._expression_statement),
+					field('operator', $.assignment_operator),
+					field('right', $._expression_statement)
+				)
+			),
 		//------Structs-----//
 		struct_declaration: ($) =>
 			seq(
@@ -668,7 +684,7 @@ module.exports = grammar({
 
 		generic_type: ($) =>
 			prec(
-				1,
+				-1,
 				seq(
 					field('type', $._type_identifier),
 					field('type_arguments', $.type_arguments)
@@ -676,24 +692,18 @@ module.exports = grammar({
 			),
 
 		type_arguments: ($) =>
-			prec.dynamic(
-				2,
-				seq('[', commaSep(choice($._type, $.type_param)), ']')
-			),
+			seq('[', commaSep(choice($._type, $.type_param)), ']'),
 
 		type_param: ($) =>
 			choice($._literals, $.type_constraint_param, $._type_identifier),
 
 		type_constraint_param: ($) =>
-			prec(
-				1,
-				seq(
-					field('name', $.identifier),
-					':',
-					choice(
-						sep(field('constraint', $._type), '|'),
-						field('constraint', $._type)
-					)
+			seq(
+				field('name', $.identifier),
+				':',
+				choice(
+					sep(field('constraint', $._type), '|'),
+					field('constraint', $._type)
 				)
 			),
 
