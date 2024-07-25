@@ -307,6 +307,18 @@
           {
             "type": "STRING",
             "value": "]"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "variadic_flag"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
@@ -2171,6 +2183,35 @@
         }
       ]
     },
+    "variadic_parameter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "variadic_flag"
+        },
+        {
+          "type": "FIELD",
+          "name": "type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type"
+          }
+        }
+      ]
+    },
     "generic_parameter": {
       "type": "CHOICE",
       "members": [
@@ -2493,35 +2534,6 @@
         {
           "type": "STRING",
           "value": ":"
-        },
-        {
-          "type": "FIELD",
-          "name": "type",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_type"
-          }
-        }
-      ]
-    },
-    "variadic_parameter": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "STRING",
-          "value": "..."
         },
         {
           "type": "FIELD",
@@ -3516,6 +3528,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "generic_type"
+        },
+        {
+          "type": "SYMBOL",
           "name": "reference_type"
         },
         {
@@ -3715,8 +3731,17 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "type_param"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_type"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "type_param"
+                      }
+                    ]
                   },
                   {
                     "type": "REPEAT",
@@ -3728,8 +3753,17 @@
                           "value": ","
                         },
                         {
-                          "type": "SYMBOL",
-                          "name": "type_param"
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_type"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "type_param"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -3753,10 +3787,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_type"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_literals"
         },
         {
@@ -3764,13 +3794,8 @@
           "name": "type_constraint_param"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
-          },
-          "named": true,
-          "value": "type_identifier"
+          "type": "SYMBOL",
+          "name": "_type_identifier"
         }
       ]
     },
@@ -4990,6 +5015,10 @@
       "type": "STRING",
       "value": "fall"
     },
+    "variadic_flag": {
+      "type": "STRING",
+      "value": "..."
+    },
     "exception_flag": {
       "type": "STRING",
       "value": "!"
@@ -5098,6 +5127,10 @@
     [
       "_type",
       "_expression"
+    ],
+    [
+      "_type",
+      "type_param"
     ],
     [
       "call_expression"

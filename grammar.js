@@ -50,6 +50,7 @@ module.exports = grammar({
 		[$._expression, $.generic_parameter, $._type_identifier],
 		[$._type_identifier, $._expression],
 		[$._type, $._expression],
+		[$._type, $.type_param],
 		[$.call_expression]
 	],
 
@@ -130,7 +131,8 @@ module.exports = grammar({
 					optional(field('first', $._expression)),
 					':',
 					optional(field('second', $._expression)),
-					']'
+					']',
+					optional($.variadic_flag)
 				)
 			),
 
@@ -406,6 +408,14 @@ module.exports = grammar({
 				seq(optional('&'), optional($.mutable_flag), $.self)
 			),
 
+		variadic_parameter: ($) =>
+			seq(
+				field('name', $.identifier),
+				':',
+				$.variadic_flag,
+				field('type', $._type)
+			),
+
 		generic_parameter: ($) =>
 			choice(
 				field('name', $.identifier),
@@ -455,14 +465,6 @@ module.exports = grammar({
 
 		named_return_type: ($) =>
 			seq(field('name', $.identifier), ':', field('type', $._type)),
-
-		variadic_parameter: ($) =>
-			seq(
-				field('name', $.identifier),
-				':',
-				'...',
-				field('type', $._type)
-			),
 
 		//------Variables-----//
 
@@ -642,7 +644,7 @@ module.exports = grammar({
 				$.slice_type,
 				$.map_type,
 				$.function_type,
-				//$.generic_type,
+				$.generic_type,
 				$.reference_type,
 				$.pointer_type
 			),
@@ -674,15 +676,13 @@ module.exports = grammar({
 			),
 
 		type_arguments: ($) =>
-			prec.dynamic(2, seq('[', commaSep($.type_param), ']')),
+			prec.dynamic(
+				2,
+				seq('[', commaSep(choice($._type, $.type_param)), ']')
+			),
 
 		type_param: ($) =>
-			choice(
-				$._type,
-				$._literals,
-				$.type_constraint_param,
-				alias($.identifier, $.type_identifier)
-			),
+			choice($._literals, $.type_constraint_param, $._type_identifier),
 
 		type_constraint_param: ($) =>
 			prec(
@@ -928,6 +928,8 @@ module.exports = grammar({
 		self: ($) => 'self',
 
 		fall: ($) => 'fall',
+
+		variadic_flag: ($) => '...',
 
 		exception_flag: ($) => '!',
 
