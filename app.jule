@@ -1,0 +1,12 @@
+fn sum[T](a: T, b: T) T {
+    ret 1
+}
+
+fn foo[T1, T2, T3](t1: T1, t2: T2, t3: T3) {}
+
+fn clamp[T: int | f32](value: T, min: T, max: T): T {}
+
+
+sum[int](10, 20)
+
+clamp[f32](3.14, 0.0, 21.0)

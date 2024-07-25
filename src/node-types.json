@@ -1007,6 +1007,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "co_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1387,6 +1397,28 @@
           }
         ]
       },
+      "modifiers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "co_flag",
+            "named": true
+          },
+          {
+            "type": "cpp_flag",
+            "named": true
+          },
+          {
+            "type": "static_flag",
+            "named": true
+          },
+          {
+            "type": "unsafe_flag",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -1439,6 +1471,28 @@
         "types": [
           {
             "type": "generic_parameters",
+            "named": true
+          }
+        ]
+      },
+      "modifiers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "co_flag",
+            "named": true
+          },
+          {
+            "type": "cpp_flag",
+            "named": true
+          },
+          {
+            "type": "static_flag",
+            "named": true
+          },
+          {
+            "type": "unsafe_flag",
             "named": true
           }
         ]
@@ -1693,6 +1747,100 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "generic_return_type",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "any",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "boolean_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "generic_type",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "exception_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3096,6 +3244,10 @@
           "named": true
         },
         {
+          "type": "self_parameter",
+          "named": true
+        },
+        {
           "type": "variadic_parameter",
           "named": true
         }
@@ -3348,6 +3500,10 @@
       "required": true,
       "types": [
         {
+          "type": "generic_return_type",
+          "named": true
+        },
+        {
           "type": "multiple_return_types",
           "named": true
         },
@@ -3357,6 +3513,25 @@
         },
         {
           "type": "single_return_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "self_parameter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "mutable_flag",
+          "named": true
+        },
+        {
+          "type": "self",
           "named": true
         }
       ]
@@ -3890,6 +4065,11 @@
     }
   },
   {
+    "type": "static_flag",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "string_literal",
     "named": true,
     "fields": {}
@@ -3997,6 +4177,10 @@
     "named": false
   },
   {
+    "type": "&",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -4061,8 +4245,16 @@
     "named": true
   },
   {
+    "type": "co_flag",
+    "named": true
+  },
+  {
     "type": "const",
     "named": false
+  },
+  {
+    "type": "cpp_flag",
+    "named": true
   },
   {
     "type": "exception_flag",
@@ -4141,6 +4333,10 @@
     "named": true
   },
   {
+    "type": "self",
+    "named": true
+  },
+  {
     "type": "static",
     "named": false
   },
@@ -4179,6 +4375,10 @@
   {
     "type": "uintptr",
     "named": false
+  },
+  {
+    "type": "unsafe_flag",
+    "named": true
   },
   {
     "type": "{",

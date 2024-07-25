@@ -49,7 +49,8 @@ module.exports = grammar({
 		[$._expression, $.generic_parameter, $._type_identifier],
 		[$._type_identifier, $._expression],
 		[$._primary_type, $.generic_type],
-		[$._type, $._expression]
+		[$._type, $._expression],
+		[$.call_expression]
 	],
 
 	extras: ($) => [$.comment, /\s+/],
@@ -95,10 +96,12 @@ module.exports = grammar({
 				PREC.call,
 				choice(
 					seq(
+						optional($.co_flag),
 						field('function', $.identifier),
 						field('arguments', $.arguments)
 					),
 					seq(
+						optional($.co_flag),
 						field('function', $._expression),
 						field('type_arguments', optional($.generic_parameters)),
 						field('arguments', $.arguments)
@@ -176,6 +179,7 @@ module.exports = grammar({
 			prec.right(
 				1,
 				seq(
+					field('modifiers', optional($._function_modifiers)),
 					'fn',
 					field('name', $.identifier),
 					optional(field('generic_params', $.generic_parameters)),
@@ -187,6 +191,7 @@ module.exports = grammar({
 
 		function_signature: ($) =>
 			seq(
+				field('modifiers', optional($._function_modifiers)),
 				'fn',
 				field('name', $.identifier),
 				optional(field('generic_params', $.generic_parameters)),
@@ -198,7 +203,15 @@ module.exports = grammar({
 		parameters: ($) =>
 			seq(
 				'(',
-				commaSep(seq(choice($.parameter, $.variadic_parameter))),
+				commaSep(
+					seq(
+						choice(
+							$.parameter,
+							$.self_parameter,
+							$.variadic_parameter
+						)
+					)
+				),
 				optional(','),
 				')'
 			),
@@ -209,6 +222,9 @@ module.exports = grammar({
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._type)))
 			),
+
+		self_parameter: ($) =>
+			seq(optional('&'), optional($.mutable_flag), $.self),
 
 		generic_parameter: ($) =>
 			choice(
@@ -229,11 +245,15 @@ module.exports = grammar({
 			choice(
 				$.single_return_type,
 				$.multiple_return_types,
-				$.named_return_types
+				$.named_return_types,
+				$.generic_return_type
 			),
 
 		single_return_type: ($) =>
 			seq(optional($.exception_flag), ':', field('type', $._type)),
+
+		generic_return_type: ($) =>
+			seq(optional($.exception_flag), field('type', $._type)),
 
 		multiple_return_types: ($) =>
 			seq(
@@ -572,7 +592,20 @@ module.exports = grammar({
 		//------------Tokens------------//
 		mutable_flag: ($) => 'mut',
 
+		self: ($) => 'self',
+
 		exception_flag: ($) => '!',
+
+		_function_modifiers: ($) =>
+			choice($.unsafe_flag, $.cpp_flag, $.static_flag, $.co_flag),
+
+		co_flag: ($) => 'co',
+
+		unsafe_flag: ($) => 'unsafe',
+
+		cpp_flag: ($) => 'cpp',
+
+		static_flag: ($) => 'static',
 
 		//------------Identifiers------------//
 		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/,
