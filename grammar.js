@@ -40,7 +40,9 @@ const UNDERSCORE_SEP = /_?/
 
 const primitiveTypes = numericTypes.concat(['bool', 'str'])
 
-const terminator = choice('\n', ';')
+const newline_terminator = token(prec.dynamic(-1, /\r?\n/))
+
+const terminator = choice(newline_terminator, ';')
 
 module.exports = grammar({
 	name: 'jule',
@@ -71,7 +73,8 @@ module.exports = grammar({
 				$.function_signature
 			),
 
-		_expression_statement: ($) => choice($._expression),
+		_expression_statement: ($) =>
+			choice($._expression, $._expression_ending_with_block),
 
 		_expression: ($) =>
 			choice(
@@ -86,10 +89,21 @@ module.exports = grammar({
 				$.field_expression
 			),
 
+		_expression_ending_with_block: ($) =>
+			choice($.block, $.for_expression, $.if_expression),
+
 		_composite_expression: ($) =>
-			choice($.array_expression, $.map_expression),
+			choice(
+				$.array_expression,
+				$.map_expression,
+				$.inc_expression,
+				$.dec_expression
+			),
 
 		//------------Expressions------------//
+
+		inc_expression: ($) => prec(-1, seq($._expression, '++')),
+		dec_expression: ($) => prec(-1, seq($._expression, '--')),
 
 		call_expression: ($) =>
 			prec(
@@ -173,6 +187,52 @@ module.exports = grammar({
 				)
 			),
 
+		//------------Control Flow------------//
+		for_expression: ($) =>
+			seq(
+				'for',
+				optional(choice($.while_next, $.for_each, $._expression)),
+				field('body', $.block)
+			),
+
+		while_next: ($) =>
+			prec.right(
+				seq(
+					optional(
+						seq(field('initializer', optional($._expression)), ';')
+					),
+					field('condition', optional($._expression)),
+					';',
+					field('update', optional($._expression))
+				)
+			),
+
+		for_each: ($) =>
+			prec.right(
+				seq(
+					field('iter', choice('_', $._expression)),
+					optional(
+						seq(
+							token.immediate(','),
+							field('value', choice('_', $._expression))
+						)
+					),
+					alias('in', $.keyword),
+					field('right', choice($._expression))
+				)
+			),
+
+		if_expression: ($) =>
+			prec.right(
+				seq(
+					'if',
+					field('condition', $._expression),
+					field('consequence', $.block),
+					optional(field('alternative', $.else_block))
+				)
+			),
+
+		else_block: ($) => seq('else', choice($.block, $.if_expression)),
 		//------------Declarations------------//
 
 		function_declaration: ($) =>
@@ -574,6 +634,7 @@ module.exports = grammar({
 		//------------Blocks------------//
 		block: ($) =>
 			prec.right(
+				-1,
 				seq(
 					'{',
 					optional(repeat($._statement)),
