@@ -47,9 +47,9 @@ module.exports = grammar({
 	name: 'jule',
 
 	conflicts: ($) => [
-		[$._expression, $.generic_parameter, $._type_identifier],
-		[$._expression, $._single_declarator, $._type_identifier],
-		[$._type_identifier, $._expression],
+		//[$._expression, $.generic_parameter, $._type_identifier],
+		// [$._expression, $._single_declarator, $._type_identifier],
+		// [$._type_identifier, $._expression],
 		[$._type, $._expression],
 		[$._type, $.type_param],
 		[$.call_expression]
@@ -71,6 +71,7 @@ module.exports = grammar({
 
 		_declaration: ($) =>
 			choice(
+				$.use_declaration,
 				$.function_declaration,
 				$._variable_declaration,
 				$.struct_declaration,
@@ -97,6 +98,7 @@ module.exports = grammar({
 				$.field_expression,
 				$.break_expression,
 				$.continue_expression,
+				$.scoped_identifier,
 				$.identifier,
 				$._literals,
 				$._type
@@ -353,6 +355,56 @@ module.exports = grammar({
 			),
 
 		//------------Declarations------------//
+
+		//------Use------//
+		use_declaration: ($) => seq('use', $.use_clause),
+
+		use_clause: ($) =>
+			choice(
+				$.scoped_identifier,
+				$.use_as_clause,
+				$.use_wildcard,
+				$.use_list
+			),
+
+		use_as_clause: ($) =>
+			seq(
+				field('alias', $.identifier),
+				'for',
+				field('path', $.scoped_identifier)
+			),
+
+		use_wildcard: ($) => seq(optional($.scoped_identifier), '::', '*'),
+
+		use_list: ($) =>
+			seq(
+				optional(seq($.scoped_identifier, '::')),
+				'{',
+				commaSep($.use_list_item),
+				optional(','),
+				'}'
+			),
+
+		use_list_item: ($) =>
+			choice($.scoped_identifier, $.use_as_clause, $.use_wildcard),
+
+		scoped_identifier: ($) =>
+			prec.left(
+				1,
+				seq(
+					optional(
+						seq(choice($.identifier, $.scoped_identifier), '::')
+					),
+					choice($.identifier)
+				)
+			),
+
+		scoped_type_identifier: ($) =>
+			seq(
+				field('path', optional($.scoped_identifier)),
+				'::',
+				field('name', $._type_identifier)
+			),
 
 		//------Functions------//
 		function_declaration: ($) =>
@@ -662,7 +714,8 @@ module.exports = grammar({
 				$.function_type,
 				$.generic_type,
 				$.reference_type,
-				$.pointer_type
+				$.pointer_type,
+				$.scoped_type_identifier
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
