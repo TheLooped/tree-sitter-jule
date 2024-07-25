@@ -46,7 +46,9 @@ module.exports = grammar({
 	name: 'jule',
 
 	conflicts: ($) => [
-		[$._primary_type, $._expression],
+		[$._expression, $.generic_parameter, $._type_identifier],
+		[$._type_identifier, $._expression],
+		[$._primary_type, $.generic_type],
 		[$._type, $._expression]
 	],
 
@@ -77,13 +79,44 @@ module.exports = grammar({
 				$._type,
 				$.identifier,
 				$.indexed_expression,
-				$.parenthesized_expression
+				$.parenthesized_expression,
+				$.return_expression,
+				$.call_expression,
+				$.field_expression
 			),
 
 		_composite_expression: ($) =>
 			choice($.array_expression, $.map_expression),
 
 		//------------Expressions------------//
+
+		call_expression: ($) =>
+			prec(
+				PREC.call,
+				choice(
+					seq(
+						field('function', $.identifier),
+						field('arguments', $.arguments)
+					),
+					seq(
+						field('function', $._expression),
+						field('type_arguments', optional($.generic_parameters)),
+						field('arguments', $.arguments)
+					)
+				)
+			),
+
+		arguments: ($) => seq('(', commaSep($._expression), optional(','), ')'),
+
+		field_expression: ($) =>
+			prec(
+				PREC.field,
+				seq(
+					field('value', $._expression),
+					'.',
+					field('field', $._field_identifier)
+				)
+			),
 
 		indexed_expression: ($) =>
 			prec(
@@ -123,6 +156,20 @@ module.exports = grammar({
 				)
 			),
 
+		return_expression: ($) =>
+			prec.right(
+				choice(
+					seq(
+						'ret',
+						choice(
+							field('values', $._expression),
+							commaSep1(field('values', $._expression))
+						)
+					),
+					prec(-1, 'ret')
+				)
+			),
+
 		//------------Declarations------------//
 
 		function_declaration: ($) =>
@@ -131,6 +178,7 @@ module.exports = grammar({
 				seq(
 					'fn',
 					field('name', $.identifier),
+					optional(field('generic_params', $.generic_parameters)),
 					field('parameters', $.parameters),
 					optional($.return_type),
 					field('body', $.block)
@@ -141,6 +189,7 @@ module.exports = grammar({
 			seq(
 				'fn',
 				field('name', $.identifier),
+				optional(field('generic_params', $.generic_parameters)),
 				field('parameters', $.parameters),
 				optional($.return_type),
 				field('body', optional($.block))
@@ -160,6 +209,21 @@ module.exports = grammar({
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._type)))
 			),
+
+		generic_parameter: ($) =>
+			choice(
+				field('name', $.identifier),
+				seq(
+					field('name', $.identifier),
+					':',
+					field('constraint', $.generic_constraint)
+				)
+			),
+
+		generic_constraint: ($) => sep1(field('type', $._type), '|'),
+
+		generic_parameters: ($) =>
+			seq('[', commaSep1(field('parameter', $.generic_parameter)), ']'),
 
 		return_type: ($) =>
 			choice(
@@ -265,8 +329,7 @@ module.exports = grammar({
 
 		_type: ($) => choice($._primary_type, $._composite_type, $._literals),
 
-		_primary_type: ($) =>
-			choice($.primitive_type, alias($.identifier, $.type_identifier)),
+		_primary_type: ($) => choice($.primitive_type, $._type_identifier),
 
 		_composite_type: ($) =>
 			choice(
@@ -274,7 +337,8 @@ module.exports = grammar({
 				$.auto_sized_array_type,
 				$.slice_type,
 				$.map_type,
-				$.function_type
+				$.function_type,
+				$.generic_type
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
@@ -287,6 +351,15 @@ module.exports = grammar({
 					optional(seq(':', field('return_type', $._type)))
 				)
 			),
+
+		generic_type: ($) =>
+			seq(
+				field('base_type', $._type_identifier),
+				optional(field('type_arguments', $.generic_type_arguments))
+			),
+
+		generic_type_arguments: ($) =>
+			seq('[', commaSep1(field('argument', $._type)), ']'),
 
 		map_type: ($) =>
 			seq(
@@ -502,7 +575,11 @@ module.exports = grammar({
 		exception_flag: ($) => '!',
 
 		//------------Identifiers------------//
-		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/
+		identifier: (_) => /[a-zA-Zα-ωΑ-Ωµ_][a-zA-Zα-ωΑ-Ωµ\d_]*/,
+
+		_type_identifier: ($) => alias($.identifier, $.type_identifier),
+
+		_field_identifier: ($) => alias($.identifier, $.field_identifier)
 	}
 })
 
