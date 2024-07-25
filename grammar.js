@@ -69,8 +69,7 @@ module.exports = grammar({
 			choice(
 				$.function_declaration,
 				$._variable_declaration,
-				$.assignment_statement,
-				$.function_signature
+				$.assignment_statement
 			),
 
 		_expression_statement: ($) =>
@@ -82,6 +81,7 @@ module.exports = grammar({
 				$._literals,
 				$._type,
 				$.identifier,
+				$.function_literal,
 				$.indexed_expression,
 				$.parenthesized_expression,
 				$.return_expression,
@@ -341,15 +341,15 @@ module.exports = grammar({
 				)
 			),
 
-		function_signature: ($) =>
-			seq(
-				field('modifiers', optional($._function_modifiers)),
-				'fn',
-				field('name', $.identifier),
-				optional(field('generic_params', $.generic_parameters)),
-				field('parameters', $.parameters),
-				optional($.return_type),
-				field('body', optional($.block))
+		function_literal: ($) =>
+			prec.right(
+				seq(
+					'fn',
+					optional(field('name', $.identifier)),
+					field('parameters', $.parameters),
+					optional($.return_type),
+					field('body', $.block)
+				)
 			),
 
 		parameters: ($) =>
@@ -517,6 +517,7 @@ module.exports = grammar({
 
 		function_type: ($) =>
 			prec.right(
+				-1,
 				seq(
 					'fn',
 					field('parameters', $.parameters),

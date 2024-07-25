@@ -60,6 +60,10 @@
           "named": true
         },
         {
+          "type": "function_literal",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -192,6 +196,10 @@
         },
         {
           "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_literal",
           "named": true
         },
         {
@@ -412,6 +420,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -561,6 +573,10 @@
           },
           {
             "type": "for_expression",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -715,6 +731,10 @@
           },
           {
             "type": "for_expression",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -950,6 +970,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -1091,6 +1115,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -1250,7 +1278,7 @@
           "named": true
         },
         {
-          "type": "function_signature",
+          "type": "function_literal",
           "named": true
         },
         {
@@ -1437,6 +1465,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -1707,6 +1739,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -1855,6 +1891,10 @@
         },
         {
           "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_literal",
           "named": true
         },
         {
@@ -2031,6 +2071,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -2180,6 +2224,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -2311,6 +2359,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -2449,6 +2501,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -2613,6 +2669,10 @@
           "named": true
         },
         {
+          "type": "function_literal",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -2770,12 +2830,12 @@
     }
   },
   {
-    "type": "function_signature",
+    "type": "function_literal",
     "named": true,
     "fields": {
       "body": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "block",
@@ -2783,41 +2843,9 @@
           }
         ]
       },
-      "generic_params": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "generic_parameters",
-            "named": true
-          }
-        ]
-      },
-      "modifiers": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "co_flag",
-            "named": true
-          },
-          {
-            "type": "cpp_flag",
-            "named": true
-          },
-          {
-            "type": "static_flag",
-            "named": true
-          },
-          {
-            "type": "unsafe_flag",
-            "named": true
-          }
-        ]
-      },
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "identifier",
@@ -3346,6 +3374,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -3492,6 +3524,10 @@
           "named": true
         },
         {
+          "type": "function_literal",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -3631,6 +3667,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -3762,6 +3802,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -4026,6 +4070,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -4188,6 +4236,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -4319,6 +4371,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -4699,7 +4755,7 @@
           "named": true
         },
         {
-          "type": "function_signature",
+          "type": "function_literal",
           "named": true
         },
         {
@@ -4897,6 +4953,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -5030,6 +5090,10 @@
         },
         {
           "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_literal",
           "named": true
         },
         {
@@ -5176,6 +5240,10 @@
           "named": true
         },
         {
+          "type": "function_literal",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -5316,6 +5384,10 @@
         },
         {
           "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_literal",
           "named": true
         },
         {
@@ -5788,6 +5860,10 @@
           "named": true
         },
         {
+          "type": "function_literal",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -5934,6 +6010,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -6317,7 +6397,7 @@
           "named": true
         },
         {
-          "type": "function_signature",
+          "type": "function_literal",
           "named": true
         },
         {
@@ -6564,6 +6644,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -6721,6 +6805,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
@@ -6973,6 +7061,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -7107,6 +7199,10 @@
             "named": true
           },
           {
+            "type": "function_literal",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -7238,6 +7334,10 @@
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_literal",
             "named": true
           },
           {
