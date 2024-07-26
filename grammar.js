@@ -94,11 +94,11 @@ module.exports = grammar({
 
 		_expression: ($) =>
 			choice(
-				$.slice_expression,
 				$._composite_expression,
+				$.parenthesized_expression,
+				$.slice_expression,
 				$.indexed_expression,
 				$.function_literal,
-				$.parenthesized_expression,
 				$.return_expression,
 				$.call_expression,
 				$.field_expression,
@@ -115,6 +115,8 @@ module.exports = grammar({
 		_expression_ending_with_block: ($) =>
 			choice(
 				$.block,
+				$.defer_block,
+				$.unsafe_block,
 				$.for_expression,
 				$.if_expression,
 				$.match_expression,
@@ -123,12 +125,12 @@ module.exports = grammar({
 
 		_composite_expression: ($) =>
 			choice(
+				$.binary_expression,
+				$.unary_expression,
 				$.array_expression,
 				$.map_expression,
 				$.inc_expression,
 				$.dec_expression,
-				$.unary_expression,
-				$.binary_expression,
 				$.reference_expression
 			),
 
@@ -156,7 +158,7 @@ module.exports = grammar({
 				PREC.unary,
 				seq(
 					field('operator', $.unary_operator),
-					field('operand', $._expression)
+					field('operand', $._expression_statement)
 				)
 			),
 
@@ -360,13 +362,16 @@ module.exports = grammar({
 			prec(PREC.cast, choice($.parenthesized_cast, $.simple_cast)),
 
 		parenthesized_cast: ($) =>
-			seq(
-				'(',
-				field('type', $._type),
-				')',
-				'(',
-				field('value', $._expression),
-				')'
+			prec(
+				PREC.cast,
+				seq(
+					'(',
+					field('type', $._type),
+					')',
+					'(',
+					field('value', $._expression),
+					')'
+				)
 			),
 
 		simple_cast: ($) =>
@@ -1004,7 +1009,7 @@ module.exports = grammar({
 				seq(
 					'{',
 					optional(repeat($._statement)),
-					optional($._expression),
+					optional($._expression_statement),
 					'}',
 					optional(terminator)
 				)
@@ -1015,7 +1020,7 @@ module.exports = grammar({
 		defer_block: ($) => seq(optional($.unsafe_flag), 'defer', $.block),
 
 		//------------Operators------------//
-		unary_operator: (_) => prec.left(choice('~', '!', '-', '-%')),
+		unary_operator: (_) => prec.left(choice('*', '~', '!', '-', '-%')),
 
 		assignment_operator: (_) =>
 			choice(
