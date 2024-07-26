@@ -1,5 +1,4 @@
 const PREC = {
-	scope: 15, // Scoped identifier
 	call: 13, // Function calls
 	field: 12, // Field access
 	unary: 11, // Unary operators
@@ -50,8 +49,11 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$._expression, $.generic_parameter, $._type_identifier],
 		[$._expression, $._single_declarator, $._type_identifier],
+		[$._expression, $._field_identifier, $._type_identifier],
 		[$._type_identifier, $._expression],
 		[$._type, $._expression],
+		[$.simple_cast, $._expression],
+		[$.parenthesized_cast, $._expression],
 		[$._composite_type, $._expression],
 		[$._type, $.type_param],
 		[$.call_expression]
@@ -68,7 +70,8 @@ module.exports = grammar({
 			choice(
 				$._declaration,
 				seq($._expression_statement, terminator),
-				$._simple_statement
+				$._simple_statement,
+				$.label
 			),
 
 		_declaration: ($) =>
@@ -79,19 +82,20 @@ module.exports = grammar({
 				$.struct_declaration,
 				$.enum_declaration,
 				$.impl_declaration,
-				$.trait_declaration
+				$.trait_declaration,
+				$.type_alias_declaration
 			),
 
 		_simple_statement: ($) =>
 			choice($.assignment_statement, $.compound_assignment_statement),
 
 		_expression_statement: ($) =>
-			choice($._expression, $._expression_ending_with_block),
+			choice($._expression, prec(-1, $._expression_ending_with_block)),
 
 		_expression: ($) =>
 			choice(
-				$._composite_expression,
 				$.slice_expression,
+				$._composite_expression,
 				$.indexed_expression,
 				$.function_literal,
 				$.parenthesized_expression,
@@ -100,9 +104,11 @@ module.exports = grammar({
 				$.field_expression,
 				$.break_expression,
 				$.continue_expression,
+				$.cast_expression,
 				$.identifier,
 				$._literals,
 				$._type,
+				$.self,
 				alias($.scoped_type_identifier, $.scoped_identifier)
 			),
 
@@ -190,7 +196,7 @@ module.exports = grammar({
 			prec.left(seq('break', optional(field('label', $.identifier)))),
 
 		continue_expression: ($) =>
-			prec.left(seq('continue', optional($.identifier))),
+			prec.left(seq('continue', optional(field('label', $.identifier)))),
 
 		call_expression: ($) =>
 			prec(
@@ -213,12 +219,12 @@ module.exports = grammar({
 		arguments: ($) => seq('(', commaSep($._expression), optional(','), ')'),
 
 		field_expression: ($) =>
-			prec(
+			prec.left(
 				PREC.field,
 				seq(
 					field('value', $._expression),
 					'.',
-					field('field', $._field_identifier)
+					field('field', choice($._expression, $._field_identifier))
 				)
 			),
 
@@ -242,10 +248,13 @@ module.exports = grammar({
 			),
 
 		map_entry: ($) =>
-			seq(
-				field('key', $._expression),
-				':',
-				field('value', $._expression)
+			prec(
+				-2,
+				seq(
+					field('key', $._expression),
+					':',
+					field('value', $._expression)
+				)
 			),
 
 		array_expression: ($) =>
@@ -327,36 +336,45 @@ module.exports = grammar({
 		match_expression: ($) =>
 			seq(
 				'match',
-				optional(field('type_flag', alias('type', $.keyword))),
-				optional(field('value', $._expression)),
-				field('body', $.match_block)
+				optional($.match_value),
+				'{',
+				repeat($.match_case),
+				optional($.default_case),
+				'}'
 			),
 
-		match_block: ($) =>
-			seq('{', repeat1($.match_arm), optional($.last_match_arm), '}'),
+		match_value: ($) => seq(optional('type'), $._expression),
 
-		match_arm: ($) =>
-			prec.right(
-				seq(
-					choice(
-						field('patterns', repeat(seq('|', $.match_pattern))),
-						$.multiple_patterns
-					),
-					':',
-					field('value', $.match_arm_body)
-				)
+		match_case: ($) => seq('|', $.case_expression_list, ':', $._statement),
+
+		case_expression_list: ($) => sep1($.case, '|'),
+
+		case: ($) => $._expression,
+
+		default_case: ($) => seq('|:', $._statement),
+
+		type_alias_declaration: ($) =>
+			seq('type', $.identifier, ':', field('type', $._type)),
+
+		cast_expression: ($) =>
+			prec(PREC.cast, choice($.parenthesized_cast, $.simple_cast)),
+
+		parenthesized_cast: ($) =>
+			seq(
+				'(',
+				field('type', $._type),
+				')',
+				'(',
+				field('value', $._expression),
+				')'
 			),
 
-		last_match_arm: ($) => seq('|:', field('value', $.match_arm_body)),
-
-		match_pattern: ($) => choice($._expression),
-
-		multiple_patterns: ($) =>
-			seq($._expression, repeat1(seq('|', $._expression))),
-
-		match_arm_body: ($) =>
-			prec.right(
-				choice(seq(repeat1($._statement), optional($.fall)), $.fall)
+		simple_cast: ($) =>
+			seq(
+				field('type', $._type),
+				'(',
+				field('value', $._expression),
+				')'
 			),
 
 		//------------Declarations------------//
@@ -561,6 +579,7 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					'let',
+					optional($.mutable_flag),
 					$._declarator_list,
 					optional(seq(':', field('type', $._type))),
 					optional(
@@ -1028,7 +1047,8 @@ module.exports = grammar({
 
 		exception_flag: ($) => '!',
 
-		label: ($) => seq(field('name', $.identifier), ':'),
+		label: ($) =>
+			prec(-4, seq(field('label', $.identifier), token.immediate(':'))),
 
 		_function_modifiers: ($) =>
 			choice($.unsafe_flag, $.cpp_flag, $.static_flag, $.co_flag),
