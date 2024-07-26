@@ -1,5 +1,43 @@
 [
   {
+    "type": "aliased",
+    "named": true,
+    "fields": {
+      "alias": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "grouped",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "arguments",
     "named": true,
     "fields": {},
@@ -4859,6 +4897,60 @@
     }
   },
   {
+    "type": "grouped",
+    "named": true,
+    "fields": {
+      "list": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "wildcard",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
+      "path": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "::",
+            "named": false
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "if_expression",
     "named": true,
     "fields": {
@@ -8507,20 +8599,31 @@
   {
     "type": "scoped_identifier",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "scoped_identifier",
-          "named": true
-        }
-      ]
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -8532,17 +8635,21 @@
         "required": true,
         "types": [
           {
-            "type": "type_identifier",
+            "type": "identifier",
             "named": true
           }
         ]
       },
       "path": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "scoped_identifier",
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           }
         ]
@@ -10766,38 +10873,9 @@
     "fields": {}
   },
   {
-    "type": "use_aliased",
+    "type": "unsafe_flag",
     "named": true,
-    "fields": {
-      "alias": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "scoped_identifier",
-            "named": true
-          },
-          {
-            "type": "use_list",
-            "named": true
-          },
-          {
-            "type": "use_wildcard",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "use_declaration",
@@ -10808,72 +10886,23 @@
       "required": true,
       "types": [
         {
-          "type": "use_aliased",
+          "type": "aliased",
           "named": true
         },
         {
-          "type": "use_list",
+          "type": "grouped",
           "named": true
         },
-        {
-          "type": "use_simple",
-          "named": true
-        },
-        {
-          "type": "use_wildcard",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "use_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
         {
           "type": "identifier",
           "named": true
         },
         {
-          "type": "scoped_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "use_simple",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
+          "type": "scoped_type_identifier",
           "named": true
         },
         {
-          "type": "scoped_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "use_wildcard",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "scoped_identifier",
+          "type": "wildcard",
           "named": true
         }
       ]
@@ -11493,6 +11522,25 @@
     }
   },
   {
+    "type": "wildcard",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -11653,6 +11701,10 @@
     "named": true
   },
   {
+    "type": "defer",
+    "named": false
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -11809,8 +11861,8 @@
     "named": false
   },
   {
-    "type": "unsafe_flag",
-    "named": true
+    "type": "unsafe",
+    "named": false
   },
   {
     "type": "use",

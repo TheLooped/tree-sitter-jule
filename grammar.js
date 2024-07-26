@@ -1,4 +1,5 @@
 const PREC = {
+	scope: 15, // Scoped identifier
 	call: 13, // Function calls
 	field: 12, // Field access
 	unary: 11, // Unary operators
@@ -47,10 +48,11 @@ module.exports = grammar({
 	name: 'jule',
 
 	conflicts: ($) => [
-		//[$._expression, $.generic_parameter, $._type_identifier],
-		// [$._expression, $._single_declarator, $._type_identifier],
-		// [$._type_identifier, $._expression],
+		[$._expression, $.generic_parameter, $._type_identifier],
+		[$._expression, $._single_declarator, $._type_identifier],
+		[$._type_identifier, $._expression],
 		[$._type, $._expression],
+		[$._composite_type, $._expression],
 		[$._type, $.type_param],
 		[$.call_expression]
 	],
@@ -98,10 +100,10 @@ module.exports = grammar({
 				$.field_expression,
 				$.break_expression,
 				$.continue_expression,
-				$.scoped_identifier,
 				$.identifier,
 				$._literals,
-				$._type
+				$._type,
+				alias($.scoped_type_identifier, $.scoped_identifier)
 			),
 
 		_expression_ending_with_block: ($) =>
@@ -234,7 +236,10 @@ module.exports = grammar({
 		parenthesized_expression: ($) => seq('(', $._expression, ')'),
 
 		map_expression: ($) =>
-			seq('{', optional(commaSep($.map_entry)), optional(','), '}'),
+			prec(
+				-3,
+				seq('{', optional(commaSep($.map_entry)), optional(','), '}')
+			),
 
 		map_entry: ($) =>
 			seq(
@@ -357,55 +362,76 @@ module.exports = grammar({
 		//------------Declarations------------//
 
 		//------Use------//
-		use_declaration: ($) =>
-			seq(
-				'use',
-				choice($.use_aliased, $.use_list, $.use_wildcard, $.use_simple)
-			),
+		use_declaration: ($) => seq('use', $._use_clause),
 
 		_use_clause: ($) =>
-			choice($.scoped_identifier, $.use_wildcard, $.use_list),
+			choice(
+				$.wildcard,
+				$.aliased,
+				$.grouped,
+				$.scoped_type_identifier,
+				$.identifier
+			),
 
-		use_simple: ($) =>
-			seq(optional(seq($.scoped_identifier, '::')), $.identifier),
+		wildcard: ($) =>
+			seq(
+				optional(
+					seq(choice($.scoped_type_identifier, $.identifier), '::')
+				),
+				'*'
+			),
 
-		use_aliased: ($) =>
+		aliased: ($) =>
 			prec(
 				1,
 				seq(
 					field('alias', $.identifier),
 					'for',
-					field('path', $._use_clause)
+					field('path', $._aliased_path)
 				)
 			),
 
-		use_wildcard: ($) => seq(optional($.scoped_identifier), '::', '*'),
-
-		use_list: ($) =>
-			seq(
-				optional(seq($.scoped_identifier, '::')),
-				'{',
-				commaSep($.identifier),
-				optional(','),
-				'}'
+		_aliased_path: ($) =>
+			choice(
+				$.scoped_type_identifier,
+				$.identifier,
+				$.wildcard,
+				$.grouped
 			),
 
-		scoped_identifier: ($) =>
-			prec.left(
-				1,
-				seq(
+		grouped: ($) =>
+			seq(
+				field(
+					'path',
 					optional(
-						seq(choice($.identifier, $.scoped_identifier), '::')
-					),
-					choice($.identifier)
+						seq(
+							choice($.identifier, $.scoped_type_identifier),
+							'::'
+						)
+					)
+				),
+				field(
+					'list',
+					seq(
+						'{',
+						commaSep(
+							choice(
+								$.identifier,
+								$.scoped_type_identifier,
+								$.wildcard
+							)
+						),
+						optional(','),
+						'}'
+					)
 				)
 			),
 
 		scoped_type_identifier: ($) =>
 			seq(
-				field('path', optional($.scoped_identifier)),
+				field('path', choice($.identifier, $.scoped_type_identifier)),
 				'::',
-				field('name', $._type_identifier)
+				field('name', $.identifier)
 			),
 
 		//------Functions------//
@@ -964,6 +990,10 @@ module.exports = grammar({
 					optional(terminator)
 				)
 			),
+
+		unsafe_block: ($) => seq('unsafe', $.block),
+
+		defer_block: ($) => seq(optional($.unsafe_flag), 'defer', $.block),
 
 		//------------Operators------------//
 		unary_operator: (_) => prec.left(choice('~', '!', '-', '-%')),
