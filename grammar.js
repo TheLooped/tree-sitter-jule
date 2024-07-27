@@ -52,8 +52,6 @@ module.exports = grammar({
 		[$._expression, $._field_identifier, $._type_identifier],
 		[$._type_identifier, $._expression],
 		[$._type, $._expression],
-		[$.simple_cast, $._expression],
-		[$.parenthesized_cast, $._expression],
 		[$._composite_type, $._expression],
 		[$._type, $.type_param],
 		[$.call_expression]
@@ -224,7 +222,7 @@ module.exports = grammar({
 			prec.left(
 				PREC.field,
 				seq(
-					field('value', $._expression),
+					field('value', $._expression_statement),
 					'.',
 					field('field', choice($._expression, $._field_identifier))
 				)
@@ -375,11 +373,14 @@ module.exports = grammar({
 			),
 
 		simple_cast: ($) =>
-			seq(
-				field('type', $._type),
-				'(',
-				field('value', $._expression),
-				')'
+			prec(
+				PREC.cast,
+				seq(
+					field('type', $._type),
+					'(',
+					field('value', $._expression),
+					')'
+				)
 			),
 
 		//------------Declarations------------//
@@ -536,24 +537,25 @@ module.exports = grammar({
 		generic_parameters: ($) =>
 			seq('[', commaSep1(field('parameter', $.generic_parameter)), ']'),
 
+		exception_return: ($) =>
+			prec.left(seq($.exception_flag, optional($.return_type))),
+
 		return_type: ($) =>
 			choice(
 				$.single_return_type,
 				$.multiple_return_types,
-				$.named_return_types,
-				$.generic_return_type
+				$.named_return_types
 			),
 
 		single_return_type: ($) =>
-			seq(optional($.exception_flag), ':', field('type', $._type)),
-
-		generic_return_type: ($) =>
-			seq(optional($.exception_flag), field('type', $._type)),
+			seq(
+				optional(choice($.exception_flag, ':')),
+				field('type', $._type)
+			),
 
 		multiple_return_types: ($) =>
 			seq(
-				optional($.exception_flag),
-				':',
+				choice($.exception_flag, ':'),
 				'(',
 				commaSep1(field('type', $._type)),
 				')'
@@ -561,8 +563,7 @@ module.exports = grammar({
 
 		named_return_types: ($) =>
 			seq(
-				optional($.exception_flag),
-				':',
+				choice($.exception_flag, ':'),
 				'(',
 				commaSep1($.named_return_type),
 				')'
@@ -1020,7 +1021,7 @@ module.exports = grammar({
 		defer_block: ($) => seq(optional($.unsafe_flag), 'defer', $.block),
 
 		//------------Operators------------//
-		unary_operator: (_) => prec.left(choice('*', '~', '!', '-', '-%')),
+		unary_operator: (_) => prec.left(choice('*', '~', '!', '-')),
 
 		assignment_operator: (_) =>
 			choice(
@@ -1050,7 +1051,7 @@ module.exports = grammar({
 
 		variadic_flag: ($) => '...',
 
-		exception_flag: ($) => '!',
+		exception_flag: ($) => '!:',
 
 		label: ($) =>
 			prec(-4, seq(field('label', $.identifier), token.immediate(':'))),

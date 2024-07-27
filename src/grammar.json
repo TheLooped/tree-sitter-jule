@@ -408,7 +408,7 @@
             "name": "operand",
             "content": {
               "type": "SYMBOL",
-              "name": "_expression_statement"
+              "name": "_expression"
             }
           }
         ]
@@ -1897,33 +1897,37 @@
       }
     },
     "simple_cast": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "type",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_type"
+      "type": "PREC",
+      "value": 10,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "type",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_type"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "("
+          },
+          {
+            "type": "FIELD",
+            "name": "value",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": ")"
           }
-        },
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "FIELD",
-          "name": "value",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        }
-      ]
+        ]
+      }
     },
     "use_declaration": {
       "type": "SEQ",
@@ -2703,6 +2707,31 @@
         }
       ]
     },
+    "exception_return": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "exception_flag"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "return_type"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "return_type": {
       "type": "CHOICE",
       "members": [
@@ -2717,10 +2746,6 @@
         {
           "type": "SYMBOL",
           "name": "named_return_types"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "generic_return_type"
         }
       ]
     },
@@ -2731,37 +2756,17 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "exception_flag"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "FIELD",
-          "name": "type",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_type"
-          }
-        }
-      ]
-    },
-    "generic_return_type": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "exception_flag"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "exception_flag"
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                }
+              ]
             },
             {
               "type": "BLANK"
@@ -2789,13 +2794,10 @@
               "name": "exception_flag"
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": ":"
             }
           ]
-        },
-        {
-          "type": "STRING",
-          "value": ":"
         },
         {
           "type": "STRING",
@@ -2851,13 +2853,10 @@
               "name": "exception_flag"
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": ":"
             }
           ]
-        },
-        {
-          "type": "STRING",
-          "value": ":"
         },
         {
           "type": "STRING",
@@ -5419,10 +5418,6 @@
           {
             "type": "STRING",
             "value": "-"
-          },
-          {
-            "type": "STRING",
-            "value": "-%"
           }
         ]
       }
@@ -5526,7 +5521,7 @@
     },
     "exception_flag": {
       "type": "STRING",
-      "value": "!"
+      "value": "!:"
     },
     "label": {
       "type": "PREC",
@@ -5648,14 +5643,6 @@
     ],
     [
       "_type",
-      "_expression"
-    ],
-    [
-      "simple_cast",
-      "_expression"
-    ],
-    [
-      "parenthesized_cast",
       "_expression"
     ],
     [

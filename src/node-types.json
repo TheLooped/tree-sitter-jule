@@ -4177,11 +4177,6 @@
     }
   },
   {
-    "type": "exception_flag",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "field_expression",
     "named": true,
     "fields": {
@@ -5626,112 +5621,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "generic_return_type",
-    "named": true,
-    "fields": {
-      "type": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "any",
-            "named": true
-          },
-          {
-            "type": "array_type",
-            "named": true
-          },
-          {
-            "type": "auto_sized_array_type",
-            "named": true
-          },
-          {
-            "type": "boolean_literal",
-            "named": true
-          },
-          {
-            "type": "byte_literal",
-            "named": true
-          },
-          {
-            "type": "float_literal",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "generic_type",
-            "named": true
-          },
-          {
-            "type": "integer_literal",
-            "named": true
-          },
-          {
-            "type": "map_type",
-            "named": true
-          },
-          {
-            "type": "nil",
-            "named": true
-          },
-          {
-            "type": "pointer_type",
-            "named": true
-          },
-          {
-            "type": "primitive_type",
-            "named": true
-          },
-          {
-            "type": "raw_string_literal",
-            "named": true
-          },
-          {
-            "type": "reference_type",
-            "named": true
-          },
-          {
-            "type": "rune_literal",
-            "named": true
-          },
-          {
-            "type": "scoped_type_identifier",
-            "named": true
-          },
-          {
-            "type": "slice_type",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "exception_flag",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -9449,10 +9338,6 @@
       "required": true,
       "types": [
         {
-          "type": "generic_return_type",
-          "named": true
-        },
-        {
           "type": "multiple_return_types",
           "named": true
         },
@@ -12041,10 +11926,6 @@
             "named": true
           },
           {
-            "type": "block",
-            "named": true
-          },
-          {
             "type": "boolean_literal",
             "named": true
           },
@@ -12073,19 +11954,11 @@
             "named": true
           },
           {
-            "type": "defer_block",
-            "named": true
-          },
-          {
             "type": "field_expression",
             "named": true
           },
           {
             "type": "float_literal",
-            "named": true
-          },
-          {
-            "type": "for_expression",
             "named": true
           },
           {
@@ -12102,10 +11975,6 @@
           },
           {
             "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_expression",
             "named": true
           },
           {
@@ -12126,10 +11995,6 @@
           },
           {
             "type": "map_type",
-            "named": true
-          },
-          {
-            "type": "match_expression",
             "named": true
           },
           {
@@ -12193,19 +12058,11 @@
             "named": true
           },
           {
-            "type": "struct_expression",
-            "named": true
-          },
-          {
             "type": "type_identifier",
             "named": true
           },
           {
             "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unsafe_block",
             "named": true
           }
         ]
@@ -12987,10 +12844,6 @@
     "named": false
   },
   {
-    "type": "-%",
-    "named": false
-  },
-  {
     "type": "--",
     "named": false
   },
@@ -13105,6 +12958,10 @@
   {
     "type": "enum",
     "named": false
+  },
+  {
+    "type": "exception_flag",
+    "named": true
   },
   {
     "type": "f32",
