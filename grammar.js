@@ -241,7 +241,7 @@ module.exports = grammar({
 				$.assignment_statement
 			),
 
-		_expression_statement: ($) => choice($._expression, terminator),
+		_expression_statement: ($) => seq($._expression, terminator),
 
 		assignment_statement: ($) =>
 			choice($.simple_assign, $.composite_assign),
@@ -290,9 +290,49 @@ module.exports = grammar({
 		// Expression statements
 
 		//----Declarations-------//
-		_declaration: ($) => choice(),
+		_declaration: ($) => choice($.var_decl),
 
-		variable_declaration: ($) => choice(),
+		var_decl: ($) => choice($.let_decl, $.const_decl, $.static_decl),
+
+		let_decl: ($) => choice($.single_decl, $.multi_decl),
+
+		single_decl: ($) =>
+			seq(
+				'let',
+				optional($.mut_flag),
+				field('name', choice($._value_identifier, $.ref_pattern)),
+				optional(seq(':', field('type', $._type))),
+				optional(seq('=', field('value', $._expression)))
+			),
+
+		multi_decl: ($) =>
+			seq(
+				'let',
+				field('pattern', $.tuple_pattern),
+				'=',
+				field(
+					'values',
+					choice($.expression_list, seq('(', $.expression_list, ')'))
+				)
+			),
+
+		const_decl: ($) =>
+			seq(
+				'const',
+				field('name', $._value_identifier),
+				optional(seq(':', field('type', $._type))),
+				'=',
+				field('value', $._expression)
+			),
+
+		static_decl: ($) =>
+			seq(
+				'static',
+				field('name', $._value_identifier),
+				optional(seq(':', field('type', $._type))),
+				'=',
+				field('value', $._expression)
+			),
 
 		// Variable declarations
 		// - Single variable
@@ -318,6 +358,8 @@ module.exports = grammar({
 		//----Identifiers--------//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
+		_value_identifier: ($) => alias($.identifier, $.value_identifier),
+
 		// Type identifiers
 
 		_type_identifier: ($) => alias($.identifier, $.type_identifier),
@@ -327,6 +369,11 @@ module.exports = grammar({
 		// Method identifiers
 		// Package identifiers
 		// Label identifiers
+
+		//----Tokens--------//
+
+		mut_flag: () => 'mut',
+
 		//----Expressions--------//
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
@@ -373,13 +420,33 @@ module.exports = grammar({
 			),
 
 		// Ignore operators
-		ignore_operator: (_) => '_'
+		ignore_operator: (_) => '_',
 
 		// Arithmetic operators
 		// Comparison operators
 		// Logical operators
 		// Bitwise operators
 
+		//----Patterns------------//
+
+		_pattern_item: ($) =>
+			choice(
+				$.mut_pattern,
+				$.ref_pattern,
+				$._value_identifier,
+				$.ignore_operator
+			),
+
+		tuple_pattern: ($) =>
+			seq('(', commaSep1(field('item', $._pattern_item)), ')'),
+
+		mut_pattern: ($) =>
+			seq(
+				$.mut_flag,
+				field('item', choice($._value_identifier, $.ref_pattern))
+			),
+
+		ref_pattern: ($) => seq('&', field('item', $._value_identifier))
 		//----Modules------------//
 		// Import declarations
 		// - Single import

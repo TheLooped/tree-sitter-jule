@@ -212,7 +212,7 @@
     }
   },
   {
-    "type": "const_declaration",
+    "type": "const_decl",
     "named": true,
     "fields": {
       "name": {
@@ -220,7 +220,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "value_identifier",
             "named": true
           }
         ]
@@ -335,75 +335,86 @@
     }
   },
   {
-    "type": "let_declaration",
+    "type": "let_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "multi_decl",
+          "named": true
+        },
+        {
+          "type": "single_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "multi_decl",
     "named": true,
     "fields": {
-      "name": {
+      "pattern": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "tuple_pattern",
             "named": true
           }
         ]
       },
-      "type": {
-        "multiple": false,
-        "required": false,
+      "values": {
+        "multiple": true,
+        "required": true,
         "types": [
           {
-            "type": "primitive_type",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "bool_literal",
-            "named": true
+            "type": "(",
+            "named": false
           },
           {
-            "type": "byte_literal",
-            "named": true
+            "type": ")",
+            "named": false
           },
           {
-            "type": "float_literal",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "integer_literal",
-            "named": true
-          },
-          {
-            "type": "nil_literal",
-            "named": true
-          },
-          {
-            "type": "primitive_type",
-            "named": true
-          },
-          {
-            "type": "raw_string_literal",
-            "named": true
-          },
-          {
-            "type": "rune_literal",
-            "named": true
-          },
-          {
-            "type": "string_literal",
+            "type": "expression_list",
             "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "mut_pattern",
+    "named": true,
+    "fields": {
+      "item": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref_pattern",
+            "named": true
+          },
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "mut_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -415,6 +426,22 @@
     "type": "raw_string_literal",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "ref_pattern",
+    "named": true,
+    "fields": {
+      "item": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "simple_assign",
@@ -533,6 +560,92 @@
     }
   },
   {
+    "type": "single_decl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref_pattern",
+            "named": true
+          },
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mut_flag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -553,10 +666,6 @@
           "named": true
         },
         {
-          "type": "const_declaration",
-          "named": true
-        },
-        {
           "type": "float_literal",
           "named": true
         },
@@ -566,10 +675,6 @@
         },
         {
           "type": "integer_literal",
-          "named": true
-        },
-        {
-          "type": "let_declaration",
           "named": true
         },
         {
@@ -589,18 +694,18 @@
           "named": true
         },
         {
-          "type": "static_declaration",
+          "type": "string_literal",
           "named": true
         },
         {
-          "type": "string_literal",
+          "type": "var_decl",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "static_declaration",
+    "type": "static_decl",
     "named": true,
     "fields": {
       "name": {
@@ -608,7 +713,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "value_identifier",
             "named": true
           }
         ]
@@ -687,6 +792,57 @@
     }
   },
   {
+    "type": "tuple_pattern",
+    "named": true,
+    "fields": {
+      "item": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "ignore_operator",
+            "named": true
+          },
+          {
+            "type": "mut_pattern",
+            "named": true
+          },
+          {
+            "type": "ref_pattern",
+            "named": true
+          },
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "var_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "const_decl",
+          "named": true
+        },
+        {
+          "type": "let_decl",
+          "named": true
+        },
+        {
+          "type": "static_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "\"",
     "named": false
   },
@@ -695,7 +851,19 @@
     "named": false
   },
   {
+    "type": "&",
+    "named": false
+  },
+  {
     "type": "&=",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
     "named": false
   },
   {
@@ -827,6 +995,10 @@
     "named": true
   },
   {
+    "type": "mut_flag",
+    "named": true
+  },
+  {
     "type": "nil_literal",
     "named": true
   },
@@ -869,6 +1041,10 @@
   {
     "type": "uintptr",
     "named": false
+  },
+  {
+    "type": "value_identifier",
+    "named": true
   },
   {
     "type": "|=",
