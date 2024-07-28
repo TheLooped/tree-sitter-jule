@@ -371,6 +371,8 @@ module.exports = grammar({
 
 		mut_flag: () => 'mut',
 
+		unsafe_flag: () => 'unsafe',
+
 		//----Expressions--------//
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
@@ -385,7 +387,8 @@ module.exports = grammar({
 				$.binary_expression
 			),
 
-		_block_expression: ($) => choice(),
+		_block_expression: ($) =>
+			choice($.block, $.defer_block, $.unsafe_block),
 
 		ref_expression: ($) =>
 			prec.left(PREC.unary, seq('&', field('value', $._expression))),
@@ -506,7 +509,15 @@ module.exports = grammar({
 				field('item', choice($._value_identifier, $.ref_pattern))
 			),
 
-		ref_pattern: ($) => seq('&', field('item', $._value_identifier))
+		ref_pattern: ($) => seq('&', field('item', $._value_identifier)),
+
+		//----Modules------------//
+		block: ($) => seq('{', repeat($._statement), '}'),
+
+		unsafe_block: ($) => seq($.unsafe_flag, $.block),
+
+		defer_block: ($) => seq(optional($.unsafe_flag), 'defer', $.block)
+
 		//----Modules------------//
 		// Import declarations
 		// - Single import
