@@ -149,14 +149,14 @@ module.exports = grammar({
 			),
 
 		reference_expression: ($) =>
-			prec(PREC.unary, seq('&', field('value', $._expression))),
+			prec(PREC.unary, seq('&', field('value', $._expression_statement))),
 
 		unary_expression: ($) =>
 			prec.left(
 				PREC.unary,
 				seq(
 					field('operator', $.unary_operator),
-					field('operand', $._expression_statement)
+					field('operand', $._expression)
 				)
 			),
 
@@ -222,7 +222,7 @@ module.exports = grammar({
 			prec.left(
 				PREC.field,
 				seq(
-					field('value', $._expression_statement),
+					field('value', $._expression),
 					'.',
 					field('field', choice($._expression, $._field_identifier))
 				)
@@ -309,15 +309,29 @@ module.exports = grammar({
 		for_each: ($) =>
 			prec.right(
 				seq(
-					field('iter', choice('_', $._expression)),
-					optional(
+					choice(
 						seq(
+							field('iter', choice('_', $._expression)),
+							optional(
+								seq(
+									token.immediate(','),
+									field('value', choice('_', $._expression))
+								)
+							)
+						),
+						seq(
+							'(',
+							field('iter', choice('_', $._expression)),
 							token.immediate(','),
-							field('value', choice('_', $._expression))
+							field(
+								'value',
+								seq(optional($.mutable_flag), $._expression)
+							),
+							')'
 						)
 					),
 					alias('in', $.keyword),
-					field('right', choice($._expression))
+					field('right', $._expression)
 				)
 			),
 

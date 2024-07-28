@@ -4984,6 +4984,10 @@
             "named": true
           },
           {
+            "type": "mutable_flag",
+            "named": true
+          },
+          {
             "type": "nil",
             "named": true
           },
@@ -8798,6 +8802,10 @@
             "named": true
           },
           {
+            "type": "block",
+            "named": true
+          },
+          {
             "type": "boolean_literal",
             "named": true
           },
@@ -8826,11 +8834,19 @@
             "named": true
           },
           {
+            "type": "defer_block",
+            "named": true
+          },
+          {
             "type": "field_expression",
             "named": true
           },
           {
             "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "for_expression",
             "named": true
           },
           {
@@ -8847,6 +8863,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if_expression",
             "named": true
           },
           {
@@ -8867,6 +8887,10 @@
           },
           {
             "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "match_expression",
             "named": true
           },
           {
@@ -8930,11 +8954,19 @@
             "named": true
           },
           {
+            "type": "struct_expression",
+            "named": true
+          },
+          {
             "type": "type_identifier",
             "named": true
           },
           {
             "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
             "named": true
           }
         ]
