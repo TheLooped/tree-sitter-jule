@@ -13,43 +13,208 @@
 // - Multiplicative precedence
 // - Unary precedence
 // - Call and member access precedence (highest)
-// Numeric Parsing Information
-// - Integer - Hex, octal, and binary
-// - Floating-point - Decimal and exponential
+
 //  Type Information
+
 //  - Primitive types
+
+const primitiveTypes = [
+	'u8',
+	'i8',
+	'u16',
+	'i16',
+	'u32',
+	'i32',
+	'u64',
+	'i64',
+	'uint',
+	'uintptr',
+	'int',
+	'f32',
+	'f64',
+	'bool',
+	'any'
+]
+
+const newline_terminator = token(/\r?\n/)
+const terminator = choice(newline, ';')
+
+// Numeric Parsing Information
+
+// - Integer - Hex, octal, and binary
+const digitPattern = (pattern) =>
+	seq(pattern, repeat(seq(optional('_'), pattern)))
+
+const hexDigits = digitPattern(/[0-9a-fA-F]/)
+const octalDigits = digitPattern(/[0-7]/)
+const decimalDigits = digitPattern(/[0-9]/)
+const binaryDigits = digitPattern(/[01]/)
+
+const intLiteral = choice(
+	seq('0', choice('x', 'X'), optional('_'), hexDigits),
+	seq('0', optional(choice('o', 'O')), optional('_'), octalDigits),
+	choice('0', seq(/[1-9]/, optional(seq(optional('_'), decimalDigits)))),
+	seq('0', choice('b', 'B'), optional('_'), binaryDigits)
+)
+
+// - Floating-point - Decimal and exponential
+const decimalFloatLiteral = choice(
+	seq(
+		decimalDigits,
+		'.',
+		optional(decimalDigits),
+		optional(
+			seq(choice('e', 'E'), optional(choice('+', '-')), decimalDigits)
+		)
+	),
+	seq(
+		decimalDigits,
+		seq(choice('e', 'E'), optional(choice('+', '-')), decimalDigits)
+	),
+	seq(
+		'.',
+		decimalDigits,
+		optional(
+			seq(choice('e', 'E'), optional(choice('+', '-')), decimalDigits)
+		)
+	)
+)
+
+const hexFloatLiteral = seq(
+	'0',
+	choice('x', 'X'),
+	choice(
+		seq(optional('_'), hexDigits, '.', optional(hexDigits)),
+		seq(optional('_'), hexDigits),
+		seq('.', hexDigits)
+	),
+	seq(choice('p', 'P'), optional(choice('+', '-')), decimalDigits)
+)
+
+const floatLiteral = choice(decimalFloatLiteral, hexFloatLiteral)
 
 module.exports = grammar({
 	name: 'jule',
+
+	word: ($) => $.identifier,
+
 	rules: {
 		//----Source Structure----//
 		// File structure
-		// Import declarations
+
+		source_file: ($) =>
+			seq(repeat(seq($._statement, terminator)), optional($._statement)),
+
 		//----Comments-----------//
-		// Single-line comments
-		// Multi-line comments
+		comment: ($) => choice($.line_comment, $.block_comment),
+
+		line_comment: ($) => token(seq('//', /(\\+(.|\r?\n)|[^\\\n])*/)),
+
+		block_comment: ($) =>
+			token(seq('/*', /[^*]*[*]+(?:[^/*][^*]*[*]+)*/, '/')),
+
 		//----Literals-----------//
+		_literal: ($) =>
+			choice(
+				$.integer_literal,
+				$.float_literal,
+				$.bool_literal,
+				$.string_literal,
+				$.raw_string_literal,
+				$.byte_literal,
+				$.rune_literal,
+				$.nil_literal
+			),
+
+		// Number literals
+
 		// Integer literals
-		// - Decimal integers
-		// - Hexadecimal integers
-		// - Octal integers
-		// - Binary integers
+		integer_literal: ($) => token(intLiteral),
+
 		// Float literals
-		// - Decimal floats
-		// - Exponential notation
-		// String literals
-		// - Double-quoted strings
-		// - Raw string literals
+		float_literal: ($) => token(floatLiteral),
+
 		// Boolean literals
+		bool_literal: ($) => choice('true', 'false'),
+
+		// String literals
+
+		// - Double-quoted strings
+		string_literal: ($) =>
+			seq(
+				'"',
+				repeat(
+					choice(
+						/[^"\\]/, // Any character except " and \
+						$.escape_sequence // Escape sequences
+					)
+				),
+				'"'
+			),
+
+		// - Raw string literals
+		raw_string_literal: ($) => seq('`', repeat(/[^`]/), '`'),
+
+		escape_sequence: (_) =>
+			token.immediate(
+				seq(
+					'\\',
+					choice(
+						/[\\abfnrtv'"]/,
+						/x[0-9a-fA-F]{2}/,
+						/u[0-9a-fA-F]{4}/,
+						/U[0-9a-fA-F]{8}/,
+						/\d{2,3}/
+					)
+				)
+			),
+
+		// Byte literals
+		byte_literal: ($) =>
+			token(
+				seq(
+					"'",
+					choice(
+						$.escape_sequence,
+						seq('\\', choice(/[^xu]/, /x[0-9a-fA-F]{2}/)),
+						/[^\\']/
+					),
+					"'"
+				)
+			),
+
+		// Rune literals
+		rune_literal: ($) =>
+			token(
+				seq(
+					"'",
+					optional(
+						choice(
+							$.escape_sequence,
+							seq(
+								'\\',
+								choice(
+									/[^xu]/,
+									/u[0-9a-fA-F]{4}/,
+									/u\{[0-9a-fA-F]+\}/,
+									/x[0-9a-fA-F]{2}/
+								)
+							),
+							/[^\\']/
+						)
+					),
+					"'"
+				)
+			),
+
 		// Nil literal
-		// Array literals
-		// Map literals
+		nil_literal: ($) => 'nil',
+
 		//----Types--------------//
-		// Primitive types
-		// - Integer types (int8, int16, int32, int64, uint8, uint16, uint32, uint64)
-		// - Floating-point types (float32, float64)
-		// - Boolean type
-		// - String type
+		_type: ($) => choice($.primitive_type),
+
+		primitive_type: (_) => choice(...primitiveTypes),
+
 		// Composite types
 		// - Array types
 		//   - Fixed-size arrays
@@ -64,8 +229,9 @@ module.exports = grammar({
 		// - Constraints
 		// Type aliases
 		// Type conversions
+
 		//----Statements---------//
-		// Declaration statements
+		_statement: ($) => choice($._declaration),
 		// Assignment statements
 		// Control flow statements
 		// - If statements
@@ -83,7 +249,12 @@ module.exports = grammar({
 		// - Continue statements
 		// Defer statements
 		// Expression statements
+
 		//----Declarations-------//
+		_declaration: ($) => choice(),
+
+		variable_declaration: ($) => choice(),
+
 		// Variable declarations
 		// - Single variable
 		// - Multiple variables
@@ -104,7 +275,9 @@ module.exports = grammar({
 		// - Methods on enums
 		// Type alias declarations
 		// Generic type declarations
+
 		//----Identifiers--------//
+		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 		// Variable identifiers
 		// Function identifiers
 		// Type identifiers
@@ -113,12 +286,18 @@ module.exports = grammar({
 		// Package identifiers
 		// Label identifiers
 		//----Expressions--------//
+		_expression: ($) =>
+			choice($._non_block_expression, $._block_expression),
+
+		_non_block_expression: ($) => choice(),
+
+		_block_expression: ($) => choice()
 		// Binary expressions
 		// - Arithmetic
 		// - Logical
 		// - Comparison
 		// - Bitwise
-		// Unary expressions
+		// Unary expressionsn
 		// Function calls
 		// Method calls
 		// Member access
@@ -155,3 +334,12 @@ module.exports = grammar({
 		// Generic interface declarations
 	}
 })
+
+//----Helpers------------//
+function commaSep(rule) {
+	return optional(commaSep1(rule))
+}
+
+function commaSep1(rule) {
+	return sep1(rule, ',')
+}
