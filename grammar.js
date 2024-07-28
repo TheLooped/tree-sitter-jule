@@ -13,6 +13,9 @@
 // - Multiplicative precedence
 // - Unary precedence
 // - Call and member access precedence (highest)
+const PREC = {
+	assign: -2
+}
 
 //  Type Information
 
@@ -36,7 +39,7 @@ const primitiveTypes = [
 	'any'
 ]
 
-const newline_terminator = token(/\r?\n/)
+const newline = token(/\r?\n/)
 const terminator = choice(newline, ';')
 
 // Numeric Parsing Information
@@ -95,6 +98,8 @@ const floatLiteral = choice(decimalFloatLiteral, hexFloatLiteral)
 
 module.exports = grammar({
 	name: 'jule',
+
+	extras: ($) => [$.comment, /\s|\\\r?\n/],
 
 	word: ($) => $.identifier,
 
@@ -175,7 +180,6 @@ module.exports = grammar({
 				seq(
 					"'",
 					choice(
-						$.escape_sequence,
 						seq('\\', choice(/[^xu]/, /x[0-9a-fA-F]{2}/)),
 						/[^\\']/
 					),
@@ -190,7 +194,6 @@ module.exports = grammar({
 					"'",
 					optional(
 						choice(
-							$.escape_sequence,
 							seq(
 								'\\',
 								choice(
@@ -231,8 +234,44 @@ module.exports = grammar({
 		// Type conversions
 
 		//----Statements---------//
-		_statement: ($) => choice($._declaration),
-		// Assignment statements
+		_statement: ($) =>
+			choice(
+				$._declaration,
+				$._expression_statement,
+				$.assignment_statement
+			),
+
+		_expression_statement: ($) => choice($._expression, terminator),
+
+		assignment_statement: ($) =>
+			choice($.simple_assign, $.composite_assign),
+
+		simple_assign: ($) =>
+			prec.right(
+				PREC.assign,
+				seq(
+					field('left', choice($.assign_list, $._expression)),
+					field('operator', '='),
+					field('right', choice($.expression_list, $._expression))
+				)
+			),
+
+		assign_list: ($) => commaSep1(field('item', $._assignable)),
+
+		_assignable: ($) => choice($._expression, $.ignore_operator),
+
+		expression_list: ($) => commaSep1($._expression),
+
+		composite_assign: ($) =>
+			prec.right(
+				PREC.assign,
+				seq(
+					field('left', $._expression),
+					field('operator', $.assignment_operator),
+					field('right', $._expression)
+				)
+			),
+
 		// Control flow statements
 		// - If statements
 		//   - If-else chains
@@ -278,9 +317,12 @@ module.exports = grammar({
 
 		//----Identifiers--------//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+
+		// Type identifiers
+
+		_type_identifier: ($) => alias($.identifier, $.type_identifier),
 		// Variable identifiers
 		// Function identifiers
-		// Type identifiers
 		// Field identifiers
 		// Method identifiers
 		// Package identifiers
@@ -289,9 +331,9 @@ module.exports = grammar({
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
 
-		_non_block_expression: ($) => choice(),
+		_non_block_expression: ($) => choice($.identifier, $._literal, $._type),
 
-		_block_expression: ($) => choice()
+		_block_expression: ($) => choice(),
 		// Binary expressions
 		// - Arithmetic
 		// - Logical
@@ -314,17 +356,37 @@ module.exports = grammar({
 		// Array/slice literals
 		// Map literals
 		//----Operators----------//
+
+		// Assignment operators
+		assignment_operator: (_) =>
+			choice(
+				'+=',
+				'-=',
+				'*=',
+				'/=',
+				'%=',
+				'&=',
+				'|=',
+				'^=',
+				'<<=',
+				'>>='
+			),
+
+		// Ignore operators
+		ignore_operator: (_) => '_'
+
 		// Arithmetic operators
 		// Comparison operators
 		// Logical operators
 		// Bitwise operators
-		// Assignment operators
+
 		//----Modules------------//
 		// Import declarations
 		// - Single import
 		// - Multiple imports
 		// - Aliased imports
 		// Package clause
+
 		//----Generics-----------//
 		// Generic type declarations
 		// - Type parameters
@@ -336,10 +398,14 @@ module.exports = grammar({
 })
 
 //----Helpers------------//
-function commaSep(rule) {
-	return optional(commaSep1(rule))
+function sep1(rule, separator) {
+	return seq(rule, repeat(seq(separator, rule)))
 }
 
 function commaSep1(rule) {
-	return sep1(rule, ',')
+	return seq(rule, repeat(seq(',', rule)))
+}
+
+function commaSep(rule) {
+	return optional(commaSep1(rule))
 }
