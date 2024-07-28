@@ -1,20 +1,17 @@
 //----Constants----------//
 // Operator Precedences
-// - Assignment precedence (lowest)
-// - Logical OR precedence
-// - Logical AND precedence
-// - Equality comparison precedence
-// - Relational comparison precedence
-// - Bitwise OR precedence
-// - Bitwise XOR precedence
-// - Bitwise AND precedence
-// - Shift precedence
-// - Additive precedence
-// - Multiplicative precedence
-// - Unary precedence
-// - Call and member access precedence (highest)
 const PREC = {
-	assign: -2
+	unary: 10, // Unary operators
+	multiplicative: 9, // *, %, /
+	shift: 8, // <<, >>
+	additive: 7, // +, -
+	bitand: 6, // &
+	bitxor: 5, // ^ (XOR)
+	bitor: 4, // |
+	comparative: 3, // ==, !=, <, <=, >, >=
+	and: 2, // &&
+	or: 1, // ||
+	assign: -2 //Assignments
 }
 
 //  Type Information
@@ -378,9 +375,77 @@ module.exports = grammar({
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
 
-		_non_block_expression: ($) => choice($.identifier, $._literal, $._type),
+		_non_block_expression: ($) =>
+			choice(
+				$.identifier,
+				$._literal,
+				$._type,
+				$.ref_expression,
+				$.unary_expression,
+				$.binary_expression
+			),
 
 		_block_expression: ($) => choice(),
+
+		ref_expression: ($) =>
+			prec.left(PREC.unary, seq('&', field('value', $._expression))),
+
+		unary_expression: ($) =>
+			choice(
+				...[
+					['~', PREC.unary],
+					['-', PREC.unary],
+					['!', PREC.unary],
+					['^', PREC.unary],
+					['*', PREC.unary]
+				].map(([operator, precedence]) =>
+					prec.right(
+						precedence,
+						seq(
+							field('operator', operator),
+							field('operand', $._expression)
+						)
+					)
+				),
+				prec.left(
+					PREC.unary,
+					seq(
+						field('operand', $._expression),
+						field('operator', choice('++', '--'))
+					)
+				)
+			),
+
+		binary_expression: ($) => {
+			const table = [
+				[PREC.and, '&&'],
+				[PREC.or, '||'],
+				[PREC.bitand, '&'],
+				[PREC.bitor, '|'],
+				[PREC.bitxor, '^'],
+				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
+				[PREC.shift, choice('<<', '>>')],
+				[PREC.additive, choice('+', '-')],
+				[PREC.multiplicative, choice('*', '/', '%')]
+			]
+
+			return choice(
+				...table.map(([precedence, operator]) =>
+					prec.left(
+						precedence,
+						seq(
+							field('left', $._expression),
+							field(
+								'operator',
+								alias(operator, $.binary_operator)
+							),
+							field('right', $._expression)
+						)
+					)
+				)
+			)
+		},
+
 		// Binary expressions
 		// - Arithmetic
 		// - Logical
@@ -421,11 +486,6 @@ module.exports = grammar({
 
 		// Ignore operators
 		ignore_operator: (_) => '_',
-
-		// Arithmetic operators
-		// Comparison operators
-		// Logical operators
-		// Bitwise operators
 
 		//----Patterns------------//
 
