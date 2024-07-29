@@ -5,16 +5,17 @@ const PREC = {
 	field: 12, // Field access
 	unary: 11, // Unary operators
 	cast: 10, // Type casting
-	multiplicative: 9, // *, %, /
-	shift: 8, // <<, >>
-	additive: 7, // +, -
-	bitand: 6, // &
-	bitxor: 5, // ^ (XOR)
+	match: 9, // Match expression
+	multiplicative: 5, // *, %, /
+	shift: 5, // <<, >>
+	bitand: 5, // &
+	additive: 4, // +, -
 	bitor: 4, // |
+	bitxor: 4, // ^ (XOR)
 	comparative: 3, // ==, !=, <, <=, >, >=
 	and: 2, // &&
 	or: 1, // ||
-	assign: -2 //Assignments
+	assign: -2 // Assignments
 }
 
 //  Type Information
@@ -339,7 +340,7 @@ module.exports = grammar({
 				$.label,
 				$._declaration,
 				$._expression_statement,
-				$.match_statement,
+				//$.match_statement,
 				$.continue_statement,
 				$.break_statement,
 				$.assignment_statement,
@@ -356,12 +357,7 @@ module.exports = grammar({
 
 		//  Return statements
 		return_statement: ($) =>
-			prec.right(
-				choice(
-					seq('ret', field('values', $.expression_list)),
-					prec(-1, 'ret')
-				)
-			),
+			prec.left(seq('ret', optional(field('values', $.expression_list)))),
 
 		// Break statements
 		break_statement: ($) =>
@@ -458,37 +454,49 @@ module.exports = grammar({
 			seq(
 				'match',
 				optional($.match_subject),
-				'{',
-				repeat($.match_branch),
-				optional($.match_default_branch),
-				'}'
+				field('body', $.match_block)
 			),
 
 		match_subject: ($) => choice($._expression, seq('type', $._expression)),
 
-		match_branch: ($) =>
-			seq(
-				alias('|', $.match_branch_start),
-				$.match_case,
-				alias(':', $.match_branch_end),
-				$._statement,
-				optional($.fallthrough)
+		match_block: ($) =>
+			prec(
+				-1,
+				seq(
+					'{',
+					repeat($.match_branch),
+					optional($.match_default_branch),
+					'}'
+				)
 			),
 
-		match_case: ($) =>
-			prec.left(
-				1,
-				sep1(
-					alias($._statement, $.match_pattern),
-					alias('|', $.match_pattern_delimiter)
+		match_branch: ($) =>
+			prec(
+				PREC.match,
+				seq(
+					field('pattern', repeat1($.match_case)),
+					token.immediate(':'),
+					choice(
+						field('body', $._expression),
+						seq(
+							field('body', $._statement),
+							repeat(field('body', $._statement)),
+							optional(terminator)
+						)
+					)
 				)
 			),
 
 		match_default_branch: ($) =>
-			seq(
-				alias('|:', $.match_default_pattern),
-				$._statement,
-				optional($.fallthrough)
+			seq('|:', optional(repeat(field('body', $._statement)))),
+
+		match_case: ($) =>
+			prec(
+				PREC.match,
+				seq(
+					field('guard', token('|')),
+					field('case', repeat(choice($._expression, $._statement)))
+				)
 			),
 
 		//----Declarations-------//
@@ -832,6 +840,7 @@ module.exports = grammar({
 				$.defer_block,
 				$.unsafe_block,
 				$.anonymous_function,
+				$.match_statement,
 				$.for_statement,
 				$.if_statement
 			),
@@ -840,7 +849,7 @@ module.exports = grammar({
 		struct_init_expression: ($) =>
 			prec.left(
 				seq(
-					field('struct', $._value_identifier),
+					field('struct', choice($._value_identifier, $.ref_pattern)),
 					'{',
 					optional(commaSep($._struct_init_field)),
 					optional(','),
@@ -897,7 +906,7 @@ module.exports = grammar({
 		// Indexed expressions
 		index_expression: ($) =>
 			prec.right(
-				PREC.call,
+				PREC.field,
 				choice(
 					seq(
 						field('object', $._expression),
@@ -962,12 +971,12 @@ module.exports = grammar({
 		// Binary expressions
 		binary_expression: ($) => {
 			const table = [
-				[PREC.and, '&&'],
 				[PREC.or, '||'],
-				[PREC.bitand, '&'],
+				[PREC.and, '&&'],
+				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
 				[PREC.bitor, '|'],
 				[PREC.bitxor, '^'],
-				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
+				[PREC.bitand, '&'],
 				[PREC.shift, choice('<<', '>>')],
 				[PREC.additive, choice('+', '-')],
 				[PREC.multiplicative, choice('*', '/', '%')]
@@ -998,7 +1007,7 @@ module.exports = grammar({
 				PREC.cast,
 				seq(
 					'(',
-					field('type', choice($._type)),
+					field('type', choice($._type, $._type_identifier)),
 					')',
 					'(',
 					field('value', $._expression),
@@ -1010,7 +1019,7 @@ module.exports = grammar({
 			prec(
 				PREC.cast,
 				seq(
-					field('type', $._type),
+					field('type', choice($._type, $._type_identifier)),
 					'(',
 					field('value', $._expression),
 					')'
@@ -1062,7 +1071,8 @@ module.exports = grammar({
 				field('item', choice($._value_identifier, $.ref_pattern))
 			),
 
-		ref_pattern: ($) => seq('&', field('item', $._value_identifier)),
+		ref_pattern: ($) =>
+			prec.right(seq('&', field('item', $._value_identifier))),
 
 		//----Blocks------------//
 		block: ($) => prec.left(1, seq('{', repeat($._statement), '}')),
