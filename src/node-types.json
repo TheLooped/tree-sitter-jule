@@ -200,6 +200,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -356,6 +360,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -564,6 +572,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -725,6 +737,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -964,6 +980,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -1125,6 +1145,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -1321,6 +1345,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -1534,6 +1562,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -1723,6 +1755,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -1884,6 +1920,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -2099,6 +2139,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -2275,6 +2319,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -2436,6 +2484,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -2606,6 +2658,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -2899,6 +2955,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -3064,6 +3124,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -3220,6 +3284,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -3393,6 +3461,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -3479,151 +3551,19 @@
         "required": false,
         "types": [
           {
-            "type": "anonymous_function",
+            "type": "ignore_operator",
             "named": true
           },
           {
-            "type": "array_literal",
+            "type": "mut_pattern",
             "named": true
           },
           {
-            "type": "array_type",
+            "type": "ref_pattern",
             "named": true
           },
           {
-            "type": "auto_sized_array_type",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "block",
-            "named": true
-          },
-          {
-            "type": "bool_literal",
-            "named": true
-          },
-          {
-            "type": "byte_literal",
-            "named": true
-          },
-          {
-            "type": "call_expression",
-            "named": true
-          },
-          {
-            "type": "defer_block",
-            "named": true
-          },
-          {
-            "type": "field_expression",
-            "named": true
-          },
-          {
-            "type": "float_literal",
-            "named": true
-          },
-          {
-            "type": "for_statement",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_statement",
-            "named": true
-          },
-          {
-            "type": "index_expression",
-            "named": true
-          },
-          {
-            "type": "integer_literal",
-            "named": true
-          },
-          {
-            "type": "map_literal",
-            "named": true
-          },
-          {
-            "type": "map_type",
-            "named": true
-          },
-          {
-            "type": "nil_literal",
-            "named": true
-          },
-          {
-            "type": "paren_expression",
-            "named": true
-          },
-          {
-            "type": "pointer_type",
-            "named": true
-          },
-          {
-            "type": "primitive_type",
-            "named": true
-          },
-          {
-            "type": "raw_string_literal",
-            "named": true
-          },
-          {
-            "type": "ref_expression",
-            "named": true
-          },
-          {
-            "type": "reference_type",
-            "named": true
-          },
-          {
-            "type": "rune_literal",
-            "named": true
-          },
-          {
-            "type": "scoped_type_identifier",
-            "named": true
-          },
-          {
-            "type": "self",
-            "named": true
-          },
-          {
-            "type": "slice_type",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "struct_init_expression",
-            "named": true
-          },
-          {
-            "type": "type_cast_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unsafe_block",
-            "named": true
-          },
-          {
-            "type": "variadic_argument",
+            "type": "value_identifier",
             "named": true
           }
         ]
@@ -3786,7 +3726,7 @@
     "fields": {
       "parameters": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "parameters",
@@ -3796,7 +3736,7 @@
       },
       "return_type": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "array_type",
@@ -4063,6 +4003,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -4312,6 +4256,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -4463,6 +4411,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -4671,6 +4623,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -4822,6 +4778,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -5034,7 +4994,7 @@
           "named": true
         },
         {
-          "type": "fall",
+          "type": "fallthrough",
           "named": true
         },
         {
@@ -5139,6 +5099,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -5284,7 +5248,7 @@
           "named": true
         },
         {
-          "type": "fall",
+          "type": "fallthrough",
           "named": true
         },
         {
@@ -5381,6 +5345,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -5563,6 +5531,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -5742,6 +5714,10 @@
         },
         {
           "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
           "named": true
         },
         {
@@ -5975,6 +5951,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -6284,6 +6264,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -6519,6 +6503,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -6616,6 +6604,10 @@
           },
           {
             "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
             "named": true
           }
         ]
@@ -6753,6 +6745,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -6819,7 +6815,7 @@
     }
   },
   {
-    "type": "scoped_type_identifier",
+    "type": "scoped_identifier",
     "named": true,
     "fields": {
       "name": {
@@ -6827,7 +6823,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "value_identifier",
             "named": true
           }
         ]
@@ -6841,7 +6837,45 @@
             "named": true
           },
           {
-            "type": "scoped_type_identifier",
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scoped_type_identifier",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
             "named": true
           }
         ]
@@ -6970,6 +7004,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -7138,6 +7176,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -7361,6 +7403,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -7531,6 +7577,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -7685,6 +7735,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -7836,6 +7890,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -8087,6 +8145,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -8318,6 +8380,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -8391,7 +8457,7 @@
     "type": "struct_decl",
     "named": true,
     "fields": {
-      "fields": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [
@@ -8845,6 +8911,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -9002,6 +9072,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -9241,6 +9315,10 @@
           "named": true
         },
         {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
           "type": "scoped_type_identifier",
           "named": true
         },
@@ -9462,6 +9540,10 @@
             "named": true
           },
           {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
             "type": "scoped_type_identifier",
             "named": true
           },
@@ -9613,6 +9695,10 @@
           },
           {
             "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
             "named": true
           },
           {
@@ -9832,7 +9918,7 @@
     "named": false
   },
   {
-    "type": "fall",
+    "type": "fallthrough",
     "named": true
   },
   {

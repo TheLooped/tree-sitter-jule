@@ -103,9 +103,9 @@ module.exports = grammar({
 	extras: ($) => [$.comment, /\s|\\\r?\n/],
 
 	conflicts: ($) => [
-		[$._type_identifier, $._value_identifier],
-		[$._type_identifier, $._non_block_expression], // cause: for_each
-		[$._value_identifier, $._non_block_expression] // cause: struct_init_expr
+		[$._type_identifier, $._value_identifier] // cause: scoped_identifier, scoped_type_identifier
+		//[$._type_identifier, $._non_block_expression], // cause: for_each
+		//[$._value_identifier, $._non_block_expression] // cause: struct_init_expr
 	],
 
 	word: ($) => $.identifier,
@@ -261,19 +261,15 @@ module.exports = grammar({
 				$.scoped_type_identifier
 			),
 
-		scoped_type_identifier: ($) =>
-			seq(
-				field('path', choice($.identifier, $.scoped_type_identifier)),
-				'::',
-				field('name', $.identifier)
-			),
-
 		primitive_type: (_) => choice(...primitiveTypes),
 
 		pointer_type: ($) => prec(PREC.unary, seq('*', $._type)),
 
 		reference_type: ($) =>
-			prec(PREC.unary, seq('&', field('type', $._type))),
+			prec(
+				PREC.unary,
+				seq('&', field('type', choice($._type, $._type_identifier)))
+			),
 
 		map_type: ($) =>
 			seq(
@@ -313,12 +309,20 @@ module.exports = grammar({
 
 		// Function types
 		function_type: ($) =>
-			prec(
+			prec.left(
 				-1,
 				seq(
 					'fn',
-					optional(seq(field('parameters', $.parameters), ':')),
-					field('return_type', choice($._type, $._type_identifier))
+					field('parameters', $.parameters),
+					optional(
+						seq(
+							':',
+							field(
+								'return_type',
+								choice($._type, $._type_identifier)
+							)
+						)
+					)
 				)
 			),
 
@@ -425,7 +429,7 @@ module.exports = grammar({
 							optional('('),
 							field('index', $._pattern_item),
 							',',
-							field('value', $._expression),
+							field('value', $._pattern_item),
 							optional(')')
 						)
 					),
@@ -465,7 +469,7 @@ module.exports = grammar({
 				$.match_case,
 				alias(':', $.match_branch_end),
 				$._statement,
-				optional($.fall)
+				optional($.fallthrough)
 			),
 
 		match_case: ($) =>
@@ -481,12 +485,13 @@ module.exports = grammar({
 			seq(
 				alias('|:', $.match_default_pattern),
 				$._statement,
-				optional($.fall)
+				optional($.fallthrough)
 			),
 
 		//----Declarations-------//
 		_declaration: ($) =>
 			choice(
+				//$.use_decl,
 				$.var_decl,
 				$.function_decl,
 				$.static_fn_decl,
@@ -583,27 +588,21 @@ module.exports = grammar({
 						$._parameter,
 						$.receiver_parameter,
 						$.variadic_parameter
-					)
+					),
+					optional(',')
 				),
 				')'
 			),
 
 		_parameter: ($) =>
 			seq(
-				optional(
-					seq(
-						field(
-							'name',
-							choice(
-								$._value_identifier,
-								$.ref_pattern,
-								$.mut_pattern
-							)
-						),
-						':'
-					)
+				field(
+					'name',
+					choice($._value_identifier, $.ref_pattern, $.mut_pattern)
 				),
-				field('type', choice($._type, $._type_identifier))
+				optional(
+					seq(':', field('type', choice($._type, $._type_identifier)))
+				)
 			),
 
 		variadic_parameter: ($) =>
@@ -660,7 +659,7 @@ module.exports = grammar({
 				'struct',
 				field('name', $._value_identifier),
 				optional(field('generic_params', $.generic_parameters)),
-				field('fields', $.struct_fields)
+				field('body', $.struct_fields)
 			),
 
 		struct_fields: ($) => {
@@ -756,6 +755,26 @@ module.exports = grammar({
 		// Field identifiers
 		_field_identifier: ($) => alias($.identifier, $.field_identifier),
 
+		_path: ($) => choice($.self, $.identifier, $.scoped_identifier),
+
+		scoped_identifier: ($) =>
+			prec.right(
+				seq(
+					field('path', $._path),
+					'::',
+					field('name', $._value_identifier)
+				)
+			),
+
+		scoped_type_identifier: ($) =>
+			prec.right(
+				seq(
+					field('path', $._path),
+					'::',
+					field('name', $._type_identifier)
+				)
+			),
+
 		// Variable identifiers
 		// Function identifiers
 		// Method identifiers
@@ -771,28 +790,32 @@ module.exports = grammar({
 
 		unsafe_flag: () => 'unsafe',
 
-		fall: () => 'fall',
+		fallthrough: () => 'fall',
 
 		//----Expressions--------//
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
 
 		_non_block_expression: ($) =>
-			choice(
-				$.unary_expression,
-				$.binary_expression,
-				$.ref_expression,
-				$.call_expression,
-				$.field_expression,
-				$.index_expression,
-				$.paren_expression,
-				$.variadic_argument,
-				$.type_cast_expression,
-				$.struct_init_expression,
-				$.self,
-				$.identifier,
-				$._literal,
-				$._type
+			prec(
+				1,
+				choice(
+					$.unary_expression,
+					$.binary_expression,
+					$.ref_expression,
+					$.call_expression,
+					$.field_expression,
+					$.index_expression,
+					$.paren_expression,
+					$.variadic_argument,
+					$.type_cast_expression,
+					$.struct_init_expression,
+					$.scoped_identifier,
+					$.self,
+					$.identifier,
+					$._literal,
+					$._type
+				)
 			),
 
 		_block_expression: ($) =>
