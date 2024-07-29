@@ -2,7 +2,9 @@
 // Operator Precedences
 const PREC = {
 	call: 13, // Function calls
-	unary: 10, // Unary operators
+	field: 12, // Field access
+	unary: 11, // Unary operators
+	cast: 10, // Type casting
 	multiplicative: 9, // *, %, /
 	shift: 8, // <<, >>
 	additive: 7, // +, -
@@ -100,7 +102,10 @@ module.exports = grammar({
 
 	extras: ($) => [$.comment, /\s|\\\r?\n/],
 
-	conflicts: ($) => [[$._type_identifier, $._value_identifier]],
+	conflicts: ($) => [
+		[$._type_identifier, $._value_identifier],
+		[$._type_identifier, $._non_block_expression]
+	],
 
 	word: ($) => $.identifier,
 
@@ -251,7 +256,15 @@ module.exports = grammar({
 				$.slice_type,
 				$.map_type,
 				$.pointer_type,
-				$.reference_type
+				$.reference_type,
+				$.scoped_type_identifier
+			),
+
+		scoped_type_identifier: ($) =>
+			seq(
+				field('path', choice($.identifier, $.scoped_type_identifier)),
+				'::',
+				field('name', $.identifier)
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
@@ -309,18 +322,11 @@ module.exports = grammar({
 			),
 
 		// Composite types
-		// - Array types
-		//   - Fixed-size arrays
-		//   - Dynamic arrays
-		// - Slice types
-		// - Map types
 		// - Struct types
-		// Pointer types
 		// Generic types
 		// - Type parameters
 		// - Constraints
 		// Type aliases
-		// Type conversions
 
 		//----Statements---------//
 		_statement: ($) =>
@@ -349,7 +355,7 @@ module.exports = grammar({
 
 		_assignable: ($) => choice($._expression, $.ignore_operator),
 
-		expression_list: ($) => commaSep1($._expression),
+		expression_list: ($) => prec.right(commaSep1($._expression)),
 
 		composite_assign: ($) =>
 			prec.right(
@@ -536,11 +542,12 @@ module.exports = grammar({
 		//----Identifiers--------//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
+		// Value identifiers
 		_value_identifier: ($) => alias($.identifier, $.value_identifier),
 
 		// Type identifiers
-
 		_type_identifier: ($) => alias($.identifier, $.type_identifier),
+
 		// Variable identifiers
 		// Function identifiers
 		// Field identifiers
@@ -566,6 +573,11 @@ module.exports = grammar({
 				$.binary_expression,
 				$.ref_expression,
 				$.call_expression,
+				$.field_expression,
+				$.index_expression,
+				$.paren_expression,
+				$.variadic_argument,
+				$.type_cast_expression,
 				$.self,
 				$.identifier,
 				$._literal,
@@ -580,6 +592,7 @@ module.exports = grammar({
 				$.anonymous_function
 			),
 
+		// Anonymous functions
 		anonymous_function: ($) =>
 			seq(
 				'fn',
@@ -588,6 +601,50 @@ module.exports = grammar({
 				field('body', $.block)
 			),
 
+		// Field Access expressions
+		field_expression: ($) =>
+			prec(
+				PREC.field,
+				seq(
+					field('object', $._expression),
+					'.',
+					field('property', $._value_identifier)
+				)
+			),
+
+		// Slice expressions
+		slice_expression: ($) =>
+			prec.right(
+				PREC.call,
+				seq(
+					field('object', $._expression),
+					'[',
+					optional(field('start', $._expression)),
+					':',
+					optional(field('end', $._expression)),
+					']'
+				)
+			),
+
+		// Indexed expressions
+		index_expression: ($) =>
+			prec.right(
+				PREC.call,
+				choice(
+					seq(
+						field('object', $._expression),
+						'[',
+						field('index', $._expression),
+						']'
+					),
+					$.slice_expression
+				)
+			),
+
+		// Parenthesized expressions
+		paren_expression: ($) => seq('(', $._expression, ')'),
+
+		// Function calls
 		call_expression: ($) =>
 			prec(
 				PREC.call,
@@ -607,6 +664,7 @@ module.exports = grammar({
 		ref_expression: ($) =>
 			prec.left(PREC.unary, seq('&', field('value', $._expression))),
 
+		// Unary expressionsn
 		unary_expression: ($) =>
 			choice(
 				...[
@@ -633,6 +691,7 @@ module.exports = grammar({
 				)
 			),
 
+		// Binary expressions
 		binary_expression: ($) => {
 			const table = [
 				[PREC.and, '&&'],
@@ -663,27 +722,39 @@ module.exports = grammar({
 			)
 		},
 
-		// Binary expressions
-		// - Arithmetic
-		// - Logical
-		// - Comparison
-		// - Bitwise
-		// Unary expressionsn
-		// Function calls
+		type_cast_expression: ($) =>
+			prec(PREC.cast, choice($._paren_cast, $._simple_cast)),
+
+		_paren_cast: ($) =>
+			prec(
+				PREC.cast,
+				seq(
+					'(',
+					field('type', choice($._type)),
+					')',
+					'(',
+					field('value', $._expression),
+					')'
+				)
+			),
+
+		_simple_cast: ($) =>
+			prec(
+				PREC.cast,
+				seq(
+					field('type', $._type),
+					'(',
+					field('value', $._expression),
+					')'
+				)
+			),
+
 		// Method calls
 		// Member access
 		// - Struct field access
 		// - Array/slice indexing
 		// - Map key access
-		// Index expressions
-		// Slice expressions
-		// Type assertions
-		// Type conversions
-		// Parenthesized expressions
-		// Anonymous functions
 		// Struct literals
-		// Array/slice literals
-		// Map literals
 		//----Operators----------//
 
 		// Assignment operators

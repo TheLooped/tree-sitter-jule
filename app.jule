@@ -1,10 +1,8 @@
-use ast for std::jule::ast::{
-    Ast,
+fn main() {
+    let mut mymap: map[i8]str = {
+        0: "CPU",
+        1: "RAM",
+        2: "GPU"
+    }
+    outln(mymap)
 }
-use lex for std::jule::lex::{
-    Token,
-    TokenKind,
-}
-use std::jule::types::{TypeKind}
-use strings for std::strings::*
-use utf8 for std::unicode::utf8

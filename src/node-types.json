@@ -60,6 +60,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -124,6 +128,10 @@
           "named": true
         },
         {
+          "type": "field_expression",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -133,6 +141,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_expression",
           "named": true
         },
         {
@@ -149,6 +161,10 @@
         },
         {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
           "named": true
         },
         {
@@ -176,6 +192,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "self",
           "named": true
         },
@@ -188,11 +208,19 @@
           "named": true
         },
         {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         },
         {
           "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
           "named": true
         }
       ]
@@ -247,6 +275,10 @@
           "named": true
         },
         {
+          "type": "field_expression",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -256,6 +288,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_expression",
           "named": true
         },
         {
@@ -272,6 +308,10 @@
         },
         {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
           "named": true
         },
         {
@@ -299,6 +339,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "self",
           "named": true
         },
@@ -311,11 +355,19 @@
           "named": true
         },
         {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         },
         {
           "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
           "named": true
         }
       ]
@@ -355,6 +407,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -412,6 +468,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -421,6 +481,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -437,6 +501,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -464,6 +532,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -476,11 +548,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -536,6 +616,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -552,6 +636,10 @@
             "named": true
           },
           {
+            "type": "index_expression",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
@@ -565,6 +653,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -592,6 +684,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -604,11 +700,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -676,6 +780,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -736,6 +844,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -745,6 +857,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -761,6 +877,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -788,6 +908,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -800,11 +924,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -864,6 +996,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -873,6 +1009,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -889,6 +1029,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -916,6 +1060,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -928,11 +1076,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -992,6 +1148,10 @@
           "named": true
         },
         {
+          "type": "field_expression",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -1008,6 +1168,10 @@
           "named": true
         },
         {
+          "type": "index_expression",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
@@ -1021,6 +1185,10 @@
         },
         {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
           "named": true
         },
         {
@@ -1048,6 +1216,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "self",
           "named": true
         },
@@ -1060,6 +1232,10 @@
           "named": true
         },
         {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         },
@@ -1069,6 +1245,10 @@
         },
         {
           "type": "var_decl",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
           "named": true
         }
       ]
@@ -1138,6 +1318,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1147,6 +1331,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -1163,6 +1351,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -1190,6 +1382,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -1202,11 +1398,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -1291,6 +1495,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1300,6 +1508,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -1316,6 +1528,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -1343,6 +1559,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -1355,11 +1575,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -1419,6 +1647,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1428,6 +1660,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -1444,6 +1680,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -1471,6 +1711,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -1483,11 +1727,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -1541,6 +1793,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           }
@@ -1591,6 +1847,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1600,6 +1860,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -1616,6 +1880,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -1643,6 +1911,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -1655,11 +1927,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -1739,6 +2019,10 @@
           "named": true
         },
         {
+          "type": "field_expression",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -1748,6 +2032,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_expression",
           "named": true
         },
         {
@@ -1764,6 +2052,10 @@
         },
         {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
           "named": true
         },
         {
@@ -1791,6 +2083,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "self",
           "named": true
         },
@@ -1803,14 +2099,180 @@
           "named": true
         },
         {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         },
         {
           "type": "unsafe_block",
           "named": true
+        },
+        {
+          "type": "variadic_argument",
+          "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "field_expression",
+    "named": true,
+    "fields": {
+      "object": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      },
+      "property": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1894,6 +2356,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -1966,6 +2432,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -2011,6 +2481,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -2061,6 +2535,306 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "index_expression",
+    "named": true,
+    "fields": {
+      "index": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      },
+      "object": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "slice_expression",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2131,6 +2905,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -2140,6 +2918,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -2156,6 +2938,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -2183,6 +2969,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -2195,11 +2985,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -2249,6 +3047,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -2258,6 +3060,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -2274,6 +3080,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -2301,6 +3111,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -2313,11 +3127,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -2376,6 +3198,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           }
@@ -2411,6 +3237,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -2532,6 +3362,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -2598,6 +3432,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           },
@@ -2618,6 +3456,153 @@
         },
         {
           "type": "variadic_parameter",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "paren_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "bool_literal",
+          "named": true
+        },
+        {
+          "type": "byte_literal",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "defer_block",
+          "named": true
+        },
+        {
+          "type": "field_expression",
+          "named": true
+        },
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_expression",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal",
+          "named": true
+        },
+        {
+          "type": "ref_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
           "named": true
         }
       ]
@@ -2657,6 +3642,10 @@
         },
         {
           "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
           "named": true
         },
         {
@@ -2725,6 +3714,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -2734,6 +3727,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -2750,6 +3747,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -2777,6 +3778,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -2789,11 +3794,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -2853,7 +3866,41 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scoped_type_identifier",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           }
         ]
@@ -2932,6 +3979,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -2941,6 +3992,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -2957,6 +4012,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -2984,6 +4043,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -2996,11 +4059,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3064,6 +4135,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3073,6 +4148,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -3089,6 +4168,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -3116,6 +4199,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -3128,11 +4215,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3190,6 +4285,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "slice_type",
             "named": true
           }
@@ -3240,6 +4339,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3249,6 +4352,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -3265,6 +4372,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -3292,6 +4403,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -3304,11 +4419,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3323,6 +4446,438 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "slice_expression",
+    "named": true,
+    "fields": {
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      },
+      "object": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      },
+      "start": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3359,6 +4914,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -3426,6 +4985,10 @@
           "named": true
         },
         {
+          "type": "field_expression",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -3442,6 +5005,10 @@
           "named": true
         },
         {
+          "type": "index_expression",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
@@ -3455,6 +5022,10 @@
         },
         {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
           "named": true
         },
         {
@@ -3482,6 +5053,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "self",
           "named": true
         },
@@ -3494,6 +5069,10 @@
           "named": true
         },
         {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
           "type": "unary_expression",
           "named": true
         },
@@ -3503,6 +5082,10 @@
         },
         {
           "type": "var_decl",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
           "named": true
         }
       ]
@@ -3552,6 +5135,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -3605,6 +5192,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3614,6 +5205,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -3630,6 +5225,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -3657,6 +5256,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -3669,11 +5272,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3760,6 +5371,10 @@
           "named": true
         },
         {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
           "type": "slice_type",
           "named": true
         },
@@ -3768,6 +5383,200 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "type_cast_expression",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3819,6 +5628,10 @@
             "named": true
           },
           {
+            "type": "field_expression",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3828,6 +5641,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
             "named": true
           },
           {
@@ -3844,6 +5661,10 @@
           },
           {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
             "named": true
           },
           {
@@ -3871,6 +5692,10 @@
             "named": true
           },
           {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
             "type": "self",
             "named": true
           },
@@ -3883,11 +5708,19 @@
             "named": true
           },
           {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
             "type": "unary_expression",
             "named": true
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3971,6 +5804,153 @@
     }
   },
   {
+    "type": "variadic_argument",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "bool_literal",
+          "named": true
+        },
+        {
+          "type": "byte_literal",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "defer_block",
+          "named": true
+        },
+        {
+          "type": "field_expression",
+          "named": true
+        },
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index_expression",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "paren_expression",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal",
+          "named": true
+        },
+        {
+          "type": "ref_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "type_cast_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "variadic_parameter",
     "named": true,
     "fields": {
@@ -4014,6 +5994,10 @@
           },
           {
             "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
             "named": true
           },
           {
@@ -4089,6 +6073,10 @@
     "named": false
   },
   {
+    "type": ".",
+    "named": false
+  },
+  {
     "type": "...",
     "named": false
   },
@@ -4098,6 +6086,10 @@
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "::",
     "named": false
   },
   {
