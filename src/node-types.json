@@ -28,7 +28,19 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
             "named": true
           },
           {
@@ -36,7 +48,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -61,6 +85,18 @@
       "types": [
         {
           "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
           "named": true
         },
         {
@@ -96,11 +132,27 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
         {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
           "named": true
         },
         {
@@ -116,11 +168,19 @@
           "named": true
         },
         {
+          "type": "reference_type",
+          "named": true
+        },
+        {
           "type": "rune_literal",
           "named": true
         },
         {
           "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
           "named": true
         },
         {
@@ -139,15 +199,192 @@
     }
   },
   {
-    "type": "assign_list",
+    "type": "array_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_function",
+          "named": true
+        },
+        {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "bool_literal",
+          "named": true
+        },
+        {
+          "type": "byte_literal",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "defer_block",
+          "named": true
+        },
+        {
+          "type": "float_literal",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer_literal",
+          "named": true
+        },
+        {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "raw_string_literal",
+          "named": true
+        },
+        {
+          "type": "ref_expression",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "rune_literal",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "unsafe_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "array_type",
     "named": true,
     "fields": {
-      "item": {
-        "multiple": true,
+      "element_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "length": {
+        "multiple": false,
         "required": true,
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -183,7 +420,7 @@
             "named": true
           },
           {
-            "type": "ignore_operator",
+            "type": "identifier",
             "named": true
           },
           {
@@ -191,7 +428,19 @@
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -207,11 +456,147 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "assign_list",
+    "named": true,
+    "fields": {
+      "item": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "ignore_operator",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -255,6 +640,54 @@
     }
   },
   {
+    "type": "auto_sized_array_type",
+    "named": true,
+    "fields": {
+      "element_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "binary_expression",
     "named": true,
     "fields": {
@@ -264,6 +697,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -299,11 +744,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -319,11 +780,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -359,6 +828,18 @@
             "named": true
           },
           {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -391,11 +872,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -411,11 +908,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -447,7 +952,19 @@
           "named": true
         },
         {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
           "type": "assignment_statement",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
           "named": true
         },
         {
@@ -487,11 +1004,27 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
         {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
           "named": true
         },
         {
@@ -507,11 +1040,19 @@
           "named": true
         },
         {
+          "type": "reference_type",
+          "named": true
+        },
+        {
           "type": "rune_literal",
           "named": true
         },
         {
           "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
           "named": true
         },
         {
@@ -561,6 +1102,18 @@
             "named": true
           },
           {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -593,11 +1146,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -613,11 +1182,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -630,10 +1207,6 @@
           },
           {
             "type": "unsafe_block",
-            "named": true
-          },
-          {
-            "type": "value_identifier",
             "named": true
           }
         ]
@@ -682,6 +1255,18 @@
             "named": true
           },
           {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -714,11 +1299,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -734,11 +1335,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -774,6 +1383,18 @@
             "named": true
           },
           {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -806,11 +1427,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -826,11 +1463,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -868,11 +1513,35 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           }
         ]
@@ -883,6 +1552,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -918,11 +1599,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -938,11 +1635,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -998,6 +1703,18 @@
           "named": true
         },
         {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -1030,11 +1747,27 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
         {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
           "named": true
         },
         {
@@ -1050,11 +1783,19 @@
           "named": true
         },
         {
+          "type": "reference_type",
+          "named": true
+        },
+        {
           "type": "rune_literal",
           "named": true
         },
         {
           "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
           "named": true
         },
         {
@@ -1121,7 +1862,19 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
             "named": true
           },
           {
@@ -1129,7 +1882,19 @@
             "named": true
           },
           {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1173,11 +1938,35 @@
         "required": true,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1197,11 +1986,35 @@
         "required": true,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           }
         ]
@@ -1267,6 +2080,345 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "map_entry",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "map_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "map_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "map_type",
+    "named": true,
+    "fields": {
+      "key_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          }
+        ]
+      },
+      "value_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1352,11 +2504,35 @@
         "required": true,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1394,11 +2570,35 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1424,6 +2624,49 @@
     }
   },
   {
+    "type": "pointer_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "primitive_type",
     "named": true,
     "fields": {}
@@ -1443,6 +2686,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -1478,11 +2733,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -1498,11 +2769,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1531,6 +2810,50 @@
         "types": [
           {
             "type": "value_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "reference_type",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           }
         ]
@@ -1569,7 +2892,19 @@
             "named": true
           },
           {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
             "type": "assign_list",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -1605,11 +2940,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -1625,11 +2976,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1662,6 +3021,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -1701,11 +3072,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -1721,11 +3108,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1767,11 +3162,35 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           }
         ]
@@ -1782,6 +3201,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -1817,11 +3248,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -1837,11 +3284,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -1871,6 +3326,54 @@
     }
   },
   {
+    "type": "slice_type",
+    "named": true,
+    "fields": {
+      "element_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -1883,7 +3386,19 @@
           "named": true
         },
         {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
           "type": "assignment_statement",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
           "named": true
         },
         {
@@ -1923,11 +3438,27 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "integer_literal",
           "named": true
         },
         {
+          "type": "map_literal",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
           "type": "nil_literal",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
           "named": true
         },
         {
@@ -1943,11 +3474,19 @@
           "named": true
         },
         {
+          "type": "reference_type",
+          "named": true
+        },
+        {
           "type": "rune_literal",
           "named": true
         },
         {
           "type": "self",
+          "named": true
+        },
+        {
+          "type": "slice_type",
           "named": true
         },
         {
@@ -1988,11 +3527,35 @@
         "required": false,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           }
         ]
@@ -2003,6 +3566,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -2038,11 +3613,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -2058,11 +3649,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -2133,11 +3732,35 @@
       "required": true,
       "types": [
         {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
         {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
           "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "slice_type",
           "named": true
         },
         {
@@ -2157,6 +3780,18 @@
         "types": [
           {
             "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
             "named": true
           },
           {
@@ -2192,11 +3827,27 @@
             "named": true
           },
           {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "integer_literal",
             "named": true
           },
           {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
             "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
             "named": true
           },
           {
@@ -2212,11 +3863,19 @@
             "named": true
           },
           {
+            "type": "reference_type",
+            "named": true
+          },
+          {
             "type": "rune_literal",
             "named": true
           },
           {
             "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -2330,11 +3989,35 @@
         "required": true,
         "types": [
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
           {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
             "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "slice_type",
             "named": true
           },
           {
@@ -2522,6 +4205,10 @@
     "named": false
   },
   {
+    "type": "identifier",
+    "named": true
+  },
+  {
     "type": "ignore_operator",
     "named": true
   },
@@ -2540,6 +4227,10 @@
   {
     "type": "line_comment",
     "named": true
+  },
+  {
+    "type": "map",
+    "named": false
   },
   {
     "type": "mut_flag",
