@@ -357,7 +357,10 @@ module.exports = grammar({
 		//  Return statements
 		return_statement: ($) =>
 			prec.right(
-				seq('ret', optional(field('values', $.expression_list)))
+				choice(
+					seq('ret', field('values', $.expression_list)),
+					prec(-1, 'ret')
+				)
 			),
 
 		// Break statements
@@ -476,7 +479,7 @@ module.exports = grammar({
 			prec.left(
 				1,
 				sep1(
-					alias($._expression, $.match_pattern),
+					alias($._statement, $.match_pattern),
 					alias('|', $.match_pattern_delimiter)
 				)
 			),
@@ -509,14 +512,19 @@ module.exports = grammar({
 		let_decl: ($) => choice($.single_decl, $.multi_decl),
 
 		single_decl: ($) =>
-			seq(
-				'let',
-				optional($.mut_flag),
-				field('name', choice($._value_identifier, $.ref_pattern)),
-				optional(
-					seq(':', field('type', choice($._type, $._type_identifier)))
-				),
-				optional(seq('=', field('value', $._expression)))
+			prec.left(
+				seq(
+					'let',
+					optional($.mut_flag),
+					field('name', choice($._value_identifier, $.ref_pattern)),
+					optional(
+						seq(
+							':',
+							field('type', choice($._type, $._type_identifier))
+						)
+					),
+					optional(seq('=', field('value', $._expression)))
+				)
 			),
 
 		multi_decl: ($) =>
