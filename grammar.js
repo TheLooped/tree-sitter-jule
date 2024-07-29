@@ -346,13 +346,17 @@ module.exports = grammar({
 
 		_expression_statement: ($) => seq($._expression, terminator),
 
+		//  Return statements
 		return_statement: ($) =>
 			prec.right(
 				seq('ret', optional(field('values', $.expression_list)))
 			),
 
+		// Break statements
 		break_statement: ($) =>
 			seq('break', optional(field('label', $._label_identifier))),
+
+		// Continue statements
 		continue_statement: ($) =>
 			seq('continue', optional(field('label', $._label_identifier))),
 
@@ -396,14 +400,20 @@ module.exports = grammar({
 		// - Match statements
 		//   - Match arms
 		//   - Default case
-		// - Return statements
-		// - Break statements
 		// - Continue statements
-		// Defer statements
 		// Expression statements
 
 		//----Declarations-------//
-		_declaration: ($) => choice($.var_decl, $.function_decl),
+		_declaration: ($) =>
+			choice(
+				$.var_decl,
+				$.function_decl,
+				$.struct_decl,
+				$.enum_decl,
+				$.type_alias,
+				$.trait_decl,
+				$.impl_decl
+			),
 
 		// Variable declarations
 		var_decl: ($) => choice($.let_decl, $.const_decl, $.static_decl),
@@ -478,6 +488,7 @@ module.exports = grammar({
 		generic_parameters: ($) =>
 			seq('[', commaSep1(field('parameter', $.generic_parameter)), ']'),
 
+		// - Function parameters
 		parameters: ($) =>
 			seq(
 				'(',
@@ -518,6 +529,7 @@ module.exports = grammar({
 
 		error_specifier: ($) => '!',
 
+		// - Return types
 		_return_type: ($) =>
 			choice(
 				$._type_identifier,
@@ -545,8 +557,90 @@ module.exports = grammar({
 		_type_constraint: ($) =>
 			sep1(field('constraint', choice($._type, $._type_identifier)), '|'),
 
-		// - Function parameters
-		// - Return types
+		type_alias: ($) =>
+			seq(
+				'type',
+				field('name', $._type_identifier),
+				':',
+				field('type', $._type)
+			),
+
+		struct_decl: ($) =>
+			seq(
+				'struct',
+				field('name', $._value_identifier),
+				optional(field('generic_params', $.generic_parameters)),
+				field('fields', $.struct_fields)
+			),
+
+		struct_fields: ($) => {
+			return seq('{', repeat($._struct_decl_field), '}')
+		},
+
+		_struct_decl_field: ($) => choice($.regular_field, $.default_field),
+
+		regular_field: ($) =>
+			seq(
+				optional($.mut_flag),
+				field('name', $._field_identifier),
+				':',
+				field('type', $._type)
+			),
+
+		default_field: ($) =>
+			seq(
+				optional($.mut_flag),
+				field('name', $._field_identifier),
+				':',
+				field('type', $._type),
+				'=',
+				field('default_value', $._expression)
+			),
+
+		//-------Implementations-------//
+		impl_decl: ($) =>
+			seq(
+				'impl',
+				optional(
+					seq(
+						field('trait', alias($.identifier, $.trait_identifier)),
+						'for'
+					)
+				),
+				field('struct', alias($.identifier, $.struct_identifier)),
+				field('body', $.impl_body)
+			),
+
+		impl_body: ($) => seq('{', repeat($._declaration), '}'),
+
+		//-------Trait-------//
+		trait_decl: ($) =>
+			seq(
+				'trait',
+				field('name', $._value_identifier),
+				field('body', $.trait_body)
+			),
+
+		trait_body: ($) =>
+			seq('{', repeat(choice($.identifier, $._declaration)), '}'),
+
+		//------Enums-----//
+		enum_decl: ($) =>
+			seq(
+				'enum',
+				field('name', alias($.identifier, $.enum_identifier)),
+				optional(seq(':', field('type', $._type))),
+				field('body', $.enum_body)
+			),
+
+		enum_body: ($) => seq('{', commaSep($.enum_member), optional(','), '}'),
+
+		enum_member: ($) =>
+			seq(
+				field('name', $.identifier),
+				optional(seq(':', field('value', $._expression)))
+			),
+
 		// - Function body
 		// Method declarations
 		// - Receiver parameter
@@ -569,9 +663,11 @@ module.exports = grammar({
 		// Label identifiers
 		_label_identifier: ($) => alias($.identifier, $.label_identifier),
 
+		// Field identifiers
+		_field_identifier: ($) => alias($.identifier, $.field_identifier),
+
 		// Variable identifiers
 		// Function identifiers
-		// Field identifiers
 		// Method identifiers
 		// Package identifiers
 
