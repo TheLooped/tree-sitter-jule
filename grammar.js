@@ -1,6 +1,7 @@
 //----Constants----------//
 // Operator Precedences
 const PREC = {
+	call: 13, // Function calls
 	unary: 10, // Unary operators
 	multiplicative: 9, // *, %, /
 	shift: 8, // <<, >>
@@ -33,6 +34,7 @@ const primitiveTypes = [
 	'f32',
 	'f64',
 	'bool',
+	'str',
 	'any'
 ]
 
@@ -97,6 +99,8 @@ module.exports = grammar({
 	name: 'jule',
 
 	extras: ($) => [$.comment, /\s|\\\r?\n/],
+
+	conflicts: ($) => [[$._type_identifier, $._value_identifier]],
 
 	word: ($) => $.identifier,
 
@@ -211,9 +215,20 @@ module.exports = grammar({
 		nil_literal: ($) => 'nil',
 
 		//----Types--------------//
-		_type: ($) => choice($.primitive_type),
+		_type: ($) => choice($.primitive_type, $.function_type),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		// Function types
+		function_type: ($) =>
+			prec(
+				-1,
+				seq(
+					'fn',
+					optional(seq(field('parameters', $.parameters), ':')),
+					field('return_type', choice($._type, $._type_identifier))
+				)
+			),
 
 		// Composite types
 		// - Array types
@@ -222,7 +237,6 @@ module.exports = grammar({
 		// - Slice types
 		// - Map types
 		// - Struct types
-		// Function types
 		// Pointer types
 		// Generic types
 		// - Type parameters
@@ -287,10 +301,12 @@ module.exports = grammar({
 		// Expression statements
 
 		//----Declarations-------//
-		_declaration: ($) => choice($.var_decl),
+		_declaration: ($) => choice($.var_decl, $.function_decl),
 
+		// Variable declarations
 		var_decl: ($) => choice($.let_decl, $.const_decl, $.static_decl),
 
+		// Let declarations
 		let_decl: ($) => choice($.single_decl, $.multi_decl),
 
 		single_decl: ($) =>
@@ -313,6 +329,7 @@ module.exports = grammar({
 				)
 			),
 
+		// Constant declarations
 		const_decl: ($) =>
 			seq(
 				'const',
@@ -322,6 +339,7 @@ module.exports = grammar({
 				field('value', $._expression)
 			),
 
+		// Static declarations
 		static_decl: ($) =>
 			seq(
 				'static',
@@ -331,14 +349,100 @@ module.exports = grammar({
 				field('value', $._expression)
 			),
 
-		// Variable declarations
-		// - Single variable
-		// - Multiple variables
-		// - With type inference
-		// - With explicit type
-		// Constant declarations
-		// Static declarations
 		// Function declarations
+
+		function_decl: ($) =>
+			seq(
+				'fn',
+				field('name', $._value_identifier),
+				optional(field('generic_params', $.generic_parameters)),
+				field('parameters', $.parameters),
+				optional($.error_specifier),
+				optional(
+					seq(optional(':'), field('return_type', $._return_type))
+				),
+				field('body', $.block)
+			),
+
+		// Generic type declarations
+		generic_parameter: ($) =>
+			seq(
+				field('name', $._type_identifier),
+				optional(seq(':', field('constraint', $.generic_constraint)))
+			),
+
+		generic_constraint: ($) => sep1(field('type', $._type), '|'),
+
+		generic_parameters: ($) =>
+			seq('[', commaSep1(field('parameter', $.generic_parameter)), ']'),
+
+		parameters: ($) =>
+			seq(
+				'(',
+				commaSep(
+					choice($._parameter, $.self_parameter, $.variadic_parameter)
+				),
+				')'
+			),
+
+		_parameter: ($) =>
+			seq(
+				optional(
+					seq(
+						field(
+							'name',
+							choice(
+								$._value_identifier,
+								$.ref_pattern,
+								$.mut_pattern
+							)
+						),
+						':'
+					)
+				),
+				field('type', choice($._type, $._type_identifier))
+			),
+
+		variadic_parameter: ($) =>
+			seq(
+				field('name', $._value_identifier),
+				':',
+				'...',
+				field('type', choice($._type, $._type_identifier))
+			),
+
+		self_parameter: ($) =>
+			choice($.self, seq(optional('&'), optional($.mut_flag), $.self)),
+
+		error_specifier: ($) => '!',
+
+		_return_type: ($) =>
+			choice(
+				$._type_identifier,
+				$._type,
+				$.tuple_type,
+				$.named_return_type
+			),
+
+		tuple_type: ($) =>
+			seq('(', commaSep1(choice($._type, $._type_identifier)), ')'),
+
+		named_return_type: ($) =>
+			seq(
+				'(',
+				commaSep1(
+					seq(
+						field('name', $._value_identifier),
+						':',
+						field('type', choice($._type, $._type_identifier))
+					)
+				),
+				')'
+			),
+
+		_type_constraint: ($) =>
+			sep1(field('constraint', choice($._type, $._type_identifier)), '|'),
+
 		// - Function parameters
 		// - Return types
 		// - Function body
@@ -350,7 +454,6 @@ module.exports = grammar({
 		// - Enum values
 		// - Methods on enums
 		// Type alias declarations
-		// Generic type declarations
 
 		//----Identifiers--------//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
@@ -369,6 +472,8 @@ module.exports = grammar({
 
 		//----Tokens--------//
 
+		self: () => 'self',
+
 		mut_flag: () => 'mut',
 
 		unsafe_flag: () => 'unsafe',
@@ -379,16 +484,46 @@ module.exports = grammar({
 
 		_non_block_expression: ($) =>
 			choice(
-				$.identifier,
-				$._literal,
-				$._type,
-				$.ref_expression,
 				$.unary_expression,
-				$.binary_expression
+				$.binary_expression,
+				$.ref_expression,
+				$.call_expression,
+				$.self,
+				$._literal,
+				$._type
 			),
 
 		_block_expression: ($) =>
-			choice($.block, $.defer_block, $.unsafe_block),
+			choice(
+				$.block,
+				$.defer_block,
+				$.unsafe_block,
+				$.anonymous_function
+			),
+
+		anonymous_function: ($) =>
+			seq(
+				'fn',
+				field('parameters', $.parameters),
+				optional(seq(':', field('return_type', $._return_type))),
+				field('body', $.block)
+			),
+
+		call_expression: ($) =>
+			prec(
+				PREC.call,
+				seq(
+					field('caller', choice($._value_identifier, $._expression)),
+					optional(
+						field('type_arguments', optional($.generic_parameters))
+					),
+					field('arguments', $.arguments)
+				)
+			),
+
+		arguments: ($) => seq('(', commaSep1($._expression), ')'),
+
+		variadic_argument: ($) => seq($._expression, '...'),
 
 		ref_expression: ($) =>
 			prec.left(PREC.unary, seq('&', field('value', $._expression))),
