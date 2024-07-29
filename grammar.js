@@ -104,7 +104,8 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$._type_identifier, $._value_identifier],
-		[$._type_identifier, $._non_block_expression]
+		[$._type_identifier, $._non_block_expression], // cause: for_each
+		[$._value_identifier, $._non_block_expression] // cause: struct_init_expr
 	],
 
 	word: ($) => $.identifier,
@@ -334,6 +335,9 @@ module.exports = grammar({
 				$.label,
 				$._declaration,
 				$._expression_statement,
+				$.match_statement,
+				$.continue_statement,
+				$.break_statement,
 				$.assignment_statement,
 				$.return_statement
 			),
@@ -354,11 +358,15 @@ module.exports = grammar({
 
 		// Break statements
 		break_statement: ($) =>
-			seq('break', optional(field('label', $._label_identifier))),
+			prec.right(
+				seq('break', optional(field('label', $._label_identifier)))
+			),
 
 		// Continue statements
 		continue_statement: ($) =>
-			seq('continue', optional(field('label', $._label_identifier))),
+			prec.right(
+				seq('continue', optional(field('label', $._label_identifier)))
+			),
 
 		assignment_statement: ($) =>
 			choice($.simple_assign, $.composite_assign),
@@ -389,19 +397,92 @@ module.exports = grammar({
 				)
 			),
 
-		// Control flow statements
-		// - If statements
-		//   - If-else chains
-		//   - If with initialization
-		// - For statements
-		//   - C-style for loops
-		//   - For-each loops
-		//   - Infinite loops
+		//------------Control Flow------------//
+		for_statement: ($) =>
+			prec(
+				-1,
+				seq(
+					'for',
+					optional(choice($.while_next, $.for_each)),
+					field('body', $.block)
+				)
+			),
+
+		while_next: ($) =>
+			prec.right(
+				seq(
+					field('condition', $._expression),
+					optional(seq(';', field('update', $._expression)))
+				)
+			),
+
+		for_each: ($) =>
+			prec.right(
+				seq(
+					choice(
+						field('iter', $._pattern_item),
+						seq(
+							optional('('),
+							field('index', $._pattern_item),
+							',',
+							field('value', $._expression),
+							optional(')')
+						)
+					),
+					$.in,
+					field('collection', $._expression)
+				)
+			),
+
+		if_statement: ($) =>
+			prec.right(
+				seq(
+					'if',
+					field('condition', $._expression),
+					field('consequence', $.block),
+					optional(field('alternative', $.else_block))
+				)
+			),
+
+		else_block: ($) => seq('else', choice($.block, $.if_statement)),
+
 		// - Match statements
-		//   - Match arms
-		//   - Default case
-		// - Continue statements
-		// Expression statements
+		match_statement: ($) =>
+			seq(
+				'match',
+				optional($.match_subject),
+				'{',
+				repeat($.match_branch),
+				optional($.match_default_branch),
+				'}'
+			),
+
+		match_subject: ($) => choice($._expression, seq('type', $._expression)),
+
+		match_branch: ($) =>
+			seq(
+				alias('|', $.match_branch_start),
+				$.match_case,
+				alias(':', $.match_branch_end),
+				$._statement,
+				optional($.fall)
+			),
+
+		match_case: ($) =>
+			prec.left(
+				1,
+				sep1(
+					alias($._expression, $.match_pattern),
+					alias('|', $.match_pattern_delimiter)
+				)
+			),
+
+		match_default_branch: ($) =>
+			seq(
+				alias('|:', $.match_default_pattern),
+				$._statement,
+				optional($.fall)
+			),
 
 		//----Declarations-------//
 		_declaration: ($) =>
@@ -427,7 +508,9 @@ module.exports = grammar({
 				'let',
 				optional($.mut_flag),
 				field('name', choice($._value_identifier, $.ref_pattern)),
-				optional(seq(':', field('type', $._type))),
+				optional(
+					seq(':', field('type', choice($._type, $._type_identifier)))
+				),
 				optional(seq('=', field('value', $._expression)))
 			),
 
@@ -447,7 +530,7 @@ module.exports = grammar({
 			seq(
 				'const',
 				field('name', $._value_identifier),
-				optional(seq(':', field('type', $._type))),
+				optional(seq(':', field('type', choice($._type, $._type)))),
 				'=',
 				field('value', $._expression)
 			),
@@ -457,7 +540,7 @@ module.exports = grammar({
 			seq(
 				'static',
 				field('name', $._value_identifier),
-				optional(seq(':', field('type', $._type))),
+				optional(seq(':', field('type', choice($._type, $._type)))),
 				'=',
 				field('value', $._expression)
 			),
@@ -591,7 +674,7 @@ module.exports = grammar({
 				optional($.mut_flag),
 				field('name', $._field_identifier),
 				':',
-				field('type', $._type)
+				field('value', $._expression)
 			),
 
 		default_field: ($) =>
@@ -599,7 +682,7 @@ module.exports = grammar({
 				optional($.mut_flag),
 				field('name', $._field_identifier),
 				':',
-				field('type', $._type),
+				field('value', $._expression),
 				'=',
 				field('default_value', $._expression)
 			),
@@ -678,13 +761,17 @@ module.exports = grammar({
 		// Method identifiers
 		// Package identifiers
 
-		//----Tokens--------//
+		//----Keywords--------//
 
 		self: () => 'self',
+
+		in: () => 'in',
 
 		mut_flag: () => 'mut',
 
 		unsafe_flag: () => 'unsafe',
+
+		fall: () => 'fall',
 
 		//----Expressions--------//
 		_expression: ($) =>
@@ -701,6 +788,7 @@ module.exports = grammar({
 				$.paren_expression,
 				$.variadic_argument,
 				$.type_cast_expression,
+				$.struct_init_expression,
 				$.self,
 				$.identifier,
 				$._literal,
@@ -712,7 +800,33 @@ module.exports = grammar({
 				$.block,
 				$.defer_block,
 				$.unsafe_block,
-				$.anonymous_function
+				$.anonymous_function,
+				$.for_statement,
+				$.if_statement
+			),
+
+		// Struct init expression
+		struct_init_expression: ($) =>
+			prec.left(
+				seq(
+					field('struct', $._value_identifier),
+					'{',
+					optional(commaSep($._struct_init_field)),
+					optional(','),
+					'}'
+				)
+			),
+
+		_struct_init_field: ($) =>
+			choice($.named_init_field, $.default_init_field),
+
+		default_init_field: ($) => $._expression,
+
+		named_init_field: ($) =>
+			seq(
+				field('name', $._field_identifier),
+				':',
+				field('value', $._expression)
 			),
 
 		// Anonymous functions
