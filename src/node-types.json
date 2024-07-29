@@ -1244,6 +1244,10 @@
           "named": true
         },
         {
+          "type": "static_fn_decl",
+          "named": true
+        },
+        {
           "type": "string_literal",
           "named": true
         },
@@ -3034,6 +3038,10 @@
         },
         {
           "type": "impl_decl",
+          "named": true
+        },
+        {
+          "type": "static_fn_decl",
           "named": true
         },
         {
@@ -5735,6 +5743,10 @@
           "named": true
         },
         {
+          "type": "static_fn_decl",
+          "named": true
+        },
+        {
           "type": "string_literal",
           "named": true
         },
@@ -5974,6 +5986,21 @@
     }
   },
   {
+    "type": "static_fn_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "function_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "string_literal",
     "named": true,
     "fields": {},
@@ -6065,6 +6092,10 @@
         },
         {
           "type": "impl_decl",
+          "named": true
+        },
+        {
+          "type": "static_fn_decl",
           "named": true
         },
         {

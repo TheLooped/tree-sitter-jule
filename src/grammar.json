@@ -2222,6 +2222,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "static_fn_decl"
+        },
+        {
+          "type": "SYMBOL",
           "name": "struct_decl"
         },
         {
@@ -2631,6 +2635,19 @@
               ]
             }
           ]
+        }
+      ]
+    },
+    "static_fn_decl": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "static"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "function_decl"
         }
       ]
     },

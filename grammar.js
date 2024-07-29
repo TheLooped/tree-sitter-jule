@@ -408,6 +408,7 @@ module.exports = grammar({
 			choice(
 				$.var_decl,
 				$.function_decl,
+				$.static_fn_decl,
 				$.struct_decl,
 				$.enum_decl,
 				$.type_alias,
@@ -475,6 +476,8 @@ module.exports = grammar({
 				),
 				choice(field('body', $.block), terminator)
 			),
+
+		static_fn_decl: ($) => seq('static', $.function_decl),
 
 		// Generic type declarations
 		generic_parameter: ($) =>
