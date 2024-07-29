@@ -331,12 +331,30 @@ module.exports = grammar({
 		//----Statements---------//
 		_statement: ($) =>
 			choice(
+				$.label,
 				$._declaration,
 				$._expression_statement,
-				$.assignment_statement
+				$.assignment_statement,
+				$.return_statement
+			),
+
+		label: ($) =>
+			prec(
+				-4,
+				seq(field('label', $._label_identifier), token.immediate(':'))
 			),
 
 		_expression_statement: ($) => seq($._expression, terminator),
+
+		return_statement: ($) =>
+			prec.right(
+				seq('ret', optional(field('values', $.expression_list)))
+			),
+
+		break_statement: ($) =>
+			seq('break', optional(field('label', $._label_identifier))),
+		continue_statement: ($) =>
+			seq('continue', optional(field('label', $._label_identifier))),
 
 		assignment_statement: ($) =>
 			choice($.simple_assign, $.composite_assign),
@@ -355,7 +373,7 @@ module.exports = grammar({
 
 		_assignable: ($) => choice($._expression, $.ignore_operator),
 
-		expression_list: ($) => prec.right(commaSep1($._expression)),
+		expression_list: ($) => commaSep1($._expression),
 
 		composite_assign: ($) =>
 			prec.right(
@@ -548,12 +566,14 @@ module.exports = grammar({
 		// Type identifiers
 		_type_identifier: ($) => alias($.identifier, $.type_identifier),
 
+		// Label identifiers
+		_label_identifier: ($) => alias($.identifier, $.label_identifier),
+
 		// Variable identifiers
 		// Function identifiers
 		// Field identifiers
 		// Method identifiers
 		// Package identifiers
-		// Label identifiers
 
 		//----Tokens--------//
 
@@ -642,7 +662,7 @@ module.exports = grammar({
 			),
 
 		// Parenthesized expressions
-		paren_expression: ($) => seq('(', $._expression, ')'),
+		paren_expression: ($) => prec(-1, seq('(', $._expression, ')')),
 
 		// Function calls
 		call_expression: ($) =>

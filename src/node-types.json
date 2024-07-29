@@ -1176,6 +1176,10 @@
           "named": true
         },
         {
+          "type": "label",
+          "named": true
+        },
+        {
           "type": "map_literal",
           "named": true
         },
@@ -1209,6 +1213,10 @@
         },
         {
           "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "return_statement",
           "named": true
         },
         {
@@ -2838,6 +2846,22 @@
     }
   },
   {
+    "type": "label",
+    "named": true,
+    "fields": {
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "label_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "let_decl",
     "named": true,
     "fields": {},
@@ -3871,6 +3895,22 @@
           },
           {
             "type": "slice_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "return_statement",
+    "named": true,
+    "fields": {
+      "values": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression_list",
             "named": true
           }
         ]
@@ -5013,6 +5053,10 @@
           "named": true
         },
         {
+          "type": "label",
+          "named": true
+        },
+        {
           "type": "map_literal",
           "named": true
         },
@@ -5046,6 +5090,10 @@
         },
         {
           "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "return_statement",
           "named": true
         },
         {
@@ -5427,10 +5475,6 @@
           },
           {
             "type": "slice_type",
-            "named": true
-          },
-          {
-            "type": "type_identifier",
             "named": true
           }
         ]
@@ -6145,11 +6189,19 @@
     "named": false
   },
   {
+    "type": "break",
+    "named": false
+  },
+  {
     "type": "byte_literal",
     "named": true
   },
   {
     "type": "const",
+    "named": false
+  },
+  {
+    "type": "continue",
     "named": false
   },
   {
@@ -6213,6 +6265,10 @@
     "named": true
   },
   {
+    "type": "label_identifier",
+    "named": true
+  },
+  {
     "type": "let",
     "named": false
   },
@@ -6231,6 +6287,10 @@
   {
     "type": "nil_literal",
     "named": true
+  },
+  {
+    "type": "ret",
+    "named": false
   },
   {
     "type": "rune_literal",
