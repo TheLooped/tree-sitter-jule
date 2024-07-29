@@ -570,7 +570,7 @@ module.exports = grammar({
 		// Generic type declarations
 		generic_parameter: ($) =>
 			seq(
-				field('name', $._type_identifier),
+				field('generic_type', choice($._type_identifier, $._type)),
 				optional(seq(':', field('constraint', $.generic_constraint)))
 			),
 
