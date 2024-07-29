@@ -473,7 +473,7 @@ module.exports = grammar({
 				optional(
 					seq(optional(':'), field('return_type', $._return_type))
 				),
-				field('body', $.block)
+				choice(field('body', $.block), terminator)
 			),
 
 		// Generic type declarations
@@ -493,7 +493,11 @@ module.exports = grammar({
 			seq(
 				'(',
 				commaSep(
-					choice($._parameter, $.self_parameter, $.variadic_parameter)
+					choice(
+						$._parameter,
+						$.receiver_parameter,
+						$.variadic_parameter
+					)
 				),
 				')'
 			),
@@ -524,8 +528,8 @@ module.exports = grammar({
 				field('type', choice($._type, $._type_identifier))
 			),
 
-		self_parameter: ($) =>
-			choice($.self, seq(optional('&'), optional($.mut_flag), $.self)),
+		receiver_parameter: ($) =>
+			seq(optional($.mut_flag), optional('&'), $.self),
 
 		error_specifier: ($) => '!',
 
@@ -773,7 +777,7 @@ module.exports = grammar({
 				)
 			),
 
-		arguments: ($) => seq('(', commaSep1($._expression), ')'),
+		arguments: ($) => seq('(', optional(commaSep1($._expression)), ')'),
 
 		variadic_argument: ($) => seq($._expression, '...'),
 
@@ -912,7 +916,7 @@ module.exports = grammar({
 
 		ref_pattern: ($) => seq('&', field('item', $._value_identifier)),
 
-		//----Modules------------//
+		//----Blocks------------//
 		block: ($) => prec.left(1, seq('{', repeat($._statement), '}')),
 
 		unsafe_block: ($) => seq($.unsafe_flag, $.block),

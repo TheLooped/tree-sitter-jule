@@ -2760,7 +2760,7 @@
     "fields": {
       "body": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "block",
@@ -4021,7 +4021,7 @@
       "required": false,
       "types": [
         {
-          "type": "self_parameter",
+          "type": "receiver_parameter",
           "named": true
         },
         {
@@ -4234,6 +4234,25 @@
     "type": "raw_string_literal",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "receiver_parameter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "mut_flag",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "ref_expression",
@@ -4559,25 +4578,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "self_parameter",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "mut_flag",
-          "named": true
-        },
-        {
-          "type": "self",
-          "named": true
-        }
-      ]
     }
   },
   {
