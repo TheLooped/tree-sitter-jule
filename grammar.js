@@ -356,7 +356,7 @@ module.exports = grammar({
 				seq(
 					field('label', $._label_identifier),
 					token.immediate(':'),
-					terminator
+					optional(terminator)
 				)
 			),
 
