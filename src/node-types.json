@@ -1,5 +1,47 @@
 [
   {
+    "type": "aliased_use",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value_identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_use",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "wildcard_use",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "anonymous_function",
     "named": true,
     "fields": {
@@ -1300,6 +1342,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1421,6 +1467,10 @@
         },
         {
           "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "use_decl",
           "named": true
         },
         {
@@ -3791,6 +3841,22 @@
     }
   },
   {
+    "type": "goto_statement",
+    "named": true,
+    "fields": {
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "label_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "if_statement",
     "named": true,
     "fields": {
@@ -3979,49 +4045,6 @@
     }
   },
   {
-    "type": "impl_body",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "enum_decl",
-          "named": true
-        },
-        {
-          "type": "function_decl",
-          "named": true
-        },
-        {
-          "type": "impl_decl",
-          "named": true
-        },
-        {
-          "type": "static_fn_decl",
-          "named": true
-        },
-        {
-          "type": "struct_decl",
-          "named": true
-        },
-        {
-          "type": "trait_decl",
-          "named": true
-        },
-        {
-          "type": "type_alias",
-          "named": true
-        },
-        {
-          "type": "var_decl",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "impl_decl",
     "named": true,
     "fields": {
@@ -4030,7 +4053,7 @@
         "required": true,
         "types": [
           {
-            "type": "impl_body",
+            "type": "block",
             "named": true
           }
         ]
@@ -4895,10 +4918,6 @@
         "required": true,
         "types": [
           {
-            "type": ";",
-            "named": false
-          },
-          {
             "type": "anonymous_function",
             "named": true
           },
@@ -4972,6 +4991,10 @@
           },
           {
             "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
             "named": true
           },
           {
@@ -5096,6 +5119,10 @@
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "use_decl",
             "named": true
           },
           {
@@ -5125,13 +5152,9 @@
     "named": true,
     "fields": {
       "case": {
-        "multiple": true,
-        "required": false,
+        "multiple": false,
+        "required": true,
         "types": [
-          {
-            "type": ";",
-            "named": false
-          },
           {
             "type": "anonymous_function",
             "named": true
@@ -5206,6 +5229,10 @@
           },
           {
             "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
             "named": true
           },
           {
@@ -5330,6 +5357,10 @@
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "use_decl",
             "named": true
           },
           {
@@ -5363,10 +5394,6 @@
         "required": false,
         "types": [
           {
-            "type": ";",
-            "named": false
-          },
-          {
             "type": "anonymous_function",
             "named": true
           },
@@ -5440,6 +5467,10 @@
           },
           {
             "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
             "named": true
           },
           {
@@ -5564,6 +5595,10 @@
           },
           {
             "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "use_decl",
             "named": true
           },
           {
@@ -6730,6 +6765,55 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "scoped_use",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "scoped_use_list",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scoped_use_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "value_identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -7947,6 +8031,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -8068,6 +8156,10 @@
         },
         {
           "type": "unsafe_block",
+          "named": true
+        },
+        {
+          "type": "use_decl",
           "named": true
         },
         {
@@ -8368,7 +8460,43 @@
     }
   },
   {
-    "type": "struct_expr_body",
+    "type": "struct_expression",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "struct_list",
+            "named": true
+          }
+        ]
+      },
+      "generic": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "generic_parameters",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "struct_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "struct_fields",
     "named": true,
     "fields": {},
     "children": {
@@ -8376,170 +8504,18 @@
       "required": false,
       "types": [
         {
-          "type": "anonymous_function",
+          "type": "default_field",
           "named": true
         },
         {
-          "type": "array_literal",
-          "named": true
-        },
-        {
-          "type": "array_type",
-          "named": true
-        },
-        {
-          "type": "auto_sized_array_type",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "bool_literal",
-          "named": true
-        },
-        {
-          "type": "byte_literal",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "defer_block",
-          "named": true
-        },
-        {
-          "type": "field_expression",
-          "named": true
-        },
-        {
-          "type": "float_literal",
-          "named": true
-        },
-        {
-          "type": "for_statement",
-          "named": true
-        },
-        {
-          "type": "function_type",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "index_expression",
-          "named": true
-        },
-        {
-          "type": "integer_literal",
-          "named": true
-        },
-        {
-          "type": "map_literal",
-          "named": true
-        },
-        {
-          "type": "map_type",
-          "named": true
-        },
-        {
-          "type": "match_statement",
-          "named": true
-        },
-        {
-          "type": "nil_literal",
-          "named": true
-        },
-        {
-          "type": "paren_expression",
-          "named": true
-        },
-        {
-          "type": "pointer_type",
-          "named": true
-        },
-        {
-          "type": "primitive_type",
-          "named": true
-        },
-        {
-          "type": "raw_string_literal",
-          "named": true
-        },
-        {
-          "type": "ref_expression",
-          "named": true
-        },
-        {
-          "type": "reference_type",
-          "named": true
-        },
-        {
-          "type": "rune_literal",
-          "named": true
-        },
-        {
-          "type": "scoped_identifier",
-          "named": true
-        },
-        {
-          "type": "scoped_type_identifier",
-          "named": true
-        },
-        {
-          "type": "self",
-          "named": true
-        },
-        {
-          "type": "slice_type",
-          "named": true
-        },
-        {
-          "type": "string_literal",
-          "named": true
-        },
-        {
-          "type": "struct_expr_field",
-          "named": true
-        },
-        {
-          "type": "struct_expression",
-          "named": true
-        },
-        {
-          "type": "type_cast_expression",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "unsafe_block",
-          "named": true
-        },
-        {
-          "type": "variadic_argument",
+          "type": "regular_field",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "struct_expr_field",
+    "type": "struct_item",
     "named": true,
     "fields": {
       "field": {
@@ -8547,14 +8523,14 @@
         "required": true,
         "types": [
           {
-            "type": "field_identifier",
+            "type": "identifier",
             "named": true
           }
         ]
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "anonymous_function",
@@ -8717,37 +8693,7 @@
     }
   },
   {
-    "type": "struct_expression",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "struct_expr_body",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "scoped_identifier",
-            "named": true
-          },
-          {
-            "type": "struct_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "struct_fields",
+    "type": "struct_list",
     "named": true,
     "fields": {},
     "children": {
@@ -8755,11 +8701,7 @@
       "required": false,
       "types": [
         {
-          "type": "default_field",
-          "named": true
-        },
-        {
-          "type": "regular_field",
+          "type": "struct_item",
           "named": true
         }
       ]
@@ -8803,6 +8745,10 @@
         },
         {
           "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "use_decl",
           "named": true
         },
         {
@@ -9411,6 +9357,41 @@
     }
   },
   {
+    "type": "use_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "aliased_use",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "scoped_identifier",
+          "named": true
+        },
+        {
+          "type": "scoped_use",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "wildcard_use",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "var_decl",
     "named": true,
     "fields": {},
@@ -9993,6 +9974,30 @@
     }
   },
   {
+    "type": "wildcard_use",
+    "named": true,
+    "fields": {
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -10189,6 +10194,10 @@
     "named": false
   },
   {
+    "type": "goto",
+    "named": false
+  },
+  {
     "type": "i16",
     "named": false
   },
@@ -10335,6 +10344,10 @@
   {
     "type": "unsafe_flag",
     "named": true
+  },
+  {
+    "type": "use",
+    "named": false
   },
   {
     "type": "value_identifier",
