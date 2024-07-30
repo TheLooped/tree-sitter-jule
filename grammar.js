@@ -101,7 +101,7 @@ const floatLiteral = choice(decimalFloatLiteral, hexFloatLiteral)
 module.exports = grammar({
 	name: 'jule',
 
-	extras: ($) => [$.comment, /\s|\\\r?\n/],
+	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
 
 	conflicts: ($) => [
 		[$._type_identifier, $._value_identifier] // cause: scoped_identifier, scoped_type_identifier
@@ -119,8 +119,6 @@ module.exports = grammar({
 			seq(repeat(seq($._statement, terminator)), optional($._statement)),
 
 		//----Comments-----------//
-		comment: ($) => choice($.line_comment, $.block_comment),
-
 		line_comment: ($) => token(seq('//', /(\\+(.|\r?\n)|[^\\\n])*/)),
 
 		block_comment: ($) =>
@@ -157,7 +155,8 @@ module.exports = grammar({
 			),
 
 		//Map literals
-		map_literal: ($) => seq('{', commaSep($.map_entry), optional(','), '}'),
+		map_literal: ($) =>
+			prec.right(-4, seq('{', commaSep($.map_entry), optional(','), '}')),
 
 		map_entry: ($) =>
 			seq(
@@ -340,7 +339,6 @@ module.exports = grammar({
 				$.label,
 				$._declaration,
 				$._expression_statement,
-				//$.match_statement,
 				$.continue_statement,
 				$.break_statement,
 				$.assignment_statement,
@@ -348,9 +346,13 @@ module.exports = grammar({
 			),
 
 		label: ($) =>
-			prec(
+			prec.left(
 				-4,
-				seq(field('label', $._label_identifier), token.immediate(':'))
+				seq(
+					field('label', $._label_identifier),
+					token.immediate(':'),
+					terminator
+				)
 			),
 
 		_expression_statement: ($) => seq($._expression, terminator),
@@ -678,9 +680,7 @@ module.exports = grammar({
 				field('body', $.struct_fields)
 			),
 
-		struct_fields: ($) => {
-			return seq('{', repeat($._struct_decl_field), '}')
-		},
+		struct_fields: ($) => seq('{', repeat($._struct_decl_field), '}'),
 
 		_struct_decl_field: ($) => choice($.regular_field, $.default_field),
 
@@ -825,7 +825,6 @@ module.exports = grammar({
 					$.paren_expression,
 					$.variadic_argument,
 					$.type_cast_expression,
-					$.struct_init_expression,
 					$.scoped_identifier,
 					$.self,
 					$.identifier,
@@ -841,30 +840,37 @@ module.exports = grammar({
 				$.unsafe_block,
 				$.anonymous_function,
 				$.match_statement,
+				$.struct_expression,
 				$.for_statement,
 				$.if_statement
 			),
 
-		// Struct init expression
-		struct_init_expression: ($) =>
-			prec.left(
+		struct_expression: ($) =>
+			prec(
+				2,
 				seq(
-					field('struct', choice($._value_identifier, $.ref_pattern)),
-					'{',
-					optional(commaSep($._struct_init_field)),
-					optional(','),
-					'}'
+					field(
+						'name',
+						choice(
+							alias($.identifier, $.struct_identifier),
+							$.scoped_identifier
+						)
+					),
+					field('body', $.struct_expr_body)
 				)
 			),
 
-		_struct_init_field: ($) =>
-			choice($.named_init_field, $.default_init_field),
-
-		default_init_field: ($) => $._expression,
-
-		named_init_field: ($) =>
+		struct_expr_body: ($) =>
 			seq(
-				field('name', $._field_identifier),
+				'{',
+				optional(commaSep(choice($.struct_expr_field, $._expression))),
+				optional(','),
+				'}'
+			),
+
+		struct_expr_field: ($) =>
+			seq(
+				field('field', $._field_identifier),
 				':',
 				field('value', $._expression)
 			),
@@ -934,12 +940,16 @@ module.exports = grammar({
 				)
 			),
 
-		arguments: ($) => seq('(', optional(commaSep1($._expression)), ')'),
+		arguments: ($) =>
+			choice(
+				seq('(', ')'),
+				seq('(', commaSep1($._expression), optional(','), ')')
+			),
 
 		variadic_argument: ($) => seq($._expression, '...'),
 
 		ref_expression: ($) =>
-			prec.left(PREC.unary, seq('&', field('value', $._expression))),
+			prec.right(PREC.unary, seq('&', field('value', $._expression))),
 
 		// Unary expressionsn
 		unary_expression: ($) =>
@@ -1075,7 +1085,7 @@ module.exports = grammar({
 			prec.right(seq('&', field('item', $._value_identifier))),
 
 		//----Blocks------------//
-		block: ($) => prec.left(1, seq('{', repeat($._statement), '}')),
+		block: ($) => seq('{', repeat($._statement), '}'),
 
 		unsafe_block: ($) => seq($.unsafe_flag, $.block),
 
