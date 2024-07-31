@@ -319,6 +319,7 @@ module.exports = grammar({
 		_statement: ($) =>
 			choice(
 				$.label,
+				$.pragma,
 				$.goto_statement,
 				$._declaration,
 				$._expression,
@@ -326,6 +327,15 @@ module.exports = grammar({
 				$.continue_statement,
 				$.break_statement,
 				$.assignment_statement
+			),
+
+		pragma: ($) =>
+			prec.left(
+				seq(
+					'#',
+					field('directive', $.identifier),
+					optional(field('argument', $._expression))
+				)
 			),
 
 		label: ($) =>
