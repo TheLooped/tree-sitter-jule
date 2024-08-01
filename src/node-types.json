@@ -74,6 +74,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -115,6 +119,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "function_modifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -159,6 +173,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
           "named": true
         },
         {
@@ -337,6 +355,10 @@
           "named": true
         },
         {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
           "type": "defer_block",
           "named": true
         },
@@ -484,6 +506,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -555,6 +581,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -734,6 +764,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -910,6 +944,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -987,6 +1025,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -1167,6 +1209,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -1359,6 +1405,10 @@
         },
         {
           "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
           "named": true
         },
         {
@@ -1624,6 +1674,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -1763,6 +1817,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "co_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1807,6 +1871,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -1990,6 +2058,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -2148,6 +2220,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -2219,6 +2295,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -2370,6 +2450,84 @@
     }
   },
   {
+    "type": "cpp_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "auto_sized_array_type",
+          "named": true
+        },
+        {
+          "type": "cpp_flag",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "map_type",
+          "named": true
+        },
+        {
+          "type": "pointer_type",
+          "named": true
+        },
+        {
+          "type": "primitive_type",
+          "named": true
+        },
+        {
+          "type": "reference_type",
+          "named": true
+        },
+        {
+          "type": "scoped_type_identifier",
+          "named": true
+        },
+        {
+          "type": "slice_type",
+          "named": true
+        },
+        {
+          "type": "type_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "cpp_use",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cpp_flag",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "default_field",
     "named": true,
     "fields": {
@@ -2411,6 +2569,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -2591,6 +2753,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -2828,6 +2994,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -3011,6 +3181,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -3088,6 +3262,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -3258,6 +3436,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -3442,6 +3624,10 @@
           "named": true
         },
         {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
           "type": "defer_block",
           "named": true
         },
@@ -3617,6 +3803,14 @@
             "named": true
           },
           {
+            "type": "cpp_flag",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -3751,7 +3945,171 @@
         "required": true,
         "types": [
           {
-            "type": "value_identifier",
+            "type": "anonymous_function",
+            "named": true
+          },
+          {
+            "type": "array_literal",
+            "named": true
+          },
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "byte_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
+            "type": "defer_block",
+            "named": true
+          },
+          {
+            "type": "else_statment",
+            "named": true
+          },
+          {
+            "type": "field_expression",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "for_statement",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "integer_literal",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "map_type",
+            "named": true
+          },
+          {
+            "type": "match_statement",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "paren_expression",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "ref_expression",
+            "named": true
+          },
+          {
+            "type": "reference_type",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "scoped_identifier",
+            "named": true
+          },
+          {
+            "type": "scoped_type_identifier",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "slice_type",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "struct_expression",
+            "named": true
+          },
+          {
+            "type": "type_cast_expression",
+            "named": true
+          },
+          {
+            "type": "type_identifier",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "unsafe_block",
+            "named": true
+          },
+          {
+            "type": "variadic_argument",
             "named": true
           }
         ]
@@ -3800,6 +4158,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -4097,6 +4459,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -4140,11 +4506,38 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "error_specifier",
+          "named": true
+        },
+        {
+          "type": "function_modifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_modifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "co_flag",
+          "named": true
+        },
+        {
+          "type": "cpp_flag",
+          "named": true
+        },
+        {
+          "type": "unsafe_flag",
           "named": true
         }
       ]
@@ -4174,6 +4567,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -4226,6 +4623,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -4288,6 +4689,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -4410,6 +4815,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -4635,6 +5044,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -4802,6 +5215,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -5026,6 +5443,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -5196,6 +5617,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -5359,6 +5784,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -5402,6 +5831,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -5468,6 +5901,10 @@
         "required": true,
         "types": [
           {
+            "type": ";",
+            "named": false
+          },
+          {
             "type": "anonymous_function",
             "named": true
           },
@@ -5517,6 +5954,10 @@
           },
           {
             "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -5722,9 +6163,13 @@
     "named": true,
     "fields": {
       "case": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": ";",
+            "named": false
+          },
           {
             "type": "anonymous_function",
             "named": true
@@ -5775,6 +6220,10 @@
           },
           {
             "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -5984,6 +6433,10 @@
         "required": false,
         "types": [
           {
+            "type": ";",
+            "named": false
+          },
+          {
             "type": "anonymous_function",
             "named": true
           },
@@ -6033,6 +6486,10 @@
           },
           {
             "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -6294,6 +6751,10 @@
           "named": true
         },
         {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
           "type": "defer_block",
           "named": true
         },
@@ -6519,6 +6980,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -6586,6 +7051,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -6680,6 +7149,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
           "named": true
         },
         {
@@ -6830,6 +7303,10 @@
           "named": true
         },
         {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -6906,6 +7383,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -7124,6 +7605,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -7288,6 +7773,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -7375,6 +7864,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -7690,6 +8183,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -7870,6 +8367,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -8036,6 +8537,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -8107,6 +8612,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -8241,9 +8750,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "cpp_flag",
+          "named": true
+        },
         {
           "type": "mut_flag",
           "named": true
@@ -8293,6 +8806,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -8466,6 +8983,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -8636,6 +9157,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "defer_block",
             "named": true
           },
@@ -8784,6 +9309,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -8877,6 +9406,10 @@
         },
         {
           "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
           "named": true
         },
         {
@@ -9093,6 +9626,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -9164,6 +9701,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -9372,6 +9913,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "cpp_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -9384,6 +9935,16 @@
         "types": [
           {
             "type": "struct_list",
+            "named": true
+          }
+        ]
+      },
+      "generic": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "generic_parameters",
             "named": true
           }
         ]
@@ -9461,6 +10022,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -9635,6 +10200,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -9914,6 +10483,10 @@
           "named": true
         },
         {
+          "type": "cpp_type",
+          "named": true
+        },
+        {
           "type": "function_type",
           "named": true
         },
@@ -9975,6 +10548,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -10010,9 +10587,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "cpp_flag",
+          "named": true
+        },
         {
           "type": "type",
           "named": true
@@ -10034,6 +10615,10 @@
           },
           {
             "type": "auto_sized_array_type",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -10108,6 +10693,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -10284,6 +10873,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -10488,6 +11081,10 @@
           "named": true
         },
         {
+          "type": "cpp_use",
+          "named": true
+        },
+        {
           "type": "path_identifier",
           "named": true
         },
@@ -10548,6 +11145,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cpp_type",
           "named": true
         },
         {
@@ -10708,6 +11309,10 @@
             "named": true
           },
           {
+            "type": "cpp_type",
+            "named": true
+          },
+          {
             "type": "function_type",
             "named": true
           },
@@ -10785,6 +11390,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -10918,9 +11527,13 @@
         ]
       },
       "update": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": ";",
+            "named": false
+          },
           {
             "type": "anonymous_function",
             "named": true
@@ -10971,6 +11584,10 @@
           },
           {
             "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "cpp_type",
             "named": true
           },
           {
@@ -11326,7 +11943,15 @@
     "named": false
   },
   {
+    "type": "byte",
+    "named": false
+  },
+  {
     "type": "byte_literal",
+    "named": true
+  },
+  {
+    "type": "co_flag",
     "named": true
   },
   {
@@ -11336,6 +11961,10 @@
   {
     "type": "continue",
     "named": false
+  },
+  {
+    "type": "cpp_flag",
+    "named": true
   },
   {
     "type": "defer",
@@ -11467,6 +12096,10 @@
   },
   {
     "type": "ret",
+    "named": false
+  },
+  {
+    "type": "rune",
     "named": false
   },
   {

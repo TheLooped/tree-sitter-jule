@@ -34,6 +34,8 @@ const primitiveTypes = [
 	'int',
 	'f32',
 	'f64',
+	'rune',
+	'byte',
 	'bool',
 	'str',
 	'any'
@@ -107,7 +109,9 @@ module.exports = grammar({
 		[$._type_identifier, $._value_identifier],
 		[$._path_identifier, $._value_identifier],
 		[$._type_identifier, $._non_block_expression],
-		[$._type_identifier, $.struct_expression, $._non_block_expression]
+		[$._type_identifier, $.struct_expression, $._non_block_expression],
+		[$.generic_parameter, $._non_block_expression],
+		[$.call_expression]
 	],
 
 	word: ($) => $.identifier,
@@ -253,6 +257,7 @@ module.exports = grammar({
 			choice(
 				$._type_identifier,
 				$.primitive_type,
+				$.cpp_type,
 				$.function_type,
 				$.array_type,
 				$.auto_sized_array_type,
@@ -264,6 +269,8 @@ module.exports = grammar({
 			),
 
 		primitive_type: (_) => choice(...primitiveTypes),
+
+		cpp_type: ($) => prec(-1, seq($.cpp_flag, '.', $._type)),
 
 		pointer_type: ($) => prec(PREC.unary, seq('*', choice($._type))),
 
@@ -313,12 +320,14 @@ module.exports = grammar({
 				$.pragma,
 				$.goto_statement,
 				$._declaration,
-				$._expression,
+				$._expression_statement,
 				$.return_statement,
 				$.continue_statement,
 				$.break_statement,
 				$.assignment_statement
 			),
+
+		_expression_statement: ($) => prec.left(seq($._expression, terminator)),
 
 		pragma: ($) =>
 			prec.left(
@@ -529,10 +538,12 @@ module.exports = grammar({
 				$.impl_decl
 			),
 
-		use_decl: ($) => seq('use', choice($._use_clause)),
+		use_decl: ($) => choice(seq('use', choice($._use_clause)), $.cpp_use),
 
 		_use_clause: ($) =>
 			choice($._path, $.scoped_use, $.aliased_use, $.wildcard_use),
+
+		cpp_use: ($) => seq($.cpp_flag, 'use', $.string_literal),
 
 		aliased_use: ($) =>
 			prec(
@@ -574,6 +585,7 @@ module.exports = grammar({
 		single_decl: ($) =>
 			prec.left(
 				seq(
+					optional($.cpp_flag),
 					'let',
 					optional($.mut_flag),
 					field('name', choice($._value_identifier, $.ref_pattern)),
@@ -618,6 +630,7 @@ module.exports = grammar({
 
 		function_decl: ($) =>
 			seq(
+				optional($.function_modifier),
 				'fn',
 				field('name', $._value_identifier),
 				optional(field('generic_params', $.generic_parameters)),
@@ -633,14 +646,9 @@ module.exports = grammar({
 
 		// Generic type declarations
 		generic_parameter: ($) =>
-			prec(
-				-1,
-				seq(
-					field('generic_type', choice($._type)),
-					optional(
-						seq(':', field('constraint', $.generic_constraint))
-					)
-				)
+			seq(
+				field('generic_type', $._type),
+				optional(seq(':', field('constraint', $.generic_constraint)))
 			),
 
 		generic_constraint: ($) => sep1(field('type', $._type), '|'),
@@ -707,6 +715,7 @@ module.exports = grammar({
 
 		type_alias: ($) =>
 			seq(
+				optional($.cpp_flag),
 				$.type,
 				field('name', $._type_identifier),
 				':',
@@ -715,6 +724,7 @@ module.exports = grammar({
 
 		struct_decl: ($) =>
 			seq(
+				optional($.cpp_flag),
 				'struct',
 				field('name', $._value_identifier),
 				optional(field('generic_params', $.generic_parameters)),
@@ -820,6 +830,8 @@ module.exports = grammar({
 				)
 			),
 
+		function_modifier: ($) => choice($.unsafe_flag, $.cpp_flag, $.co_flag),
+
 		//----Keywords--------//
 
 		self: () => 'self',
@@ -831,6 +843,10 @@ module.exports = grammar({
 		mut_flag: () => 'mut',
 
 		unsafe_flag: () => 'unsafe',
+
+		cpp_flag: () => 'cpp',
+
+		co_flag: () => 'co',
 
 		fallthrough: () => 'fall',
 
@@ -872,7 +888,7 @@ module.exports = grammar({
 		struct_expression: ($) =>
 			seq(
 				field('name', alias($.identifier, $.struct_identifier)),
-				//optional(field('generic', $.generic_parameters)),
+				optional(field('generic', $.generic_parameters)),
 				field('body', $.struct_list)
 			),
 
@@ -894,6 +910,7 @@ module.exports = grammar({
 		// Anonymous functions
 		anonymous_function: ($) =>
 			seq(
+				optional($.function_modifier),
 				'fn',
 				field('parameters', $.parameters),
 				optional(seq(':', field('return_type', $._return_type))),
@@ -902,12 +919,12 @@ module.exports = grammar({
 
 		// Field Access expressions
 		field_expression: ($) =>
-			prec(
+			prec.right(
 				PREC.field,
 				seq(
-					field('object', $._expression),
+					field('object', choice($._expression, $.cpp_flag)),
 					'.',
-					field('property', $._value_identifier)
+					field('property', $._expression)
 				)
 			),
 
@@ -928,7 +945,7 @@ module.exports = grammar({
 		// Indexed expressions
 		index_expression: ($) =>
 			prec.right(
-				PREC.field,
+				PREC.call,
 				choice(
 					seq(
 						field('object', $._expression),
@@ -948,6 +965,7 @@ module.exports = grammar({
 			prec(
 				PREC.call,
 				seq(
+					optional($.co_flag),
 					field('caller', $._expression),
 					optional(field('type_arguments', $.generic_parameters)),
 					field('arguments', $.arguments)

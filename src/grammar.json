@@ -1517,6 +1517,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "cpp_type"
+        },
+        {
+          "type": "SYMBOL",
           "name": "function_type"
         },
         {
@@ -1606,6 +1610,14 @@
         },
         {
           "type": "STRING",
+          "value": "rune"
+        },
+        {
+          "type": "STRING",
+          "value": "byte"
+        },
+        {
+          "type": "STRING",
           "value": "bool"
         },
         {
@@ -1617,6 +1629,27 @@
           "value": "any"
         }
       ]
+    },
+    "cpp_type": {
+      "type": "PREC",
+      "value": -1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "cpp_flag"
+          },
+          {
+            "type": "STRING",
+            "value": "."
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_type"
+          }
+        ]
+      }
     },
     "pointer_type": {
       "type": "PREC",
@@ -1869,7 +1902,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_expression"
+          "name": "_expression_statement"
         },
         {
           "type": "SYMBOL",
@@ -1888,6 +1921,35 @@
           "name": "assignment_statement"
         }
       ]
+    },
+    "_expression_statement": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_expression"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "\\r?\\n"
+                }
+              },
+              {
+                "type": "STRING",
+                "value": ";"
+              }
+            ]
+          }
+        ]
+      }
     },
     "pragma": {
       "type": "PREC_LEFT",
@@ -2840,20 +2902,29 @@
       ]
     },
     "use_decl": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "use"
-        },
-        {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_use_clause"
+              "type": "STRING",
+              "value": "use"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_use_clause"
+                }
+              ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cpp_use"
         }
       ]
     },
@@ -2875,6 +2946,23 @@
         {
           "type": "SYMBOL",
           "name": "wildcard_use"
+        }
+      ]
+    },
+    "cpp_use": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "cpp_flag"
+        },
+        {
+          "type": "STRING",
+          "value": "use"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string_literal"
         }
       ]
     },
@@ -3073,6 +3161,18 @@
       "content": {
         "type": "SEQ",
         "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "cpp_flag"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
           {
             "type": "STRING",
             "value": "let"
@@ -3357,6 +3457,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "function_modifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "fn"
         },
@@ -3482,51 +3594,42 @@
       ]
     },
     "generic_parameter": {
-      "type": "PREC",
-      "value": -1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "FIELD",
-            "name": "generic_type",
-            "content": {
-              "type": "CHOICE",
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "generic_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "_type"
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "constraint",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "generic_constraint"
+                  }
                 }
               ]
+            },
+            {
+              "type": "BLANK"
             }
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ":"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "constraint",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "generic_constraint"
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
+          ]
+        }
+      ]
     },
     "generic_constraint": {
       "type": "SEQ",
@@ -4021,6 +4124,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "cpp_flag"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "type"
         },
@@ -4049,6 +4164,18 @@
     "struct_decl": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "cpp_flag"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "STRING",
           "value": "struct"
@@ -4582,6 +4709,23 @@
         ]
       }
     },
+    "function_modifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "unsafe_flag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cpp_flag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "co_flag"
+        }
+      ]
+    },
     "self": {
       "type": "STRING",
       "value": "self"
@@ -4601,6 +4745,14 @@
     "unsafe_flag": {
       "type": "STRING",
       "value": "unsafe"
+    },
+    "cpp_flag": {
+      "type": "STRING",
+      "value": "cpp"
+    },
+    "co_flag": {
+      "type": "STRING",
+      "value": "co"
     },
     "fallthrough": {
       "type": "STRING",
@@ -4738,6 +4890,22 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "generic",
+              "content": {
+                "type": "SYMBOL",
+                "name": "generic_parameters"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "body",
           "content": {
@@ -4854,6 +5022,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "function_modifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "fn"
         },
@@ -4901,7 +5081,7 @@
       ]
     },
     "field_expression": {
-      "type": "PREC",
+      "type": "PREC_RIGHT",
       "value": 12,
       "content": {
         "type": "SEQ",
@@ -4910,8 +5090,17 @@
             "type": "FIELD",
             "name": "object",
             "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "cpp_flag"
+                }
+              ]
             }
           },
           {
@@ -4923,7 +5112,7 @@
             "name": "property",
             "content": {
               "type": "SYMBOL",
-              "name": "_value_identifier"
+              "name": "_expression"
             }
           }
         ]
@@ -4992,7 +5181,7 @@
     },
     "index_expression": {
       "type": "PREC_RIGHT",
-      "value": 12,
+      "value": 13,
       "content": {
         "type": "CHOICE",
         "members": [
@@ -5059,6 +5248,18 @@
       "content": {
         "type": "SEQ",
         "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "co_flag"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
           {
             "type": "FIELD",
             "name": "caller",
@@ -6142,6 +6343,13 @@
       "_type_identifier",
       "struct_expression",
       "_non_block_expression"
+    ],
+    [
+      "generic_parameter",
+      "_non_block_expression"
+    ],
+    [
+      "call_expression"
     ]
   ],
   "precedences": [],
