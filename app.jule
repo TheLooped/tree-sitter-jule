@@ -1,8 +1,0 @@
-fn main() {
-    let mut mymap: map[i8]str = {
-        0: "CPU",
-        1: "RAM",
-        2: "GPU"
-    }
-    outln(mymap)
-}
