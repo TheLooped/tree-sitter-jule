@@ -114,6 +114,7 @@ module.exports = grammar({
 		[$._value_identifier, $._type_identifier, $._non_block_expression],
 		[$._type_identifier, $.struct_expression, $._non_block_expression],
 		[$.struct_expression, $._non_block_expression],
+		[$.generic_param, $._non_block_expression],
 		[$.expression_list, $.else_statment],
 		[$.call_expression],
 		[$.expression_list],
@@ -330,8 +331,7 @@ module.exports = grammar({
 
 		map_type: ($) =>
 			seq(
-				'map',
-				'[',
+				'map[',
 				field('key_type', $._type),
 				']',
 				field('value_type', $._type)
@@ -699,14 +699,9 @@ module.exports = grammar({
 
 		// Generic type declarations
 		generic_param: ($) =>
-			prec(
-				-1,
-				seq(
-					field('param_type', $._type),
-					optional(
-						seq(':', field('constraint', $.generic_constraint))
-					)
-				)
+			seq(
+				field('param_type', $._type),
+				optional(seq(':', field('constraint', $.generic_constraint)))
 			),
 
 		generic_constraint: ($) => sep1(field('type', $._type), '|'),

@@ -3470,7 +3470,7 @@
     "named": true
   },
   {
-    "type": "map",
+    "type": "map[",
     "named": false
   },
   {
