@@ -105,6 +105,10 @@
     "named": false
   },
   {
+    "type": "block_comment",
+    "named": true
+  },
+  {
     "type": "byte_literal",
     "named": true
   },
@@ -122,6 +126,10 @@
   },
   {
     "type": "integer_literal",
+    "named": true
+  },
+  {
+    "type": "line_comment",
     "named": true
   },
   {

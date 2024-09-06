@@ -60,6 +60,9 @@ const floatLiteral = token(
 
 module.exports = grammar({
 	name: 'jule',
+
+	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
+
 	rules: {
 		source_file: ($) => repeat($._literals),
 
@@ -124,16 +127,7 @@ module.exports = grammar({
 
 		// Byte literal
 		byte_literal: ($) =>
-			token(
-				seq(
-					"'",
-					choice(
-						seq('\\', choice(/[^xu]/, /x[0-9a-fA-F]{2}/)),
-						/[!-~]/
-					),
-					"'"
-				)
-			),
+			token(seq("'", choice(seq('\\', /x[0-9a-fA-F]{2}/), /[!-~]/), "'")),
 
 		// Rune literal
 		rune_literal: ($) =>
@@ -155,6 +149,12 @@ module.exports = grammar({
 					),
 					"'"
 				)
-			)
+			),
+
+		//---Comments---//
+
+		line_comment: ($) => token(seq('//', /.*/)),
+
+		block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/'))
 	}
 })
