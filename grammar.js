@@ -67,6 +67,8 @@ module.exports = grammar({
 		_literals: ($) =>
 			choice(
 				$.number_literal,
+				$.bool_literal,
+				$.nil_literal,
 				$.string_literal,
 				$.raw_string_literal,
 				$.byte_literal,
@@ -78,6 +80,12 @@ module.exports = grammar({
 
 		integer_literal: ($) => intLiteral,
 		float_literal: ($) => floatLiteral,
+
+		//---Bool Literals---//
+		bool_literal: ($) => choice('true', 'false'),
+
+		//---Nil Literal---//
+		nil_literal: ($) => 'nil',
 
 		//---String Literals---//
 		string_literal: ($) =>

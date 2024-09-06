@@ -1,5 +1,10 @@
 [
   {
+    "type": "bool_literal",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "number_literal",
     "named": true,
     "fields": {},
@@ -42,7 +47,15 @@
       "required": false,
       "types": [
         {
+          "type": "bool_literal",
+          "named": true
+        },
+        {
           "type": "byte_literal",
+          "named": true
+        },
+        {
+          "type": "nil_literal",
           "named": true
         },
         {
@@ -100,11 +113,19 @@
     "named": true
   },
   {
+    "type": "false",
+    "named": false
+  },
+  {
     "type": "float_literal",
     "named": true
   },
   {
     "type": "integer_literal",
+    "named": true
+  },
+  {
+    "type": "nil_literal",
     "named": true
   },
   {
@@ -118,5 +139,9 @@
   {
     "type": "string_content",
     "named": true
+  },
+  {
+    "type": "true",
+    "named": false
   }
 ]
