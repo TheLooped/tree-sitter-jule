@@ -91,13 +91,41 @@ module.exports = grammar({
 	rules: {
 		source_file: ($) => repeat(seq($._statement, terminator)),
 
-		_statement: ($) => choice($._var_decl, $._expression),
+		_statement: ($) => choice($._var_decl, $._expression, $.use_decl),
 
-		_expression: ($) => choice($._literals, $._types, $.identifier),
+		_expression: ($) =>
+			choice($._literals, $._types, $.qualified_identifier, $.identifier),
 
 		expression_list: ($) => commaSep1($._expression),
 
 		//---Declarations---//
+
+		// Use Declaration
+		use_decl: ($) =>
+			seq('use', choice($.simple, $.wildcard, $.selector, $.aliased)),
+
+		simple: ($) => field('path', $.qualified_identifier),
+
+		wildcard: ($) => seq(field('path', $.qualified_identifier), '::*'),
+
+		selector: ($) =>
+			seq(
+				field('path', $.qualified_identifier),
+				'::',
+				'{',
+				field(
+					'items',
+					commaSep(choice($.identifier, alias('self', $.self_import)))
+				),
+				'}'
+			),
+
+		aliased: ($) =>
+			seq(
+				field('alias', $.identifier),
+				'for',
+				field('import', choice($.simple, $.selector))
+			),
 
 		// Variable Declaration
 		_var_decl: ($) =>
@@ -163,6 +191,18 @@ module.exports = grammar({
 
 		//---Identifiers---//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+
+		qualified_identifier: ($) =>
+			prec.left(
+				seq(
+					field(
+						'namespace',
+						choice($.identifier, $.qualified_identifier)
+					),
+					'::',
+					field('member', $.identifier)
+				)
+			),
 
 		//---Types---//
 		_types: ($) => choice($.primitive_type),
