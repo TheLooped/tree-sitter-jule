@@ -44,7 +44,19 @@
   "tree-sitter": [
     {
       "scope": "source.jule",
-      "injection-regex": "^jule$"
+      "injection-regex": "^jule$",
+      "file-types": [
+        "jule"
+      ],
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "folds": [
+        "queries/folds.scm"
+      ],
+      "locals": [
+        "queries/locals.scm"
+      ]
     }
   ]
 }
