@@ -61,12 +61,92 @@ const floatLiteral = token(
 module.exports = grammar({
 	name: 'jule',
 	rules: {
-		source_file: ($) => repeat($.number_literal),
+		source_file: ($) => repeat($._literals),
 
-		_literals: ($) => choice($.number_literal),
+		//---Literals---//
+		_literals: ($) =>
+			choice(
+				$.number_literal,
+				$.string_literal,
+				$.raw_string_literal,
+				$.byte_literal,
+				$.rune_literal
+			),
 
+		//---Numeric Literals---//
 		number_literal: ($) => choice($.integer_literal, $.float_literal),
+
 		integer_literal: ($) => intLiteral,
-		float_literal: ($) => floatLiteral
+		float_literal: ($) => floatLiteral,
+
+		//---String Literals---//
+		string_literal: ($) =>
+			seq(
+				'"',
+				repeat(
+					choice(
+						alias(
+							token.immediate(prec(1, /[^\\"\n]+/)),
+							$.string_content
+						),
+						$.escape_sequence
+					)
+				),
+				'"'
+			),
+
+		// Raw String Literal
+		raw_string_literal: ($) =>
+			seq('`', alias(token(/[^`]*/), $.raw_string_content), '`'),
+
+		// Escape Sequence
+		escape_sequence: ($) =>
+			token.immediate(
+				seq(
+					'\\',
+					choice(
+						/[\\abfnrtv'"]/,
+						/x[0-9a-fA-F]{2}/,
+						/u[0-9a-fA-F]{4}/,
+						/U[0-9a-fA-F]{8}/,
+						/[0-7]{1,3}/
+					)
+				)
+			),
+
+		// Byte literal
+		byte_literal: ($) =>
+			token(
+				seq(
+					"'",
+					choice(
+						seq('\\', choice(/[^xu]/, /x[0-9a-fA-F]{2}/)),
+						/[!-~]/
+					),
+					"'"
+				)
+			),
+
+		// Rune literal
+		rune_literal: ($) =>
+			token(
+				seq(
+					"'",
+					choice(
+						seq(
+							'\\',
+							choice(
+								/[^xu]/,
+								/u[0-9a-fA-F]{4}/,
+								/u\{[0-9a-fA-F]+\}/,
+								/x[0-9a-fA-F]{2}/,
+								/U[0-9a-fA-F]{8}/
+							)
+						),
+						/[^\\']/
+					),
+					"'"
+				)
+			)
 	}
 })
