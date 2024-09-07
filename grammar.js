@@ -86,19 +86,111 @@ module.exports = grammar({
 
 	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
 
+	conflicts: ($) => [
+		[$.qualified_identifier, $._type_identifier],
+		[$._expression, $._type_identifier]
+	],
+
 	word: ($) => $.identifier,
 
 	rules: {
 		source_file: ($) => repeat(seq($._statement, terminator)),
 
-		_statement: ($) => choice($._var_decl, $._expression, $.use_decl),
+		_statement: ($) => choice($._declaration, $._expression),
 
 		_expression: ($) =>
-			choice($._literals, $._types, $.qualified_identifier, $.identifier),
+			choice(
+				$._literals,
+				$._types,
+				$.anonymous_function,
+				$.qualified_identifier,
+				$.identifier
+			),
 
 		expression_list: ($) => commaSep1($._expression),
 
 		//---Declarations---//
+
+		_declaration: ($) => choice($.named_function, $._var_decl, $.use_decl),
+
+		//  Function Declaration
+		named_function: ($) =>
+			seq(
+				optional($.function_modifiers),
+				'fn',
+				field('name', $.identifier),
+				optional(field('generic_params', $.generic_parameters)),
+				field('parameters', $.parameters),
+				optional($.error_specifier),
+				optional(seq(':', field('return_type', $._return_type))),
+				$.block
+			),
+
+		function_modifiers: ($) => choice('co', 'unsafe', 'cpp', 'static'),
+
+		generic_parameters: ($) =>
+			seq('[', commaSep1($.generic_parameter), ']'),
+
+		generic_parameter: ($) =>
+			seq(
+				field('name', $._type_identifier),
+				optional(seq(':', field('constraint', $.type_constraint)))
+			),
+
+		type_constraint: ($) => sep1($._types, '|'),
+
+		receiver_parameter: ($) => seq(optional(choice('mut', '&')), 'self'),
+
+		parameters: ($) =>
+			seq(
+				'(',
+				optional(
+					commaSep1(
+						choice(
+							$.parameter,
+							$.receiver_parameter,
+							$.variadic_parameter
+						)
+					)
+				),
+				')'
+			),
+
+		parameter: ($) =>
+			seq(
+				field(
+					'name',
+					choice($.mut_pattern, $.ref_pattern, $.identifier)
+				),
+				optional(seq(':', field('type', $._types)))
+			),
+
+		variadic_parameter: ($) =>
+			seq(
+				field('name', $.identifier),
+				':',
+				'...',
+				field('type', $._types)
+			),
+
+		_return_type: ($) =>
+			choice($._types, $.multi_return, $.named_return_type),
+
+		multi_return: ($) => seq('(', commaSep1($._types), ')'),
+
+		named_return_type: ($) => seq('(', commaSep1($.named_return_item), ')'),
+
+		named_return_item: ($) =>
+			seq(field('name', $.identifier), ':', field('type', $._types)),
+
+		// Anonymous Function
+		anonymous_function: ($) =>
+			seq(
+				'fn',
+				field('parameters', $.parameters),
+				optional(seq(':', field('return_type', $._return_type))),
+				field('body', $.block)
+			),
 
 		// Use Declaration
 		use_decl: ($) =>
@@ -192,6 +284,8 @@ module.exports = grammar({
 		//---Identifiers---//
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
+		_type_identifier: ($) => alias($.identifier, $.type_identifier),
+
 		qualified_identifier: ($) =>
 			prec.left(
 				seq(
@@ -204,10 +298,27 @@ module.exports = grammar({
 				)
 			),
 
-		//---Types---//
-		_types: ($) => choice($.primitive_type),
+		qualified_type_identifier: ($) =>
+			prec.left(
+				seq(
+					field(
+						'namespace',
+						choice($.identifier, $.qualified_type_identifier)
+					),
+					'::',
+					field('member', $._type_identifier)
+				)
+			),
 
-		primitive_type: ($) => token(choice(...PRIMITIVE_TYPES)),
+		//---Types---//
+		_types: ($) =>
+			choice(
+				$.primitive_type,
+				$._type_identifier,
+				$.qualified_type_identifier
+			),
+
+		primitive_type: ($) => choice(...PRIMITIVE_TYPES),
 
 		//---Literals---//
 		_literals: ($) =>
@@ -295,9 +406,13 @@ module.exports = grammar({
 			),
 
 		//---Patterns---//
+		error_specifier: ($) => '!',
 		cpp_flag: () => 'cpp',
+
 		ignore_operator: () => '_',
+
 		mut_flag: () => 'mut',
+
 		ref_pattern: ($) => seq('&', $.identifier),
 		mut_pattern: ($) => seq('mut', choice($.ref_pattern, $.identifier)),
 		tuple_pattern: ($) =>
@@ -314,6 +429,9 @@ module.exports = grammar({
 				')'
 			),
 
+		//---Blocks---//
+		block: ($) => seq('{', repeat($._statement), '}'),
+
 		//---Comments---//
 
 		line_comment: ($) => token(seq('//', /.*/)),
@@ -329,4 +447,8 @@ function commaSep(rule) {
 
 function commaSep1(rule) {
 	return seq(rule, repeat(seq(',', rule)))
+}
+
+function sep1(rule, separator) {
+	return seq(rule, repeat(seq(separator, rule)))
 }
