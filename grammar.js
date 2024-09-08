@@ -22,6 +22,17 @@ const PRIMITIVE_TYPES = [
 const PREC = {
 	call: 13, // Function calls
 	field: 12, // Field access
+	unary: 11, // Unary operators
+	cast: 10, // Type casting
+	multiplicative: 9, // *, %, /
+	shift: 8, // <<, >>
+	additive: 7, // +, -
+	bitand: 6, // &
+	bitxor: 5, // ^ (XOR)
+	bitor: 4, // |
+	comparative: 3, // ==, !=, <, <=, >, >=
+	and: 2, // &&
+	or: 1, // ||
 	assign: 1 // Assignment
 }
 
@@ -95,7 +106,8 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$.qualified_identifier, $._type_identifier],
 		[$._non_block_expression, $._type_identifier],
-		[$.expression_list]
+		[$.expression_list],
+		[$.call_expression]
 	],
 
 	word: ($) => $.identifier,
@@ -113,6 +125,8 @@ module.exports = grammar({
 
 		_non_block_expression: ($) =>
 			choice(
+				$.binary_expression,
+				$.unary_expression,
 				$.assignment_expression,
 				$.call_expression,
 				$.field_expression,
@@ -219,6 +233,66 @@ module.exports = grammar({
 				'<<=',
 				'>>='
 			),
+
+		// Unary expressionsn
+		unary_expression: ($) =>
+			choice(
+				...[
+					['~', PREC.unary],
+					['&', PREC.unary],
+					['-', PREC.unary],
+					['!', PREC.unary],
+					['^', PREC.unary],
+					['*', PREC.unary],
+					['+', PREC.unary]
+				].map(([operator, precedence]) =>
+					prec.right(
+						precedence,
+						seq(
+							field('operator', operator),
+							field('operand', $._expression)
+						)
+					)
+				),
+				prec.left(
+					PREC.unary,
+					seq(
+						field('operand', $._expression),
+						field('operator', choice('++', '--'))
+					)
+				)
+			),
+
+		// Binary expressions
+		binary_expression: ($) => {
+			const table = [
+				[PREC.or, '||'],
+				[PREC.and, '&&'],
+				[PREC.comparative, choice('==', '!=', '<', '<=', '>', '>=')],
+				[PREC.bitor, '|'],
+				[PREC.bitxor, '^'],
+				[PREC.bitand, '&'],
+				[PREC.shift, choice('<<', '>>')],
+				[PREC.additive, choice('+', '-')],
+				[PREC.multiplicative, choice('*', '/', '%')]
+			]
+
+			return choice(
+				...table.map(([precedence, operator]) =>
+					prec.left(
+						precedence,
+						seq(
+							field('left', $._expression),
+							field(
+								'operator',
+								alias(operator, $.binary_operator)
+							),
+							field('right', $._expression)
+						)
+					)
+				)
+			)
+		},
 
 		//---Declarations---//
 
