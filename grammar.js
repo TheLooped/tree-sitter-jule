@@ -19,6 +19,12 @@ const PRIMITIVE_TYPES = [
 	'any'
 ]
 
+const PREC = {
+	call: 13, // Function calls
+	field: 12, // Field access
+	assign: 1 // Assignment
+}
+
 const DIGIT = /[0-9]/
 const HEX_DIGIT = /[0-9a-fA-F]/
 const BIN_DIGIT = /[01]/
@@ -88,7 +94,8 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$.qualified_identifier, $._type_identifier],
-		[$._non_block_expression, $._type_identifier]
+		[$._non_block_expression, $._type_identifier],
+		[$.expression_list]
 	],
 
 	word: ($) => $.identifier,
@@ -107,6 +114,12 @@ module.exports = grammar({
 		_non_block_expression: ($) =>
 			choice(
 				$.assignment_expression,
+				$.call_expression,
+				$.field_expression,
+				$.parenthesized_expression,
+				$.index_expression,
+				$.slice_expression,
+				$.return_expression,
 				$.anonymous_function,
 				$._types,
 				$._literals,
@@ -116,9 +129,75 @@ module.exports = grammar({
 
 		expression_list: ($) => commaSep1($._expression),
 
+		// Indexed expressions
+		index_expression: ($) =>
+			prec.left(
+				PREC.call,
+				seq(
+					field('target', $._non_block_expression),
+					choice(
+						seq('[', field('index', $._non_block_expression), ']'),
+						$.slice_expression
+					)
+				)
+			),
+
+		// Slice expressions
+		slice_expression: ($) =>
+			seq(
+				'[',
+				optional(field('start', $._non_block_expression)),
+				':',
+				optional(field('end', $._non_block_expression)),
+				']'
+			),
+
+		// Parenthesized expressions
+		parenthesized_expression: ($) =>
+			prec.dynamic(-1, seq('(', field('content', $._expression), ')')),
+
+		// Field Access expressions
+		field_expression: ($) =>
+			prec(
+				PREC.field,
+				seq(
+					field('object', $._non_block_expression),
+					'.',
+					field('property', $._field_identifier)
+				)
+			),
+
+		// Function calls
+		call_expression: ($) =>
+			prec(
+				PREC.call,
+				seq(
+					field('function', $._expression),
+					optional(field('type_parameters', $.generic_parameters)),
+					field('arguments', $.arguments),
+					optional($.error_specifier)
+				)
+			),
+
+		arguments: ($) =>
+			seq(
+				'(',
+				commaSep(choice($._expression, $.variadic_argument)),
+				optional(','),
+				')'
+			),
+
+		variadic_argument: ($) =>
+			prec.right(seq($._non_block_expression, '...')),
+
+		// return expression
+		return_expression: ($) =>
+			prec.left(seq('ret', optional(field('values', $.expression_list)))),
+
+		// assignment expr
 		assignment_expression: ($) =>
 			prec.right(
-				1,
+				PREC.assign,
 				seq(
 					field('left', $._expression),
 					field('operator', $.assignment_operator),
@@ -317,6 +396,7 @@ module.exports = grammar({
 		identifier: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
 		_type_identifier: ($) => alias($.identifier, $.type_identifier),
+		_field_identifier: ($) => alias($.identifier, $.field_identifier),
 
 		qualified_identifier: ($) =>
 			prec.left(
