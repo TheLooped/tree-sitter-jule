@@ -106,7 +106,6 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$.qualified_identifier, $._type_identifier],
 		[$._non_block_expression, $._type_identifier],
-		[$.expression_list],
 		[$.call_expression]
 	],
 
@@ -115,13 +114,23 @@ module.exports = grammar({
 	rules: {
 		source_file: ($) => repeat(seq($._statement, terminator)),
 
-		_statement: ($) => choice($._declaration, $._expression),
+		_statement: ($) =>
+			choice($._declaration, $._simple_statment, $._expression),
+
+		//---Statments---//
+		_simple_statment: ($) => choice($.return_expression),
 
 		//---Expressions---//
 		_expression: ($) =>
 			choice($._non_block_expression, $._block_expression),
 
-		_block_expression: ($) => choice($.block),
+		_block_expression: ($) =>
+			choice(
+				$.block,
+				$.for_expression,
+				$.if_expression,
+				$.else_expression
+			),
 
 		_non_block_expression: ($) =>
 			choice(
@@ -133,7 +142,6 @@ module.exports = grammar({
 				$.parenthesized_expression,
 				$.index_expression,
 				$.slice_expression,
-				$.return_expression,
 				$.anonymous_function,
 				$._types,
 				$._literals,
@@ -142,6 +150,74 @@ module.exports = grammar({
 			),
 
 		expression_list: ($) => commaSep1($._expression),
+
+		// If expression
+		if_expression: ($) =>
+			prec.right(
+				seq(
+					'if',
+					field('condition', $._expression),
+					field('consequence', $.block),
+					optional(field('alternative', $.else_clause))
+				)
+			),
+
+		else_clause: ($) =>
+			choice(seq('else', $.block), seq('else', $.if_expression)),
+
+		else_expression: ($) => seq($._expression, 'else', $.block),
+
+		// for expression
+		for_expression: ($) =>
+			seq(optional('const'), choice($.for_each, $.while, $.while_next)),
+
+		for_each: ($) =>
+			seq(
+				'for',
+				choice(
+					field('index', choice($.ignore_operator, $.identifier)),
+					seq(
+						field('index', choice($.ignore_operator, $.identifier)),
+						',',
+						field(
+							'element',
+							choice($.ignore_operator, $.identifier)
+						)
+					),
+					seq(
+						'(',
+						optional('mut'),
+						field('index', choice($.ignore_operator, $.identifier)),
+						',',
+						optional('mut'),
+						field(
+							'element',
+							choice($.ignore_operator, $.identifier)
+						),
+						')'
+					)
+				),
+				alias('in', $.keyword),
+				field('collection', $._non_block_expression),
+
+				field('body', $.block)
+			),
+
+		while: ($) =>
+			seq(
+				'for',
+				field('condition', $._non_block_expression),
+				field('body', $.block)
+			),
+
+		while_next: ($) =>
+			seq(
+				'for',
+				field('condition', $._non_block_expression),
+				';',
+				field('update', $._non_block_expression),
+				field('body', $.block)
+			),
 
 		// Indexed expressions
 		index_expression: ($) =>
