@@ -88,7 +88,7 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$.qualified_identifier, $._type_identifier],
-		[$._expression, $._type_identifier]
+		[$._non_block_expression, $._type_identifier]
 	],
 
 	word: ($) => $.identifier,
@@ -98,16 +98,48 @@ module.exports = grammar({
 
 		_statement: ($) => choice($._declaration, $._expression),
 
+		//---Expressions---//
 		_expression: ($) =>
+			choice($._non_block_expression, $._block_expression),
+
+		_block_expression: ($) => choice($.block),
+
+		_non_block_expression: ($) =>
 			choice(
-				$._literals,
-				$._types,
+				$.assignment_expression,
 				$.anonymous_function,
+				$._types,
+				$._literals,
 				$.qualified_identifier,
 				$.identifier
 			),
 
 		expression_list: ($) => commaSep1($._expression),
+
+		assignment_expression: ($) =>
+			prec.right(
+				1,
+				seq(
+					field('left', $._expression),
+					field('operator', $.assignment_operator),
+					field('right', $._expression)
+				)
+			),
+
+		assignment_operator: (_) =>
+			choice(
+				'=',
+				'+=',
+				'-=',
+				'*=',
+				'/=',
+				'%=',
+				'&=',
+				'|=',
+				'^=',
+				'<<=',
+				'>>='
+			),
 
 		//---Declarations---//
 
