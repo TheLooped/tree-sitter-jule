@@ -530,10 +530,18 @@ module.exports = grammar({
 			),
 
 		short_names: ($) =>
-			seq(
-				choice($.identifier, $.ref_pattern, $.mut_pattern),
-				repeat(
-					seq(',', choice($.identifier, $.ref_pattern, $.mut_pattern))
+			choice(
+				$.identifier,
+				$.ref_pattern,
+				$.mut_pattern,
+				seq(
+					choice($.identifier, $.ref_pattern, $.mut_pattern),
+					repeat1(
+						seq(
+							',',
+							choice($.identifier, $.ref_pattern, $.mut_pattern)
+						)
+					)
 				)
 			),
 
@@ -573,6 +581,7 @@ module.exports = grammar({
 				$.primitive_type,
 				$._type_identifier,
 				$.qualified_type_identifier,
+				$.function_type,
 				$.pointer_type,
 				$.reference_type,
 				$.map_type,
@@ -581,6 +590,13 @@ module.exports = grammar({
 			),
 
 		primitive_type: ($) => choice(...PRIMITIVE_TYPES),
+
+		function_type: ($) =>
+			seq(
+				'fn',
+				field('parameters', $.parameters),
+				optional(seq(':', field('return_type', $._return_type)))
+			),
 
 		pointer_type: ($) =>
 			prec(PREC.unary, seq('*', field('type', $._types))),
@@ -624,7 +640,9 @@ module.exports = grammar({
 				$.string_literal,
 				$.raw_string_literal,
 				$.byte_literal,
-				$.rune_literal
+				$.rune_literal,
+				$.map_literal,
+				$.array_literal
 			),
 
 		//---Numeric Literals---//
@@ -632,6 +650,32 @@ module.exports = grammar({
 
 		integer_literal: ($) => intLiteral,
 		float_literal: ($) => floatLiteral,
+
+		// Array literals
+		array_literal: ($) =>
+			choice(
+				seq('[', ']'),
+				seq(
+					'[',
+					choice(
+						commaSep1($._expression),
+						seq($._expression, ',', '...')
+					),
+					optional(','),
+					']'
+				)
+			),
+
+		// Map literals
+		map_literal: ($) =>
+			seq('{', commaSep1($.map_entry), optional(','), '}'),
+
+		map_entry: ($) =>
+			seq(
+				field('key', $._expression),
+				':',
+				field('value', $._expression)
+			),
 
 		//---Bool Literals---//
 		bool_literal: ($) => choice('true', 'false'),
