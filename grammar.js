@@ -534,15 +534,7 @@ module.exports = grammar({
 				$.identifier,
 				$.ref_pattern,
 				$.mut_pattern,
-				seq(
-					choice($.identifier, $.ref_pattern, $.mut_pattern),
-					repeat1(
-						seq(
-							',',
-							choice($.identifier, $.ref_pattern, $.mut_pattern)
-						)
-					)
-				)
+				seq(commaSep1($.identifier, $.ref_pattern, $.mut_pattern))
 			),
 
 		//---Identifiers---//
