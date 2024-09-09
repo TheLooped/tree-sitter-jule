@@ -367,7 +367,34 @@ module.exports = grammar({
 
 		//---Declarations---//
 
-		_declaration: ($) => choice($.named_function, $._var_decl, $.use_decl),
+		_declaration: ($) =>
+			choice(
+				$.named_function,
+				$.struct_declaration,
+				$._var_decl,
+				$.use_decl
+			),
+
+		struct_declaration: ($) =>
+			seq(
+				optional('cpp'),
+				'struct',
+				field('name', $.identifier),
+				optional(field('generic_parameters', $.generic_parameters)),
+				'{',
+				optional(repeat($.struct_field)),
+				'}'
+			),
+
+		struct_field: ($) =>
+			seq(
+				field('name', $.identifier),
+				':',
+				field('type', $._types),
+				optional(
+					seq('=', field('default_value', $._non_block_expression))
+				)
+			),
 
 		//  Function Declaration
 		named_function: ($) =>
