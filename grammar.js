@@ -371,6 +371,9 @@ module.exports = grammar({
 			choice(
 				$.named_function,
 				$.struct_declaration,
+				$.enum_declaration,
+				$.trait_decl,
+				$.impl_decl,
 				$._var_decl,
 				$.use_decl
 			),
@@ -394,6 +397,59 @@ module.exports = grammar({
 				optional(
 					seq('=', field('default_value', $._non_block_expression))
 				)
+			),
+
+		enum_declaration: ($) =>
+			seq(
+				'enum',
+				field('name', $.identifier),
+				optional(seq(':', field('type', $._types))),
+				'{',
+				commaSep($.enum_field),
+				optional(','),
+				'}'
+			),
+
+		enum_field: ($) =>
+			seq(
+				field('name', $.identifier),
+				optional(seq(':', field('type', $._types)))
+			),
+
+		impl_decl: ($) =>
+			seq(
+				'impl',
+				optional(
+					seq(
+						field(
+							'trait',
+							choice($.identifier, $.qualified_identifier)
+						),
+						'for'
+					)
+				),
+				field('struct', choice($.identifier, $.qualified_identifier)),
+				field('body', $.block)
+			),
+
+		trait_decl: ($) =>
+			seq(
+				'trait',
+				field('name', $.identifier),
+				field('body', $.trait_body)
+			),
+
+		trait_body: ($) =>
+			seq(
+				'{',
+				repeat(
+					choice(
+						$.identifier,
+						$.qualified_identifier,
+						$.named_function
+					)
+				),
+				'}'
 			),
 
 		//  Function Declaration
