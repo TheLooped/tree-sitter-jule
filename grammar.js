@@ -103,11 +103,7 @@ module.exports = grammar({
 
 	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
 
-	conflicts: ($) => [
-		[$.qualified_identifier, $._type_identifier],
-		[$._non_block_expression, $._type_identifier],
-		[$.call_expression]
-	],
+	conflicts: ($) => [[$.call_expression]],
 
 	word: ($) => $.identifier,
 
@@ -143,7 +139,6 @@ module.exports = grammar({
 				$.index_expression,
 				$.slice_expression,
 				$.anonymous_function,
-				$._types,
 				$._literals,
 				$.qualified_identifier,
 				$.identifier
@@ -491,7 +486,7 @@ module.exports = grammar({
 			seq(
 				optional($.cpp_flag),
 				'let',
-				optional($.mut_flag),
+				optional('mut'),
 				field('name', choice($.identifier, $.ref_pattern)),
 				optional(seq(':', field('type', $._types))),
 				optional(seq('=', field('value', $._expression)))
@@ -519,7 +514,7 @@ module.exports = grammar({
 		static_decl: ($) =>
 			seq(
 				'static',
-				optional($.mut_flag),
+				optional('mut'),
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._types))),
 				'=',
@@ -577,10 +572,48 @@ module.exports = grammar({
 			choice(
 				$.primitive_type,
 				$._type_identifier,
-				$.qualified_type_identifier
+				$.qualified_type_identifier,
+				$.pointer_type,
+				$.reference_type,
+				$.map_type,
+				$.slice_type,
+				$.array_type
 			),
 
 		primitive_type: ($) => choice(...PRIMITIVE_TYPES),
+
+		pointer_type: ($) =>
+			prec(PREC.unary, seq('*', field('type', $._types))),
+
+		reference_type: ($) =>
+			seq(optional('mut'), '&', field('type', $._types)),
+
+		map_type: ($) =>
+			seq(
+				'map[',
+				field('key_type', $._types),
+				']',
+				field('value_type', $._types)
+			),
+
+		slice_type: ($) => seq('[', ']', field('element_type', $._types)),
+
+		array_type: ($) =>
+			seq(
+				'[',
+				field('length', $._non_block_expression),
+				']',
+				field('element_type', $._types)
+			),
+
+		auto_sized_array_type: ($) =>
+			seq(
+				'[',
+				'...',
+				optional(field('length', $._non_block_expression)),
+				']',
+				field('element_type', $._types)
+			),
 
 		//---Literals---//
 		_literals: ($) =>
@@ -672,8 +705,6 @@ module.exports = grammar({
 		cpp_flag: () => 'cpp',
 
 		ignore_operator: () => '_',
-
-		mut_flag: () => 'mut',
 
 		ref_pattern: ($) => seq('&', $.identifier),
 		mut_pattern: ($) => seq('mut', choice($.ref_pattern, $.identifier)),
