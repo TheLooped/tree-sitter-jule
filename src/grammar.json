@@ -79,6 +79,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "modified_block"
+        },
+        {
+          "type": "SYMBOL",
           "name": "for_expression"
         },
         {
@@ -2055,14 +2059,36 @@
           ]
         },
         {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_function_body"
+          }
+        }
+      ]
+    },
+    "_function_body": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "block"
+        },
+        {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "block"
+              "type": "STRING",
+              "value": "\n"
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": ";"
+            },
+            {
+              "type": "STRING",
+              "value": "\u0000"
             }
           ]
         }
@@ -2086,6 +2112,15 @@
         {
           "type": "STRING",
           "value": "static"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "cpp, unsafe"
+            }
+          ]
         }
       ]
     },
@@ -2535,7 +2570,7 @@
           "name": "body",
           "content": {
             "type": "SYMBOL",
-            "name": "block"
+            "name": "_function_body"
           }
         }
       ]
@@ -5097,6 +5132,45 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "_block_modifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "defer"
+        },
+        {
+          "type": "STRING",
+          "value": "unsafe"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "unsafe"
+            },
+            {
+              "type": "STRING",
+              "value": "defer"
+            }
+          ]
+        }
+      ]
+    },
+    "modified_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_block_modifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "block"
         }
       ]
     },

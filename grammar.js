@@ -123,6 +123,7 @@ module.exports = grammar({
 		_block_expression: ($) =>
 			choice(
 				$.block,
+				$.modified_block,
 				$.for_expression,
 				$.if_expression,
 				$.else_expression
@@ -462,10 +463,13 @@ module.exports = grammar({
 				field('parameters', $.parameters),
 				optional($.error_specifier),
 				optional(seq(':', field('return_type', $._return_type))),
-				$.block
+				field('body', $._function_body)
 			),
 
-		function_modifiers: ($) => choice('co', 'unsafe', 'cpp', 'static'),
+		_function_body: ($) => choice($.block, terminator),
+
+		function_modifiers: ($) =>
+			choice('co', 'unsafe', 'cpp', 'static', seq('cpp, unsafe')),
 
 		generic_parameters: ($) =>
 			seq('[', commaSep1($.generic_parameter), ']'),
@@ -528,7 +532,7 @@ module.exports = grammar({
 				'fn',
 				field('parameters', $.parameters),
 				optional(seq(':', field('return_type', $._return_type))),
-				field('body', $.block)
+				field('body', $._function_body)
 			),
 
 		// Use Declaration
@@ -843,6 +847,11 @@ module.exports = grammar({
 
 		//---Blocks---//
 		block: ($) => seq('{', repeat($._statement), '}'),
+
+		_block_modifier: ($) =>
+			choice('defer', 'unsafe', seq('unsafe', 'defer')),
+
+		modified_block: ($) => seq($._block_modifier, $.block),
 
 		//---Comments---//
 
