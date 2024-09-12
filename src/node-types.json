@@ -2088,10 +2088,6 @@
           "named": true
         },
         {
-          "type": "infinity",
-          "named": true
-        },
-        {
           "type": "while",
           "named": true
         },
@@ -2592,22 +2588,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "infinity",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "block",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -5334,7 +5314,7 @@
       },
       "condition": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "anonymous_function",

@@ -208,10 +208,13 @@ module.exports = grammar({
 			),
 
 		while: ($) =>
-			seq(
-				'for',
-				field('condition', $._non_block_expression),
-				field('body', $.block)
+			prec(
+				1,
+				seq(
+					'for',
+					optional(field('condition', $._non_block_expression)),
+					field('body', $.block)
+				)
 			),
 
 		while_next: ($) =>
