@@ -114,7 +114,15 @@ module.exports = grammar({
 			choice($._declaration, $._simple_statment, $._expression),
 
 		//---Statments---//
-		_simple_statment: ($) => choice($.return_expression),
+		_simple_statment: ($) =>
+			choice(
+				$.return_expression,
+				$.break_statement,
+				$.goto_statement,
+				$.label,
+				$.pragma,
+				$.continue_statement
+			),
 
 		//---Expressions---//
 		_expression: ($) =>
@@ -365,6 +373,27 @@ module.exports = grammar({
 				)
 			)
 		},
+
+		pragma: ($) =>
+			prec.left(
+				seq(
+					'#',
+					field('directive', $.identifier),
+					optional(field('argument', $._expression))
+				)
+			),
+
+		label: ($) =>
+			prec(-8, seq(field('label', $.identifier), ':', terminator)),
+
+		goto_statement: ($) =>
+			prec.right(seq('goto', field('label', $.identifier))),
+
+		break_statement: ($) =>
+			prec.right(seq('break', optional(field('label', $.identifier)))),
+
+		continue_statement: ($) =>
+			prec.right(seq('continue', optional(field('label', $.identifier)))),
 
 		//---Declarations---//
 
