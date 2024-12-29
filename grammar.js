@@ -131,7 +131,6 @@ module.exports = grammar({
 		_block_expression: ($) =>
 			choice(
 				$.block,
-				$.modified_block,
 				$.for_expression,
 				$.if_expression,
 				$.else_expression
@@ -147,7 +146,7 @@ module.exports = grammar({
 				$.parenthesized_expression,
 				$.index_expression,
 				$.slice_expression,
-				$.anonymous_function,
+				$.fn_expr,
 				$._literals,
 				$.qualified_identifier,
 				$.identifier
@@ -270,9 +269,9 @@ module.exports = grammar({
 				PREC.call,
 				seq(
 					field('function', $._expression),
-					optional(field('type_parameters', $.generic_parameters)),
+					optional(field('type_parameters', $.generic_params)),
 					field('arguments', $.arguments),
-					optional($.error_specifier)
+					optional($.err_tkn)
 				)
 			),
 
@@ -377,6 +376,15 @@ module.exports = grammar({
 			)
 		},
 
+		_bind: ($) =>
+			choice($.identifier, $.mut_bind, $.ref_bind, $.ignore_operator),
+
+		mut_bind: ($) => seq('mut', choice($.identifier, $.ref_bind)),
+
+		ref_bind: ($) => prec(-1, seq('&', $.identifier)),
+
+		type_annotation: ($) => seq(':', field('type', $._types)),
+
 		pragma: ($) =>
 			prec.left(
 				seq(
@@ -402,7 +410,7 @@ module.exports = grammar({
 
 		_declaration: ($) =>
 			choice(
-				$.named_function,
+				$.fn_decl,
 				$.struct_declaration,
 				$.enum_declaration,
 				$.trait_decl,
@@ -416,7 +424,7 @@ module.exports = grammar({
 				optional('cpp'),
 				'struct',
 				field('name', $.identifier),
-				optional(field('generic_parameters', $.generic_parameters)),
+				optional(field('generic_parameters', $.generic_params)),
 				'{',
 				optional(repeat($.struct_field)),
 				'}'
@@ -475,96 +483,114 @@ module.exports = grammar({
 		trait_body: ($) =>
 			seq(
 				'{',
-				repeat(
-					choice(
-						$.identifier,
-						$.qualified_identifier,
-						$.named_function
-					)
-				),
+				repeat(choice($.identifier, $.qualified_identifier, $.fn_decl)),
 				'}'
 			),
 
 		//  Function Declaration
-		named_function: ($) =>
+		fn_decl: ($) =>
 			seq(
-				optional($.function_modifiers),
+				optional(field('modifiers', $.fn_modifiers)),
 				'fn',
 				field('name', $.identifier),
-				optional(field('generic_params', $.generic_parameters)),
-				field('parameters', $.parameters),
-				optional($.error_specifier),
-				optional(seq(':', field('return_type', $._return_type))),
-				field('body', $._function_body)
+				optional(field('generics', $.generic_params)),
+				field('parameters', $.param_list),
+				optional(field('return_type', $.return_spec)),
+				field('body', $.fn_body)
 			),
 
-		_function_body: ($) => choice($.block, terminator),
+		// Function modifiers
+		fn_modifiers: () => choice('unsafe', 'static'),
 
-		function_modifiers: ($) =>
-			choice('co', 'unsafe', 'cpp', 'static', seq('cpp, unsafe')),
+		// Function body
+		fn_body: ($) => choice($._fn_block, terminator),
 
-		generic_parameters: ($) =>
-			seq('[', commaSep1($.generic_parameter), ']'),
+		// ============ Generic Parameters ============
+		/**
+		 * Generic type parameters with optional constraints
+		 * Example: [T: Comparable]
+		 */
+		generic_params: ($) => seq('[', commaSep1($.generic_param), ']'),
 
-		generic_parameter: ($) =>
+		generic_param: ($) =>
 			seq(
-				field('name', $._type_identifier),
-				optional(seq(':', field('constraint', $.type_constraint)))
+				field('name', $.identifier),
+				optional(seq(':', field('constraints', sep1($._types, '|'))))
 			),
 
-		type_constraint: ($) => sep1($._types, '|'),
-
-		receiver_parameter: ($) => seq(optional(choice('mut', '&')), 'self'),
-
-		parameters: ($) =>
+		// ============ Parameter Definitions ============
+		/**
+		 * Function parameter list supporting regular, self, and variadic params
+		 * Example: (x: int, mut y: float, &z: string)
+		 */
+		param_list: ($) =>
 			seq(
 				'(',
 				optional(
-					commaSep1(
-						choice(
-							$.parameter,
-							$.receiver_parameter,
-							$.variadic_parameter
-						)
-					)
+					commaSep1(choice($.param, $.self_param, $.variadic_param))
 				),
 				')'
 			),
 
-		parameter: ($) =>
-			seq(
-				field(
-					'name',
-					choice($.mut_pattern, $.ref_pattern, $.identifier)
-				),
-				optional(seq(':', field('type', $._types)))
-			),
+		/**
+		 * Regular parameter with binding modes
+		 * Example: x: int, mut y: float, &z: string
+		 */
+		param: ($) => seq(field('bind', $._bind), optional($.type_annotation)),
 
-		variadic_parameter: ($) =>
+		/**
+		 * Self parameter for methods
+		 * Example: self, mut self, &self
+		 */
+		self_param: ($) =>
+			seq(optional(seq(optional('mut'), optional('&'))), 'self'),
+
+		/**
+		 * Variadic parameter
+		 * Example: args: ...string
+		 */
+		variadic_param: ($) =>
 			seq(
-				field('name', $.identifier),
-				':',
+				optional(field('name', $._bind)),
+				optional(':'),
 				'...',
 				field('type', $._types)
 			),
 
-		_return_type: ($) =>
-			choice($._types, $.multi_return, $.named_return_type),
+		// ============ Return Specifications ============
 
-		multi_return: ($) => seq('(', commaSep1($._types), ')'),
+		return_spec: ($) =>
+			choice(
+				field('err_ident', $.err_tkn),
+				seq(':', field('type', $._ret_type)),
+				seq(
+					field('err_ident', $.err_tkn),
+					seq(':', field('type', $._ret_type))
+				)
+			),
 
-		named_return_type: ($) => seq('(', commaSep1($.named_return_item), ')'),
+		err_tkn: ($) => '!',
 
-		named_return_item: ($) =>
-			seq(field('name', $.identifier), ':', field('type', $._types)),
+		_ret_type: ($) => choice($._types, $.multi_ret, $.named_ret_list),
+
+		multi_ret: ($) => seq('(', commaSep1($._types), ')'),
+
+		named_ret_list: ($) => seq('(', commaSep1($.named_ret), ')'),
+
+		named_ret: ($) =>
+			seq(
+				field('name', alias($.identifier, $.ret_id)),
+				':',
+				field('type', $._types)
+			),
 
 		// Anonymous Function
-		anonymous_function: ($) =>
+		fn_expr: ($) =>
 			seq(
 				'fn',
-				field('parameters', $.parameters),
-				optional(seq(':', field('return_type', $._return_type))),
-				field('body', $._function_body)
+				field('parameters', $.param_list),
+				optional(seq(':', field('return_type', $._types))),
+				field('body', choice($.block, terminator))
 			),
 
 		// Use Declaration
@@ -673,7 +699,7 @@ module.exports = grammar({
 				$.primitive_type,
 				$._type_identifier,
 				$.qualified_type_identifier,
-				$.function_type,
+				$.fn_type,
 				$.pointer_type,
 				$.reference_type,
 				$.map_type,
@@ -683,11 +709,22 @@ module.exports = grammar({
 
 		primitive_type: ($) => choice(...PRIMITIVE_TYPES),
 
-		function_type: ($) =>
+		fn_type: ($) =>
 			seq(
 				'fn',
-				field('parameters', $.parameters),
-				optional(seq(':', field('return_type', $._return_type)))
+				field('params', $.fn_type_params),
+				optional(seq(':', field('ret_type', $._types)))
+			),
+
+		fn_type_params: ($) =>
+			seq('(', optional(commaSep1($.fn_type_param)), ')'),
+
+		fn_type_param: ($) =>
+			seq(
+				optional(
+					seq(field('name', alias($.identifier, $.param_id)), ':')
+				),
+				field('type', $._types)
 			),
 
 		pointer_type: ($) =>
@@ -837,7 +874,6 @@ module.exports = grammar({
 			),
 
 		//---Patterns---//
-		error_specifier: ($) => '!',
 		cpp_flag: () => 'cpp',
 
 		ignore_operator: () => '_',
@@ -859,12 +895,23 @@ module.exports = grammar({
 			),
 
 		//---Blocks---//
-		block: ($) => seq('{', repeat($._statement), '}'),
+		block: ($) =>
+			choice(
+				$._normal_block,
+				$.unsafe_block,
+				$.defer_block,
+				$.unsafe_defer_block
+			),
 
-		_block_modifier: ($) =>
-			choice('defer', 'unsafe', seq('unsafe', 'defer')),
+		_normal_block: ($) => seq('{', optional(repeat1($._statement)), '}'),
 
-		modified_block: ($) => seq($._block_modifier, $.block),
+		unsafe_block: ($) => seq('unsafe', $._normal_block),
+
+		defer_block: ($) => seq('defer', $._normal_block),
+
+		unsafe_defer_block: ($) => seq('unsafe', 'defer', $._normal_block),
+
+		_fn_block: ($) => alias($._normal_block, $.fn_block),
 
 		//---Comments---//
 
