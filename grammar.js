@@ -569,29 +569,10 @@ module.exports = grammar({
 
 		// Use Declaration
 		use_decl: ($) =>
-			seq('use', choice($.simple, $.wildcard, $.selector, $.aliased)),
-
-		simple: ($) => field('path', $.qualified_identifier),
-
-		wildcard: ($) => seq(field('path', $.qualified_identifier), '::*'),
-
-		selector: ($) =>
 			seq(
-				field('path', $.qualified_identifier),
-				'::',
-				'{',
-				field(
-					'items',
-					commaSep(choice($.identifier, alias('self', $.self_import)))
-				),
-				'}'
-			),
-
-		aliased: ($) =>
-			seq(
-				field('alias', $.identifier),
-				'for',
-				field('import', choice($.simple, $.selector))
+				'use',
+				optional(field('alias', $.identifier)),
+				field('path', $.string_literal)
 			),
 
 		// Variable Declaration
