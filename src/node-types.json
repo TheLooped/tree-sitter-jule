@@ -1,35 +1,5 @@
 [
   {
-    "type": "aliased",
-    "named": true,
-    "fields": {
-      "alias": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "import": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "selector",
-            "named": true
-          },
-          {
-            "type": "simple",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "anonymous_function",
     "named": true,
     "fields": {
@@ -3805,40 +3775,6 @@
     }
   },
   {
-    "type": "selector",
-    "named": true,
-    "fields": {
-      "items": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "self_import",
-            "named": true
-          }
-        ]
-      },
-      "path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "qualified_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "short_decl",
     "named": true,
     "fields": {
@@ -3885,22 +3821,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "simple",
-    "named": true,
-    "fields": {
-      "path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "qualified_identifier",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -4310,6 +4230,7 @@
   {
     "type": "source_file",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -5125,28 +5046,27 @@
   {
     "type": "use_decl",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "aliased",
-          "named": true
-        },
-        {
-          "type": "selector",
-          "named": true
-        },
-        {
-          "type": "simple",
-          "named": true
-        },
-        {
-          "type": "wildcard",
-          "named": true
-        }
-      ]
+    "fields": {
+      "alias": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string_literal",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -5589,22 +5509,6 @@
     }
   },
   {
-    "type": "wildcard",
-    "named": true,
-    "fields": {
-      "path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "qualified_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "\u0000",
     "named": false
   },
@@ -5698,10 +5602,6 @@
   },
   {
     "type": "::",
-    "named": false
-  },
-  {
-    "type": "::*",
     "named": false
   },
   {
@@ -5923,10 +5823,6 @@
   {
     "type": "self",
     "named": false
-  },
-  {
-    "type": "self_import",
-    "named": true
   },
   {
     "type": "static",
