@@ -27,6 +27,7 @@ const PREC = {
 	multiplicative: 9, // *, %, /
 	shift: 8, // <<, >>
 	additive: 7, // +, -
+	match_sep: 6,
 	bitand: 6, // &
 	bitxor: 5, // ^ (XOR)
 	bitor: 4, // |
@@ -103,7 +104,10 @@ module.exports = grammar({
 
 	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
 
-	conflicts: ($) => [[$.call_expression]],
+	conflicts: ($) => [
+		[$._type_identifier, $.qualified_identifier],
+		[$.call_expression]
+	],
 
 	word: ($) => $.identifier,
 
@@ -121,7 +125,8 @@ module.exports = grammar({
 				$.goto_statement,
 				$.label,
 				$.pragma,
-				$.continue_statement
+				$.continue_statement,
+				$.match_statement
 			),
 
 		//---Expressions---//
@@ -149,7 +154,7 @@ module.exports = grammar({
 				$.fn_expr,
 				$._literals,
 				$.qualified_identifier,
-				$.identifier
+				prec(1, $.identifier)
 			),
 
 		expression_list: ($) => commaSep1($._expression),
@@ -177,33 +182,24 @@ module.exports = grammar({
 		for_each: ($) =>
 			seq(
 				'for',
-				choice(
-					field('index', choice($.ignore_operator, $.identifier)),
-					seq(
-						field('index', choice($.ignore_operator, $.identifier)),
-						',',
-						field(
-							'element',
-							choice($.ignore_operator, $.identifier)
-						)
-					),
-					seq(
-						'(',
-						optional('mut'),
-						field('index', choice($.ignore_operator, $.identifier)),
-						',',
-						optional('mut'),
-						field(
-							'element',
-							choice($.ignore_operator, $.identifier)
-						),
-						')'
-					)
-				),
+				optional($.foreach_bind),
 				alias('in', $.keyword),
 				field('collection', $._non_block_expression),
 
 				field('body', $.block)
+			),
+
+		foreach_bind: ($) =>
+			choice(
+				field('index', $._bind),
+				seq(field('index', $._bind), ',', field('element', $._bind)),
+				seq(
+					'(',
+					field('index', $._bind),
+					',',
+					field('element', $._bind),
+					')'
+				)
 			),
 
 		while: ($) =>
@@ -406,20 +402,96 @@ module.exports = grammar({
 		continue_statement: ($) =>
 			prec.right(seq('continue', optional(field('label', $.identifier)))),
 
+		match_statement: ($) =>
+			seq(
+				field('modifier', optional('const')),
+				'match',
+				field(
+					'condition',
+					optional(
+						choice(
+							seq(
+								'type',
+								field(
+									'type_expression',
+									$._non_block_expression
+								)
+							),
+							field('match_expression', $._non_block_expression)
+						)
+					)
+				),
+				field('body', $.match_block)
+			),
+
+		// Match block containing all cases
+		match_block: ($) =>
+			prec(
+				-1,
+				seq('{', repeat($.match_case), optional($.base_case), '}')
+			),
+
+		// Pattern case with match patterns
+		match_case: ($) =>
+			seq(
+				field('seperator', $.branch_sep),
+				field('patterns', $.pattern_list),
+				':',
+				field('body', $.case_body)
+			),
+
+		// Default case with no patterns
+		base_case: ($) =>
+			seq(
+				field('pattern_token', $.branch_sep),
+				':', // Note: No pattern list needed
+				field('body', $.case_body)
+			),
+
+		// Pattern separator token with high precedence
+		branch_sep: (_) => token(prec(PREC.match_sep, '|')),
+
+		// List of patterns that can be matched
+		pattern_list: ($) =>
+			prec.left(
+				PREC.match_sep,
+				sep1(
+					field('pattern', choice($._non_block_expression, $._types)),
+					//field('pattern', $._non_block_expression),
+					$.branch_sep
+				)
+			),
+
+		// Body of a case including optional fall-through
+		case_body: ($) => seq(repeat1($._statement), optional($.fall_through)),
+
+		// Fall-through statement
+		fall_through: (_) => token('fall'),
+
 		//---Declarations---//
 
 		_declaration: ($) =>
 			choice(
 				$.fn_decl,
-				$.struct_declaration,
-				$.enum_declaration,
+				$.struct_decl,
+				$.enum_decl,
 				$.trait_decl,
 				$.impl_decl,
 				$._var_decl,
-				$.use_decl
+				$.use_decl,
+				$.type_alias_decl
 			),
 
-		struct_declaration: ($) =>
+		type_alias_decl: ($) =>
+			seq(
+				optional('cpp'),
+				'type',
+				field('name', $._type_identifier),
+				field('kind', choice('=', ':')), // = for soft alias, : for strict alias
+				field('target', $._types)
+			),
+
+		struct_decl: ($) =>
 			seq(
 				optional('cpp'),
 				'struct',
@@ -440,13 +512,13 @@ module.exports = grammar({
 				)
 			),
 
-		enum_declaration: ($) =>
+		enum_decl: ($) =>
 			seq(
 				'enum',
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._types))),
 				'{',
-				commaSep($.enum_field),
+				commaSep1($.enum_field),
 				optional(','),
 				'}'
 			),
@@ -646,7 +718,6 @@ module.exports = grammar({
 				'=',
 				field('value', $._expression)
 			),
-
 		// Short variable declarations
 		short_decl: ($) =>
 			seq(
@@ -710,21 +781,12 @@ module.exports = grammar({
 		primitive_type: ($) => choice(...PRIMITIVE_TYPES),
 
 		fn_type: ($) =>
-			seq(
-				'fn',
-				field('params', $.fn_type_params),
-				optional(seq(':', field('ret_type', $._types)))
-			),
-
-		fn_type_params: ($) =>
-			seq('(', optional(commaSep1($.fn_type_param)), ')'),
-
-		fn_type_param: ($) =>
-			seq(
-				optional(
-					seq(field('name', alias($.identifier, $.param_id)), ':')
-				),
-				field('type', $._types)
+			prec.right(
+				seq(
+					'fn',
+					field('params', $.param_list),
+					optional(seq(':', field('ret_type', $._types)))
+				)
 			),
 
 		pointer_type: ($) =>
@@ -741,23 +803,21 @@ module.exports = grammar({
 				field('value_type', $._types)
 			),
 
-		slice_type: ($) => seq('[', ']', field('element_type', $._types)),
+		slice_type: ($) =>
+			prec(1, seq('[', ']', field('element_type', $._types))),
 
 		array_type: ($) =>
-			seq(
-				'[',
-				field('length', $._non_block_expression),
-				']',
-				field('element_type', $._types)
-			),
-
-		auto_sized_array_type: ($) =>
-			seq(
-				'[',
-				'...',
-				optional(field('length', $._non_block_expression)),
-				']',
-				field('element_type', $._types)
+			prec(
+				1,
+				seq(
+					'[',
+					choice(
+						$.integer_literal, // [3]int
+						'...' // [...]int - autosized array
+					),
+					']',
+					field('element_type', $._types)
+				)
 			),
 
 		//---Literals---//
@@ -782,18 +842,20 @@ module.exports = grammar({
 
 		// Array literals
 		array_literal: ($) =>
-			choice(
-				seq('[', ']'),
-				seq(
-					'[',
-					choice(
-						commaSep1($._expression),
-						seq($._expression, ',', '...')
-					),
-					optional(','),
-					']'
-				)
+			seq(
+				'[',
+				choice(
+					// Fill syntax: [100, ...]
+					seq(field('fill_value', $._expression), ',', '...'),
+					// Regular array elements
+					optional($.array_elements)
+				),
+				']'
 			),
+
+		// Non-zero width array elements rule
+		array_elements: ($) =>
+			seq($._expression, repeat(seq(',', $._expression)), optional(',')),
 
 		// Map literals
 		map_literal: ($) =>
