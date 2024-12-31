@@ -679,7 +679,7 @@
       }
     },
     "call_expression": {
-      "type": "PREC",
+      "type": "PREC_LEFT",
       "value": 13,
       "content": {
         "type": "SEQ",
@@ -693,15 +693,24 @@
             }
           },
           {
+            "type": "SYMBOL",
+            "name": "_fn_call_spec"
+          }
+        ]
+      }
+    },
+    "_fn_call_spec": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "FIELD",
-                "name": "type_parameters",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "generic_params"
-                }
+                "type": "SYMBOL",
+                "name": "generic_params"
               },
               {
                 "type": "BLANK"
@@ -713,15 +722,19 @@
             "name": "arguments",
             "content": {
               "type": "SYMBOL",
-              "name": "arguments"
+              "name": "call_args"
             }
           },
           {
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "err_tkn"
+                "type": "FIELD",
+                "name": "error",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "err_tkn"
+                }
               },
               {
                 "type": "BLANK"
@@ -731,55 +744,64 @@
         ]
       }
     },
-    "arguments": {
-      "type": "PREC",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "("
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "expression_list"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "variadic_argument"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "STRING",
-            "value": ")"
-          }
-        ]
-      }
+    "call_args": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "expression_list"
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "variadic_argument"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": ","
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
     },
     "variadic_argument": {
       "type": "PREC_RIGHT",
@@ -5691,9 +5713,6 @@
     [
       "_type_identifier",
       "qualified_identifier"
-    ],
-    [
-      "call_expression"
     ],
     [
       "expression_list"

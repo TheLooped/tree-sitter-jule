@@ -106,7 +106,6 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$._type_identifier, $.qualified_identifier],
-		[$.call_expression],
 		[$.expression_list]
 	],
 
@@ -263,27 +262,31 @@ module.exports = grammar({
 
 		// Function calls
 		call_expression: ($) =>
-			prec(
+			prec.left(
 				PREC.call,
+				seq(field('function', $._expression), $._fn_call_spec)
+			),
+
+		_fn_call_spec: ($) =>
+			prec.left(
 				seq(
-					field('function', $._expression),
-					optional(field('type_parameters', $.generic_params)),
-					field('arguments', $.arguments),
-					optional($.err_tkn)
+					optional($.generic_params),
+					field('arguments', $.call_args),
+					optional(field('error', $.err_tkn))
 				)
 			),
 
-		arguments: ($) =>
-			prec(
-				1,
-				seq(
-					'(',
-					seq($.expression_list, optional($.variadic_argument)),
-					optional(','),
-					')'
-				)
+		call_args: ($) =>
+			seq(
+				'(',
+				optional(
+					seq(
+						seq($.expression_list, optional($.variadic_argument)),
+						optional(',')
+					)
+				),
+				')'
 			),
-
 		variadic_argument: ($) =>
 			prec.right(seq($._non_block_expression, '...')),
 

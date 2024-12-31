@@ -1,24 +1,5 @@
 [
   {
-    "type": "arguments",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expression_list",
-          "named": true
-        },
-        {
-          "type": "variadic_argument",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "array_elements",
     "named": true,
     "fields": {},
@@ -801,6 +782,25 @@
     }
   },
   {
+    "type": "call_args",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression_list",
+          "named": true
+        },
+        {
+          "type": "variadic_argument",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "call_expression",
     "named": true,
     "fields": {
@@ -809,7 +809,17 @@
         "required": true,
         "types": [
           {
-            "type": "arguments",
+            "type": "call_args",
+            "named": true
+          }
+        ]
+      },
+      "error": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "err_tkn",
             "named": true
           }
         ]
@@ -915,16 +925,6 @@
             "named": true
           }
         ]
-      },
-      "type_parameters": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "generic_params",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -932,7 +932,7 @@
       "required": false,
       "types": [
         {
-          "type": "err_tkn",
+          "type": "generic_params",
           "named": true
         }
       ]
