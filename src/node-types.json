@@ -1608,9 +1608,34 @@
     }
   },
   {
+    "type": "enum_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "enum_field",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "enum_decl",
     "named": true,
     "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "enum_body",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -1663,16 +1688,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "enum_field",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -1684,49 +1699,93 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "field_identifier",
             "named": true
           }
         ]
       },
-      "type": {
+      "val": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "array_type",
+            "type": "array_literal",
             "named": true
           },
           {
-            "type": "fn_type",
+            "type": "assignment_expression",
             "named": true
           },
           {
-            "type": "map_type",
+            "type": "binary_expression",
             "named": true
           },
           {
-            "type": "pointer_type",
+            "type": "bool_literal",
             "named": true
           },
           {
-            "type": "primitive_type",
+            "type": "byte_literal",
             "named": true
           },
           {
-            "type": "qualified_type_identifier",
+            "type": "call_expression",
             "named": true
           },
           {
-            "type": "reference_type",
+            "type": "field_expression",
             "named": true
           },
           {
-            "type": "slice_type",
+            "type": "fn_expr",
             "named": true
           },
           {
-            "type": "type_identifier",
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index_expression",
+            "named": true
+          },
+          {
+            "type": "map_literal",
+            "named": true
+          },
+          {
+            "type": "nil_literal",
+            "named": true
+          },
+          {
+            "type": "number_literal",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "qualified_identifier",
+            "named": true
+          },
+          {
+            "type": "raw_string_literal",
+            "named": true
+          },
+          {
+            "type": "rune_literal",
+            "named": true
+          },
+          {
+            "type": "slice_expression",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
             "named": true
           }
         ]

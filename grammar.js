@@ -528,16 +528,18 @@ module.exports = grammar({
 				'enum',
 				field('name', $.identifier),
 				optional(seq(':', field('type', $._types))),
-				'{',
-				commaSep1($.enum_field),
-				optional(','),
-				'}'
+				field('body', $.enum_body)
 			),
 
+		enum_body: ($) => seq('{', commaSep($.enum_field), optional(','), '}'),
+
 		enum_field: ($) =>
-			seq(
-				field('name', $.identifier),
-				optional(seq(':', field('type', $._types)))
+			prec(
+				1,
+				seq(
+					field('name', $._field_identifier),
+					optional(seq(':', field('val', $._non_block_expression)))
+				)
 			),
 
 		impl_decl: ($) =>
