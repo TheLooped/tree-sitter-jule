@@ -106,7 +106,8 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$._type_identifier, $.qualified_identifier],
-		[$.call_expression]
+		[$.call_expression],
+		[$.expression_list]
 	],
 
 	word: ($) => $.identifier,
@@ -131,7 +132,7 @@ module.exports = grammar({
 
 		//---Expressions---//
 		_expression: ($) =>
-			choice($._non_block_expression, $._block_expression),
+			prec(0, choice($._non_block_expression, $._block_expression)),
 
 		_block_expression: ($) =>
 			choice(
@@ -153,7 +154,7 @@ module.exports = grammar({
 				$.slice_expression,
 				$.fn_expr,
 				$._literals,
-				$.qualified_identifier,
+				prec(1, $.qualified_identifier),
 				prec(1, $.identifier)
 			),
 
@@ -173,7 +174,8 @@ module.exports = grammar({
 		else_clause: ($) =>
 			choice(seq('else', $.block), seq('else', $.if_expression)),
 
-		else_expression: ($) => seq($._expression, 'else', $.block),
+		else_expression: ($) =>
+			prec.left(1, seq($._expression, 'else', $.block)),
 
 		// for expression
 		for_expression: ($) =>
@@ -272,11 +274,14 @@ module.exports = grammar({
 			),
 
 		arguments: ($) =>
-			seq(
-				'(',
-				commaSep(choice($._expression, $.variadic_argument)),
-				optional(','),
-				')'
+			prec(
+				1,
+				seq(
+					'(',
+					seq($.expression_list, optional($.variadic_argument)),
+					optional(','),
+					')'
+				)
 			),
 
 		variadic_argument: ($) =>
@@ -291,9 +296,9 @@ module.exports = grammar({
 			prec.right(
 				PREC.assign,
 				seq(
-					field('left', $._expression),
+					field('left', $.expression_list),
 					field('operator', $.assignment_operator),
-					field('right', $._expression)
+					field('right', $.expression_list)
 				)
 			),
 
@@ -373,11 +378,17 @@ module.exports = grammar({
 		},
 
 		_bind: ($) =>
-			choice($.identifier, $.mut_bind, $.ref_bind, $.ignore_operator),
+			choice(
+				$.identifier,
+				$.qualified_identifier,
+				$.mut_bind,
+				$.ref_bind,
+				$.ignore_operator
+			),
 
-		mut_bind: ($) => seq('mut', choice($.identifier, $.ref_bind)),
+		mut_bind: ($) => seq('mut', $._bind),
 
-		ref_bind: ($) => prec(-1, seq('&', $.identifier)),
+		ref_bind: ($) => prec(-1, seq('&', $._bind)),
 
 		type_annotation: ($) => seq(':', field('type', $._types)),
 
@@ -862,10 +873,13 @@ module.exports = grammar({
 			seq('{', commaSep1($.map_entry), optional(','), '}'),
 
 		map_entry: ($) =>
-			seq(
-				field('key', $._expression),
-				':',
-				field('value', $._expression)
+			prec(
+				1,
+				seq(
+					field('key', $._expression),
+					':',
+					field('value', $._expression)
+				)
 			),
 
 		//---Bool Literals---//
