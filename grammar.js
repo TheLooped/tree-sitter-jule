@@ -112,10 +112,12 @@ module.exports = grammar({
 	word: ($) => $.identifier,
 
 	rules: {
-		source_file: ($) => repeat(seq($._statement, terminator)),
+		source_file: ($) => repeat(seq($._statement)),
 
 		_statement: ($) =>
-			choice($._declaration, $._simple_statment, $._expression),
+			choice($._declaration, $._simple_statment, $._expr_stmt),
+
+		_expr_stmt: ($) => choice($._expression, terminator),
 
 		//---Statments---//
 		_simple_statment: ($) =>
@@ -491,7 +493,7 @@ module.exports = grammar({
 				$.enum_decl,
 				$.trait_decl,
 				$.impl_decl,
-				$._var_decl,
+				$.var_decl,
 				$.use_decl,
 				$.type_alias_decl
 			),
@@ -690,7 +692,7 @@ module.exports = grammar({
 			),
 
 		// Variable Declaration
-		_var_decl: ($) =>
+		var_decl: ($) =>
 			choice($.let_decl, $.const_decl, $.static_decl, $.short_decl),
 
 		// Let declarations

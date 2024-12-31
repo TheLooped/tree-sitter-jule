@@ -610,10 +610,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -670,10 +666,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -714,15 +706,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -755,6 +739,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -979,10 +967,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -1039,10 +1023,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -1083,15 +1063,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -1116,6 +1088,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -1343,10 +1319,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -1399,10 +1371,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -1443,15 +1411,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -1476,6 +1436,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -2047,10 +2011,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -2103,10 +2063,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -2147,15 +2103,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -2180,6 +2128,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -5116,10 +5068,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -5172,10 +5120,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -5216,15 +5160,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -5249,6 +5185,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -6000,10 +5940,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -6056,10 +5992,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -6100,15 +6032,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -6133,6 +6057,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -6179,10 +6107,6 @@
           "named": true
         },
         {
-          "type": "const_decl",
-          "named": true
-        },
-        {
           "type": "continue_statement",
           "named": true
         },
@@ -6235,10 +6159,6 @@
           "named": true
         },
         {
-          "type": "let_decl",
-          "named": true
-        },
-        {
           "type": "map_literal",
           "named": true
         },
@@ -6279,15 +6199,7 @@
           "named": true
         },
         {
-          "type": "short_decl",
-          "named": true
-        },
-        {
           "type": "slice_expression",
-          "named": true
-        },
-        {
-          "type": "static_decl",
           "named": true
         },
         {
@@ -6312,6 +6224,10 @@
         },
         {
           "type": "use_decl",
+          "named": true
+        },
+        {
+          "type": "var_decl",
           "named": true
         }
       ]
@@ -6341,6 +6257,33 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "var_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "const_decl",
+          "named": true
+        },
+        {
+          "type": "let_decl",
+          "named": true
+        },
+        {
+          "type": "short_decl",
+          "named": true
+        },
+        {
+          "type": "static_decl",
+          "named": true
+        }
+      ]
     }
   },
   {
