@@ -749,6 +749,21 @@
     }
   },
   {
+    "type": "block_comment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block_comment_text",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bool_literal",
     "named": true,
     "fields": {}
@@ -3067,10 +3082,6 @@
             "named": true
           },
           {
-            "type": "block",
-            "named": true
-          },
-          {
             "type": "bool_literal",
             "named": true
           },
@@ -3083,10 +3094,6 @@
             "named": true
           },
           {
-            "type": "else_expression",
-            "named": true
-          },
-          {
             "type": "field_expression",
             "named": true
           },
@@ -3095,15 +3102,7 @@
             "named": true
           },
           {
-            "type": "for_expression",
-            "named": true
-          },
-          {
             "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_expression",
             "named": true
           },
           {
@@ -3169,10 +3168,6 @@
             "named": true
           },
           {
-            "type": "block",
-            "named": true
-          },
-          {
             "type": "bool_literal",
             "named": true
           },
@@ -3185,10 +3180,6 @@
             "named": true
           },
           {
-            "type": "else_expression",
-            "named": true
-          },
-          {
             "type": "field_expression",
             "named": true
           },
@@ -3197,15 +3188,7 @@
             "named": true
           },
           {
-            "type": "for_expression",
-            "named": true
-          },
-          {
             "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if_expression",
             "named": true
           },
           {
@@ -3262,7 +3245,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "map_entry",
@@ -4493,17 +4476,16 @@
   {
     "type": "return_expression",
     "named": true,
-    "fields": {
-      "values": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression_list",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "expression_list",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -6786,6 +6768,10 @@
     "named": false
   },
   {
+    "type": "*/",
+    "named": false
+  },
+  {
     "type": "*=",
     "named": false
   },
@@ -6823,6 +6809,10 @@
   },
   {
     "type": "...",
+    "named": false
+  },
+  {
+    "type": "/*",
     "named": false
   },
   {
@@ -6886,7 +6876,7 @@
     "named": true
   },
   {
-    "type": "block_comment",
+    "type": "block_comment_text",
     "named": true
   },
   {

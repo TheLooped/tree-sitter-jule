@@ -104,6 +104,8 @@ module.exports = grammar({
 
 	extras: ($) => [$.block_comment, $.line_comment, /\s|\\\r?\n/],
 
+	externals: ($) => [$.block_comment_text],
+
 	conflicts: ($) => [
 		[$._type_identifier, $.qualified_identifier],
 		[$.expression_list]
@@ -294,7 +296,7 @@ module.exports = grammar({
 
 		// return expression
 		return_expression: ($) =>
-			prec.left(seq('ret', optional(field('values', $.expression_list)))),
+			prec.right(seq('ret', optional($.expression_list))),
 
 		// assignment expr
 		assignment_expression: ($) =>
@@ -875,17 +877,17 @@ module.exports = grammar({
 		array_elements: ($) =>
 			seq($._expression, repeat(seq(',', $._expression)), optional(',')),
 
-		// Map literals
-		map_literal: ($) =>
-			seq('{', commaSep1($.map_entry), optional(','), '}'),
+		// Map literal
+		map_literal: ($) => prec(2, seq('{', commaSep($.map_entry), '}')),
 
 		map_entry: ($) =>
-			prec(
+			prec.right(
 				1,
 				seq(
-					field('key', $._expression),
+					field('key', $._non_block_expression),
 					':',
-					field('value', $._expression)
+					field('value', $._non_block_expression),
+					optional(',')
 				)
 			),
 
@@ -986,7 +988,8 @@ module.exports = grammar({
 				$.unsafe_defer_block
 			),
 
-		_normal_block: ($) => seq('{', optional(repeat1($._statement)), '}'),
+		_normal_block: ($) =>
+			prec(1, seq('{', optional(repeat1($._statement)), '}')),
 
 		unsafe_block: ($) => seq('unsafe', $._normal_block),
 
@@ -1000,7 +1003,7 @@ module.exports = grammar({
 
 		line_comment: ($) => token(seq('//', /.*/)),
 
-		block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/'))
+		block_comment: ($) => seq('/*', $.block_comment_text, '*/')
 	}
 })
 

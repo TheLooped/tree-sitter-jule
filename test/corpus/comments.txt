@@ -11,8 +11,6 @@ Comments
 
 ---
 (source_file
- (comment
-  (line_comment))
- (comment
-  (block_comment))
- )
+  (line_comment
+  (block_comment
+    (block_comment_text)))
